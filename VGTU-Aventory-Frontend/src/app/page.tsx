@@ -131,10 +131,20 @@ export default function Home() {
     <main className="min-h-screen bg-slate-50 p-6">
       <div className="mx-auto flex max-w-6xl flex-col gap-6">
         <header className="flex flex-col gap-2">
-          <h1 className="text-3xl font-bold text-slate-900">Inventory Dashboard</h1>
-          <p className="text-sm text-slate-600">
-            Overview of current stock levels and analytics for your inventory management.
-          </p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-slate-900">Inventory Dashboard</h1>
+              <p className="text-sm text-slate-600">
+                Overview of current stock levels and analytics for your inventory management.
+              </p>
+            </div>
+            <a
+              href="/products"
+              className="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+            >
+              View All Products
+            </a>
+          </div>
         </header>
 
         {error ? (
