@@ -6,6 +6,12 @@
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/VGTU-Aventory-Android" />
         <option name="gradleJvm" value="zulu-21" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/VGTU-Aventory-Android" />
+            <option value="$PROJECT_DIR$/VGTU-Aventory-Android/app" />
+          </set>
+        </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/VGTU-Aventory-Backend" />

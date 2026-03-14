@@ -1,5 +1,6 @@
 package org.example.vgtuaventory.service;
 
+import org.example.vgtuaventory.model.Event;
 import org.example.vgtuaventory.repository.EventRepository;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,10 @@ public class EventService {
         this.eventRepository = eventRepository;
     }
 
-    public void deleteEvent(int id) {
+    public void deleteEvent(Integer id) {
+        if (!eventRepository.existsById(id)) {
+            throw new IllegalArgumentException("Event with id " + id + " does not exist");
+        }
         eventRepository.deleteById(id);
     }
 }
