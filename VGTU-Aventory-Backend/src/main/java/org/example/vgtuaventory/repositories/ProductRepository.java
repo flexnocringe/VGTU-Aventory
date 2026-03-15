@@ -1,9 +1,12 @@
 package org.example.vgtuaventory.repositories;
 
 import org.example.vgtuaventory.model.Product;
-import org.example.vgtuaventory.model.Sale;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface ProductRepository extends JpaRepository<Product,Integer> {
-    Sale deleteById(int id);
+    Product deleteById(int id);
+
+
 }
