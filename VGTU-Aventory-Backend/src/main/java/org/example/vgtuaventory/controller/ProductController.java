@@ -29,5 +29,6 @@ public class ProductController {
         productToEdit.setPrice(product.getPrice());
         productToEdit.setPhotoUrl(product.getPhotoUrl());
         productRepository.save(productToEdit);
+        return productRepository.findById(productToEdit.getProductId());
     }
 }
