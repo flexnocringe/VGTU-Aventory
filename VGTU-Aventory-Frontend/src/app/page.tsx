@@ -1,9 +1,20 @@
+import Link from "next/link";
+
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-4xl font-bold text-center text-black">Hello World</h1>
+    <main className="flex min-h-screen items-center justify-center bg-slate-100 px-6 py-12 text-slate-900">
+      <div className="w-full max-w-xl rounded-2xl bg-white p-8 shadow-lg">
+        <h1 className="text-3xl font-bold">Inventory Frontend</h1>
+        <p className="mt-3 text-slate-600">
+          Open the products page to view items, select one or many rows, and delete by product ids.
+        </p>
+        <Link
+          href="/products"
+          className="mt-6 inline-block rounded-md bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-slate-700"
+        >
+          Go to Products
+        </Link>
       </div>
-    </div>
+    </main>
   );
 }
