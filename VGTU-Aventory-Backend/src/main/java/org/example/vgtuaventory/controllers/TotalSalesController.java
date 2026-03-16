@@ -11,10 +11,7 @@ import org.example.vgtuaventory.utils.LocalDateAdapter;
 import org.example.vgtuaventory.utils.LocalDateTimeAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -44,15 +41,14 @@ public class TotalSalesController {
         return totalProfit;
     }
 
-    @GetMapping(value = "/totalProfitInInterval")
-    public @ResponseBody String getTotalProfitInInterval(@RequestBody String dateInfo) {
+    @GetMapping(value = "/totalProfitInInterval/{startDate}/{endDate}")
+    public @ResponseBody String getTotalProfitInInterval(@PathVariable String startDate, @PathVariable String endDate) {
         GsonBuilder build = new GsonBuilder();
         build.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter());
         Gson gson = build.setPrettyPrinting().create();
-        JsonObject dateInterval = gson.fromJson(dateInfo, JsonObject.class);
-        LocalDateTime startDate = LocalDate.parse(dateInterval.get("startDate").getAsString()).atStartOfDay();
-        LocalDateTime endDate = LocalDate.parse(dateInterval.get("endDate").getAsString()).atStartOfDay();
-        List<Sale> sales = saleRepository.findAllBySaleDateBetween(startDate, endDate);
+        LocalDateTime startDateFormatted = LocalDate.parse(startDate).atStartOfDay();
+        LocalDateTime endDateFormatted = LocalDate.parse(endDate).atStartOfDay();
+        List<Sale> sales = saleRepository.findAllBySaleDateBetween(startDateFormatted, endDateFormatted);
         Double sum = 0.0;
         for(Sale sale : sales) {
             sum += sale.getTotalPrice();
