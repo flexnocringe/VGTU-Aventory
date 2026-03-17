@@ -46,13 +46,17 @@ class EventControllerTest {
 
     @Test
     void testGetMyEvents_NotEmpty() throws Exception {
+        LocalDateTime start = LocalDateTime.now().plusDays(1);
+        LocalDateTime end = start.plusHours(2);
         List<EventDTO> events = new ArrayList<>();
-        events.add(new EventDTO(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(1).plusHours(2), "Future Event"));
+        events.add(new EventDTO(start, end, "Future Event"));
         
         when(eventService.getAllEvents()).thenReturn(events);
 
         mockMvc.perform(get("/api/events/my-events"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].description").value("Future Event"));
+                .andExpect(jsonPath("$[0].description").value("Future Event"))
+                .andExpect(jsonPath("$[0].startDate").exists())
+                .andExpect(jsonPath("$[0].endDate").exists());
     }
 }
