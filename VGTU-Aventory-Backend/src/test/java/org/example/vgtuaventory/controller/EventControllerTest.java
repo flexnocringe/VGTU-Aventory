@@ -37,7 +37,7 @@ class EventControllerTest {
 
     @Test
     void testGetMyEvents_Empty() throws Exception {
-        when(eventService.getEventsForCurrentUser()).thenReturn(new ArrayList<>());
+        when(eventService.getAllEvents()).thenReturn(new ArrayList<>());
 
         mockMvc.perform(get("/api/events/my-events"))
                 .andExpect(status().isOk())
@@ -49,7 +49,7 @@ class EventControllerTest {
         List<EventDTO> events = new ArrayList<>();
         events.add(new EventDTO(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(1).plusHours(2), "Future Event"));
         
-        when(eventService.getEventsForCurrentUser()).thenReturn(events);
+        when(eventService.getAllEvents()).thenReturn(events);
 
         mockMvc.perform(get("/api/events/my-events"))
                 .andExpect(status().isOk())

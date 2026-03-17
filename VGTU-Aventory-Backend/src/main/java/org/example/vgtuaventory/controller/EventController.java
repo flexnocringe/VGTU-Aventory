@@ -25,7 +25,7 @@ public class EventController {
 
     @GetMapping("/my-events")
     public ResponseEntity<?> getMyEvents() {
-        List<EventDTO> events = eventService.getEventsForCurrentUser();
+        List<EventDTO> events = eventService.getAllEvents();
         
         if (events.isEmpty()) {
             Map<String, String> response = new HashMap<>();

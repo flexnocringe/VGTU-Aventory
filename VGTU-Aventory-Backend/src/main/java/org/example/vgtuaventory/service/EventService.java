@@ -4,5 +4,5 @@ import org.example.vgtuaventory.dto.EventDTO;
 import java.util.List;
 
 public interface EventService {
-    List<EventDTO> getEventsForCurrentUser();
+    List<EventDTO> getAllEvents();
 }
