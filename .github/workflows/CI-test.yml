@@ -36,9 +36,3 @@ jobs:
           SPRING_DATASOURCE_PASSWORD:
           SPRING_JPA_DATABASE-PLATFORM: org.hibernate.dialect.H2Dialect
           SPRING_JPA_HIBERNATE_DDL-AUTO: create-drop
-
-      - name: Upload Test Report
-        uses: actions/upload-artifact@v3
-        with:
-          name: backend-test-report
-          path: ./VGTU-Aventory-Backend/build/reports/tests/test
