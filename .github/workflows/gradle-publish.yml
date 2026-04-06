@@ -23,6 +23,10 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
+      # Make gradlew executable
+      - name: Make Gradle Wrapper Executable
+        run: chmod +x ./VGTU-Aventory-Backend/gradlew
+
       - name: Build Backend
         run: ./VGTU-Aventory-Backend/gradlew build
 
