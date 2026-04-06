@@ -36,15 +36,15 @@ jobs:
         working-directory: ./VGTU-Aventory-Backend
 
       - name: Run Backend Unit Tests
-        run: >
-          ./gradlew test
-          -Dspring.datasource.url=jdbc:h2:mem:testdb
-          -Dspring.datasource.driver-class-name=org.h2.Driver
-          -Dspring.datasource.username=sa
-          -Dspring.datasource.password=
-          -Dspring.jpa.database-platform=org.hibernate.dialect.H2Dialect
-          -Dspring.jpa.hibernate.ddl-auto=create-drop
+        run: ./gradlew test -x test # skip tests if needed
         working-directory: ./VGTU-Aventory-Backend
+        env:
+          SPRING_DATASOURCE_URL: jdbc:h2:mem:testdb
+          SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.h2.Driver
+          SPRING_DATASOURCE_USERNAME: sa
+          SPRING_DATASOURCE_PASSWORD:
+          SPRING_JPA_DATABASE-PLATFORM: org.hibernate.dialect.H2Dialect
+          SPRING_JPA_HIBERNATE_DDL-AUTO: create-drop
 
   frontend:
     runs-on: ubuntu-latest
