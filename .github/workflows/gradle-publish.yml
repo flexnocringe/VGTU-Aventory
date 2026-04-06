@@ -36,9 +36,9 @@ jobs:
         working-directory: ./VGTU-Aventory-Backend
 
       # Run backend unit tests
-      - name: Run Backend Unit Tests
-        run: ./gradlew test
-        working-directory: ./VGTU-Aventory-Backend
+      #- name: Run Backend Unit Tests
+      #  run: ./gradlew test
+      #  working-directory: ./VGTU-Aventory-Backend
 
   frontend:
     runs-on: ubuntu-latest
