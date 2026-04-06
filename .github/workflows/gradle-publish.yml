@@ -32,7 +32,7 @@ jobs:
 
       # Build backend
       - name: Build Backend
-        run: ./gradlew build
+        run: ./gradlew build -x test
         working-directory: ./VGTU-Aventory-Backend
 
       # Run backend unit tests
