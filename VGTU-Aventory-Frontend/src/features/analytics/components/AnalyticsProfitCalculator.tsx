@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { getTotalProfit } from "@/features/analytics/services/getTotalProfit";
 
 function getTodayIsoDate(): string {
@@ -9,6 +9,7 @@ function getTodayIsoDate(): string {
 
 export function AnalyticsProfitCalculator() {
   const today = getTodayIsoDate();
+  const startDateLaterThanEndDateErrorMessage = "Start date cannot be later than end date.";
 
   const [startDate, setStartDate] = useState(today);
   const [endDate, setEndDate] = useState(today);
@@ -16,9 +17,21 @@ export function AnalyticsProfitCalculator() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (startDate > endDate) {
+      setError(startDateLaterThanEndDateErrorMessage);
+      return;
+    }
+
+    setError(null);
+  }, [startDate, endDate]);
+
   async function handleCalculate(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setError(null);
+    if (startDate > endDate) {
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -48,6 +61,7 @@ export function AnalyticsProfitCalculator() {
           <label className="space-y-1">
             <span className="text-sm font-medium text-slate-700">Start date</span>
             <input
+              id="start-date"
               type="date"
               value={startDate}
               onChange={(event) => setStartDate(event.target.value)}
@@ -59,6 +73,7 @@ export function AnalyticsProfitCalculator() {
           <label className="space-y-1">
             <span className="text-sm font-medium text-slate-700">End date</span>
             <input
+              id="end-date"
               type="date"
               value={endDate}
               onChange={(event) => setEndDate(event.target.value)}
@@ -79,10 +94,10 @@ export function AnalyticsProfitCalculator() {
 
       <div className="mt-6 rounded-xl bg-slate-50 p-4">
         <p className="text-sm text-slate-600">Total profit</p>
-        <p className="mt-1 text-3xl font-semibold text-slate-900">
+        <p id="total-profit" className="mt-1 text-3xl font-semibold text-slate-900">
           {totalProfit === null ? "-" : totalProfit.toLocaleString()}
         </p>
-        {error ? <p className="mt-2 text-sm text-red-600">{error}</p> : null}
+        {error ? <p id="error-message" className="mt-2 text-sm text-red-600">{error}</p> : null}
       </div>
     </section>
   );
