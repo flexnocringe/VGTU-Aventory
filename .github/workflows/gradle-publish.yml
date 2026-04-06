@@ -12,23 +12,29 @@ jobs:
   backend:
     runs-on: ubuntu-latest
     steps:
+      # Checkout code
       - uses: actions/checkout@v4
 
+      # Set up Java 21 to match Gradle build
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
 
+      # Setup Gradle
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      # Build backend (skip tests for now)
+      # Ensure Gradle wrapper is executable
+      - name: Make Gradle Wrapper Executable
+        run: chmod +x ./VGTU-Aventory-Backend/gradlew
+
+      # Build backend
       - name: Build Backend
         run: ./gradlew build -x test
         working-directory: ./VGTU-Aventory-Backend
 
-      # Run backend unit tests with H2 in-memory DB
       - name: Run Backend Unit Tests
         run: ./gradlew test \
           -Dspring.datasource.url=jdbc:h2:mem:testdb \
