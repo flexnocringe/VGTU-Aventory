@@ -1,5 +1,6 @@
 package org.example.vgtuaventory.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,6 +19,7 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @ManyToOne
+    @JsonIgnore
     private User owner;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
