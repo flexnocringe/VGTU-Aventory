@@ -36,7 +36,7 @@ jobs:
         working-directory: ./VGTU-Aventory-Backend
 
       - name: Run Backend Unit Tests
-        run: ./gradlew test -x test # skip tests if needed
+        run: ./gradlew test 
         working-directory: ./VGTU-Aventory-Backend
         env:
           SPRING_DATASOURCE_URL: jdbc:h2:mem:testdb
