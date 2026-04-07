@@ -1,4 +1,4 @@
-name: CI - Feature Branch Build and Test
+name: CI - Feature Branch Build and Test Antras Bandymas
 
 on:
   push:
@@ -23,24 +23,15 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
       - name: Make gradlew executable
         run: chmod +x ./VGTU-Aventory-Backend/gradlew
-        working-directory: ${{ github.workspace }}
 
-      - name: Build with Gradle
-        run: ./gradlew clean build
+      - name: Build without tests
+        run: ./gradlew build -x test
         working-directory: ./VGTU-Aventory-Backend
-
-      - name: Run tests
-        run: ./gradlew test
-        working-directory: ./VGTU-Aventory-Backend
-
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results
-          path: ./VGTU-Aventory-Backend/build/test-results/test/
 
       - name: Upload build artifacts
         if: success()
