@@ -89,8 +89,6 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
-    // ... existing code ...
-
     public record ProductRequest(
             String productName,
             Double price,

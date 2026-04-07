@@ -167,7 +167,7 @@ export default function Home() {
               <SummaryCard
                 title="Low stock items"
                 value={loading ? "—" : summary.lowStockCount}
-                description="Products at or below the low stock threshold"
+                description="Products at or below the low stock threshold(or smt else)"
               />
               <SummaryCard
                 title="Categories"
@@ -178,7 +178,21 @@ export default function Home() {
 
             <section className="grid gap-6 lg:grid-cols-3">
               <div className="lg:col-span-2">
-                <AnalyticsPanel />
+                <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <h2 className="text-lg font-semibold text-gray-900">Something important</h2>
+                      <p className="mt-1 text-sm text-gray-600">Something too important</p>
+                    </div>
+                    <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">LIVE YAY</span>
+                  </div>
+
+                  <div className="mt-6">
+                    <div className="flex items-end justify-between gap-2">
+                      something way more more important
+                    </div>
+                  </div>
+                </div>
               </div>
               <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
                 <div className="flex items-start justify-between">
