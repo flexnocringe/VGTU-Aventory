@@ -5,10 +5,8 @@ on:
     branches:
       - main
       - develop
-      - feature/**
-      - feature-*
-    paths-ignore:
-      - VGTU-Aventory-Android/**
+      - /**
+
 
 jobs:
   backend-build:
