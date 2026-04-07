@@ -25,7 +25,7 @@ public class AuthService {
         boolean valid = passwordService.verifyPassword(password, user.getPassword());
 
         if (!valid) {
-            throw new RuntimeException("Invalid email or password");
+            throw new RuntimeException("Invalid credentials");
         }
 
         return tokenService.generateToken(user);
