@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import javafx.util.Pair;
 import org.example.vgtuaventory.model.Sale;
 import org.example.vgtuaventory.repositories.SaleRepository;
 import org.example.vgtuaventory.utils.LocalDateAdapter;
