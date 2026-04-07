@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - A1_FR1-Sistema-turi-leisti-vartotojui-filtruoti-prekes-pagal-kategorija
+      - "**"
   pull_request:
 
 jobs:
