@@ -1,4 +1,4 @@
-name: CI - Feature Branch Build and Test Antras Bandymas
+name: CI - Feature Branch Build and Test Trečias Bandymas
 
 on:
   push:
@@ -29,9 +29,22 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./VGTU-Aventory-Backend/gradlew
 
-      - name: Build without tests
-        run: ./gradlew build -x test
+      - name: Build with Gradle
+        run: ./gradlew clean build -x test
         working-directory: ./VGTU-Aventory-Backend
+
+      - name: Run tests with H2
+        run: ./gradlew test --console=plain
+        working-directory: ./VGTU-Aventory-Backend
+        env:
+          SPRING_PROFILES_ACTIVE: test
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: ./VGTU-Aventory-Backend/build/test-results/test/
 
       - name: Upload build artifacts
         if: success()
