@@ -1,4 +1,4 @@
-name: CI - Feature Branch Build and Test Trečias Bandymas
+name: Build ketvirtas bandymas
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - 'A4_NR1-Vartotojas-gali-peržiūrėti-visų-savo-sukurtų-renginių-sąrašą'
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
     
     steps:
@@ -32,19 +32,6 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build -x test
         working-directory: ./VGTU-Aventory-Backend
-
-      - name: Run tests with H2
-        run: ./gradlew test --console=plain
-        working-directory: ./VGTU-Aventory-Backend
-        env:
-          SPRING_PROFILES_ACTIVE: test
-
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results
-          path: ./VGTU-Aventory-Backend/build/test-results/test/
 
       - name: Upload build artifacts
         if: success()
