@@ -15,8 +15,12 @@ public class AuthService {
     private final TokenService tokenService;
 
     public String authenticate(String email, String password){
+        if(email == null || password == null || email.isBlank() || password.isBlank()) {
+            throw new IllegalArgumentException("Email and password must not be empty");
+        }
+
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Invalid email or password"));
+                .orElseThrow(() -> new RuntimeException("Invalid credentials"));
 
         boolean valid = passwordService.verifyPassword(password, user.getPassword());
 
