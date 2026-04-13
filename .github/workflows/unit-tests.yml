@@ -56,4 +56,4 @@ jobs:
         run: npm ci
 
       - name: Run frontend unit tests
-        run: npm test -- --ci --watch=false
+        run: npm run test -- --ci --watch=false
