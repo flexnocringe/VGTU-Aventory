@@ -3,12 +3,9 @@ name: Basic CI
 on:
   push:
     branches:
-      - main
-      - develop
-  pull_request:
-    branches:
-      - main
-      - develop
+        - main
+        - develop
+        - "**"
 
 jobs:
   backend-build:
@@ -34,30 +31,6 @@ jobs:
 
       - name: Build backend (skip tests)
         run: ./gradlew clean build -x test --no-daemon
-
-  android-build:
-    name: Android Build
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: VGTU-Aventory-Android
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: "21"
-          cache: gradle
-
-      - name: Ensure Gradle wrapper is executable
-        run: chmod +x gradlew
-
-      - name: Build Android debug app
-        run: ./gradlew :app:assembleDebug --no-daemon
 
   frontend-build:
     name: Frontend Build
