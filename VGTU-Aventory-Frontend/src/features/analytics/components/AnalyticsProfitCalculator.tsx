@@ -50,34 +50,34 @@ export function AnalyticsProfitCalculator() {
   }
 
   return (
-    <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-      <h1 className="text-2xl font-semibold text-slate-900">Analytics</h1>
-      <p className="mt-2 text-sm text-slate-600">
+    <section className="rounded-2xl border border-[#f0dfc5] bg-white p-6 shadow-[0_12px_30px_rgba(154,107,47,0.08)] sm:p-8">
+      <h1 className="text-2xl font-semibold text-[#2d2418]">Analytics</h1>
+      <p className="mt-2 text-sm text-[#6a5841]">
         Select a date range and calculate total profit.
       </p>
 
       <form className="mt-6 space-y-4" onSubmit={handleCalculate}>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <label className="space-y-1">
-            <span className="text-sm font-medium text-slate-700">Start date</span>
+            <span className="text-sm font-medium text-[#5b4a37]">Start date</span>
             <input
               id="start-date"
               type="date"
               value={startDate}
               onChange={(event) => setStartDate(event.target.value)}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 outline-none ring-offset-2 transition focus:border-slate-400 focus:ring-2 focus:ring-slate-300"
+              className="w-full rounded-lg border border-[#e9dfcc] px-3 py-2 text-[#2d2418] outline-none ring-offset-2 transition focus:border-[#f59e0b] focus:ring-2 focus:ring-[#f59e0b]/20"
               required
             />
           </label>
 
           <label className="space-y-1">
-            <span className="text-sm font-medium text-slate-700">End date</span>
+            <span className="text-sm font-medium text-[#5b4a37]">End date</span>
             <input
               id="end-date"
               type="date"
               value={endDate}
               onChange={(event) => setEndDate(event.target.value)}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 outline-none ring-offset-2 transition focus:border-slate-400 focus:ring-2 focus:ring-slate-300"
+              className="w-full rounded-lg border border-[#e9dfcc] px-3 py-2 text-[#2d2418] outline-none ring-offset-2 transition focus:border-[#f59e0b] focus:ring-2 focus:ring-[#f59e0b]/20"
               required
             />
           </label>
@@ -86,15 +86,15 @@ export function AnalyticsProfitCalculator() {
         <button
           type="submit"
           disabled={isLoading}
-          className="inline-flex items-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70"
+          className="inline-flex items-center rounded-lg bg-[#f59e0b] px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-[#ea8c08] hover:shadow-md disabled:cursor-not-allowed disabled:opacity-70"
         >
           {isLoading ? "Calculating..." : "Calculate"}
         </button>
       </form>
 
-      <div className="mt-6 rounded-xl bg-slate-50 p-4">
-        <p className="text-sm text-slate-600">Total profit</p>
-        <p id="total-profit" className="mt-1 text-3xl font-semibold text-slate-900">
+      <div className="mt-6 rounded-xl bg-[#fff4e2] p-4">
+        <p className="text-sm text-[#8a6b45]">Total profit</p>
+        <p id="total-profit" className="mt-1 text-3xl font-semibold text-[#2d2418]">
           {totalProfit === null ? "-" : totalProfit.toLocaleString()}
         </p>
         {error ? <p id="error-message" className="mt-2 text-sm text-red-600">{error}</p> : null}

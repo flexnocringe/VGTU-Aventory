@@ -17,15 +17,17 @@ export type Product = {
   description: string;
   photoUrl: string;
   qrCode: string;
+  price: number;
 };
 
-export function mapApiProduct(product: ApiProduct): Product {
+export function mapApiProduct(p: ApiProduct): Product {
   return {
-    id: String(product.productId),
-    name: product.productName,
-    quantity: product.quantity,
-    description: product.productDescription,
-    photoUrl: product.photoUrl,
-    qrCode: product.qrCode,
+    id: String(p.productId),
+    name: p.productName,
+    quantity: p.quantity,
+    description: p.productDescription,
+    photoUrl: p.photoUrl,
+    qrCode: p.qrCode,
+    price: p.price,
   };
 }

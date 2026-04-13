@@ -10,46 +10,52 @@ type DashboardSummaryCardsProps = {
   loading: boolean;
 };
 
-function SummaryCard({
-  title,
-  value,
-  description,
-}: {
-  title: string;
-  value: string | number;
-  description: string;
-}) {
-  return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-      <p className="text-sm font-medium text-slate-500">{title}</p>
-      <p className="mt-2 text-3xl font-semibold text-slate-900">{value}</p>
-      <p className="mt-1 text-sm text-slate-600">{description}</p>
-    </div>
-  );
-}
+import { InventoryMetricCard } from "./InventoryMetricCard";
 
 export function DashboardSummaryCards({ summary, loading }: DashboardSummaryCardsProps) {
+  const displayValue = (value: number) => (loading ? "-" : value.toLocaleString());
+
   return (
     <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-      <SummaryCard
-        title="Total products"
-        value={loading ? "-" : summary.totalProducts}
-        description="Unique SKUs currently listed"
+      <InventoryMetricCard
+        title="Total Stock"
+        value={displayValue(summary.totalStock)}
+        accentClassName="bg-[#b56d12]"
+        labelClassName="text-[#fff4e2]"
+        valueClassName="text-white"
+        bgClassName="bg-[#f59e0b]"
+        ringClassName="border-[#f2b74e] bg-[#c87d10]"
+        trend="up"
       />
-      <SummaryCard
-        title="Total stock"
-        value={loading ? "-" : summary.totalStock}
-        description="Total quantity across all products"
+      <InventoryMetricCard
+        title="Total Products"
+        value={displayValue(summary.totalProducts)}
+        accentClassName="bg-[#5a2d13]"
+        labelClassName="text-[#fff4e2]"
+        valueClassName="text-white"
+        bgClassName="bg-[#d97706]"
+        ringClassName="border-[#f6c17a] bg-[#a8551b]"
+        trend="up"
       />
-      <SummaryCard
-        title="Low stock items"
-        value={loading ? "-" : summary.lowStockCount}
-        description="Products at or below threshold (20)"
+      <InventoryMetricCard
+        title="Low Stock Items"
+        value={displayValue(summary.lowStockCount)}
+        accentClassName="bg-[#6b2f16]"
+        labelClassName="text-[#fff4e2]"
+        valueClassName="text-white"
+        bgClassName="bg-[#b45309]"
+        ringClassName="border-[#f6c27f] bg-[#944317]"
+        trend="down"
       />
-      <SummaryCard
+      <InventoryMetricCard
         title="Categories"
-        value={loading ? "-" : summary.categories}
-        description="Category tracking not connected yet"
+        value={displayValue(summary.categories)}
+        accentClassName="bg-[#8a5a20]"
+        labelClassName="text-[#fff4e2]"
+        valueClassName="text-white"
+        bgClassName="bg-[#92400e]"
+        ringClassName="border-[#f3bf70] bg-[#a46b2b]"
+        trend="up"
       />
     </section>
   );
