@@ -32,7 +32,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Run backend unit tests
-        run: ./gradlew test --no-daemon
+        run: ./gradlew test --tests "org.example.vgtuaventory.unitTests.*" --no-daemon
 
   frontend-unit-tests:
     name: Frontend Unit Tests

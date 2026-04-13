@@ -1,4 +1,4 @@
-package org.example.vgtuaventory;
+package org.example.vgtuaventory.unitTests;
 
 import org.example.vgtuaventory.controller.ProductController;
 import org.example.vgtuaventory.model.Product;
