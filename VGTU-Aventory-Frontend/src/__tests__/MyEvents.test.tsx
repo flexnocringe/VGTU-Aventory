@@ -1,15 +1,17 @@
 import { render, screen, waitFor } from '@testing-library/react'
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import MyEvents from '../app/my-events/page'
+import MyEvents from '../app/(dashboard)/my-events/page'
 
 describe('MyEvents Page', () => {
+  const mockFetch = jest.fn()
+
   beforeEach(() => {
-    vi.resetAllMocks()
+    global.fetch = mockFetch as unknown as typeof fetch
+    mockFetch.mockReset()
   })
 
   it('renders loading state initially', () => {
     // Return a promise that doesn't resolve immediately
-    ;(global.fetch as any).mockReturnValue(new Promise(() => {}))
+    mockFetch.mockReturnValue(new Promise(() => {}))
     
     render(<MyEvents />)
     expect(screen.getByText(/loading events/i)).toBeInTheDocument()
@@ -29,10 +31,10 @@ describe('MyEvents Page', () => {
       },
     ]
 
-    ;(global.fetch as any).mockResolvedValue({
+    mockFetch.mockResolvedValue({
       ok: true,
       json: async () => mockEvents,
-    })
+    } as Response)
 
     render(<MyEvents />)
 
@@ -46,10 +48,10 @@ describe('MyEvents Page', () => {
   })
 
   it('renders error message when fetch fails', async () => {
-    ;(global.fetch as any).mockResolvedValue({
+    mockFetch.mockResolvedValue({
       ok: false,
       json: async () => ({}),
-    })
+    } as Response)
 
     render(<MyEvents />)
 
@@ -59,10 +61,10 @@ describe('MyEvents Page', () => {
   })
 
   it('renders custom message from API if present', async () => {
-    ;(global.fetch as any).mockResolvedValue({
+    mockFetch.mockResolvedValue({
       ok: true,
       json: async () => ({ message: 'No events found' }),
-    })
+    } as Response)
 
     render(<MyEvents />)
 
