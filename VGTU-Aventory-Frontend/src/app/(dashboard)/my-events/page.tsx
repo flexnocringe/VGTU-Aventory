@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { EventForm } from "./EventForm";
 
 interface EventDTO {
   startDate: string;
@@ -12,32 +13,59 @@ export default function MyEvents() {
   const [events, setEvents] = useState<EventDTO[]>([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState<string | null>(null);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+
+  async function fetchEvents() {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/events/my-events");
+      const data = await response.json();
+
+      if (response.ok) {
+        if (Array.isArray(data)) {
+          setEvents(data);
+          setMessage(null);
+        } else if (data.message) {
+          setMessage(data.message);
+          setEvents([]);
+        }
+      } else {
+        setMessage("Failed to fetch events.");
+      }
+    } catch (error) {
+      setMessage("An error occurred while fetching events.");
+      console.error("Fetch error:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
-    async function fetchEvents() {
-      try {
-        const response = await fetch("/api/events/my-events");
-        const data = await response.json();
-
-        if (response.ok) {
-          if (Array.isArray(data)) {
-            setEvents(data);
-          } else if (data.message) {
-            setMessage(data.message);
-          }
-        } else {
-          setMessage("Failed to fetch events.");
-        }
-      } catch (error) {
-        setMessage("An error occurred while fetching events.");
-        console.error("Fetch error:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
     fetchEvents();
   }, []);
+
+  const handleCreateEvent = async (data: { startDate: string; endDate: string; description: string }) => {
+    try {
+      const response = await fetch("/api/events/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        setIsFormOpen(false);
+        fetchEvents();
+      } else {
+        const errorData = await response.json();
+        alert(errorData.message || "Failed to create event.");
+      }
+    } catch (error) {
+      console.error("Create error:", error);
+      alert("An error occurred while creating the event.");
+    }
+  };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString();
@@ -52,7 +80,24 @@ export default function MyEvents() {
             View and manage your created events.
           </p>
         </div>
+        {!isFormOpen && (
+          <button
+            onClick={() => setIsFormOpen(true)}
+            className="rounded-full bg-[#f59e0b] px-6 py-2.5 text-sm font-bold text-white shadow-[0_4px_14px_rgba(245,158,11,0.39)] transition-all hover:bg-[#ea8c08] hover:shadow-[0_6px_20px_rgba(245,158,11,0.23)] focus:outline-none focus:ring-2 focus:ring-[#f59e0b]/50"
+          >
+            Create Event
+          </button>
+        )}
       </header>
+
+      {isFormOpen && (
+        <div className="mb-6">
+          <EventForm
+            onSave={handleCreateEvent}
+            onCancel={() => setIsFormOpen(false)}
+          />
+        </div>
+      )}
 
       {message && (
         <div className="rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-800" role="alert">

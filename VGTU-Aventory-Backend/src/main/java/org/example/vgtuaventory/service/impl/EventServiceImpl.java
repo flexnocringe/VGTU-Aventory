@@ -34,4 +34,16 @@ public class EventServiceImpl implements EventService {
                 .map(event -> new EventDTO(event.getStartDate(), event.getEndDate(), event.getDescription()))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public EventDTO createEvent(EventDTO eventDTO) {
+        Event event = new Event();
+        event.setStartDate(eventDTO.getStartDate());
+        event.setEndDate(eventDTO.getEndDate());
+        event.setDescription(eventDTO.getDescription());
+        
+        Event savedEvent = eventRepository.save(event);
+        
+        return new EventDTO(savedEvent.getStartDate(), savedEvent.getEndDate(), savedEvent.getDescription());
+    }
 }

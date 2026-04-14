@@ -5,4 +5,5 @@ import java.util.List;
 
 public interface EventService {
     List<EventDTO> getAllEvents();
+    EventDTO createEvent(EventDTO eventDTO);
 }

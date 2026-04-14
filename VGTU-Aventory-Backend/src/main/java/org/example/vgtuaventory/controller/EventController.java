@@ -1,13 +1,11 @@
 package org.example.vgtuaventory.controller;
 
+import jakarta.validation.Valid;
 import org.example.vgtuaventory.dto.EventDTO;
 import org.example.vgtuaventory.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -36,5 +34,18 @@ public class EventController {
         }
         
         return ResponseEntity.ok(events);
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<?> createEvent(@Valid @RequestBody EventDTO eventDTO) {
+        EventDTO createdEvent = eventService.createEvent(eventDTO);
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("startDate", createdEvent.getStartDate());
+        response.put("endDate", createdEvent.getEndDate());
+        response.put("description", createdEvent.getDescription());
+        response.put("message", "Event created successfully.");
+        
+        return ResponseEntity.ok(response);
     }
 }

@@ -14,6 +14,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class EventServiceTest {
@@ -87,5 +89,22 @@ class EventServiceTest {
         // Since they are all past, they should stay in ascending order (E1 then E2)
         assertEquals("E1", result.get(0).getDescription());
         assertEquals("E2", result.get(1).getDescription());
+    }
+
+    @Test
+    void testCreateEvent() {
+        LocalDateTime start = LocalDateTime.now().plusDays(1);
+        LocalDateTime end = start.plusHours(2);
+        EventDTO inputDTO = new EventDTO(start, end, "New Event");
+        
+        Event savedEvent = new Event(10, null, start, end, "New Event");
+        when(eventRepository.save(any(Event.class))).thenReturn(savedEvent);
+
+        EventDTO result = eventService.createEvent(inputDTO);
+
+        assertEquals("New Event", result.getDescription());
+        assertEquals(start, result.getStartDate());
+        assertEquals(end, result.getEndDate());
+        verify(eventRepository).save(any(Event.class));
     }
 }

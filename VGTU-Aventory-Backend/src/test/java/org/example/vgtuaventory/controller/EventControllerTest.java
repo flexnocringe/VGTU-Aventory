@@ -15,8 +15,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -58,5 +60,26 @@ class EventControllerTest {
                 .andExpect(jsonPath("$[0].description").value("Future Event"))
                 .andExpect(jsonPath("$[0].startDate").exists())
                 .andExpect(jsonPath("$[0].endDate").exists());
+    }
+
+    @Test
+    void testCreateEvent_Success() throws Exception {
+        EventDTO eventDTO = new EventDTO(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(1).plusHours(2), "New Event");
+        when(eventService.createEvent(any(EventDTO.class))).thenReturn(eventDTO);
+
+        mockMvc.perform(post("/api/events/create")
+                .contentType("application/json")
+                .content("{\"startDate\":\"2026-04-16T10:00:00\", \"endDate\":\"2026-04-16T12:00:00\", \"description\":\"New Event\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.description").value("New Event"))
+                .andExpect(jsonPath("$.message").value("Event created successfully."));
+    }
+
+    @Test
+    void testCreateEvent_MissingDates() throws Exception {
+        mockMvc.perform(post("/api/events/create")
+                .contentType("application/json")
+                .content("{\"description\":\"Invalid Event\"}"))
+                .andExpect(status().isBadRequest());
     }
 }
