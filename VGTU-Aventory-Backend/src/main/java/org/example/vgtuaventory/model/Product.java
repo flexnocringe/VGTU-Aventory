@@ -21,9 +21,9 @@ public class Product {
     @Column(unique = true)
     protected String productName;
     @ManyToOne
-    @JsonIgnore
     protected User owner;
     @OneToMany(mappedBy ="product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Sale> sales;
     protected Double price;
     protected String productDescription;

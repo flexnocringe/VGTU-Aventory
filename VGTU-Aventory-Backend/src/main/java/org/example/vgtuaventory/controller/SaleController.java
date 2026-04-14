@@ -1,6 +1,5 @@
 package org.example.vgtuaventory.controller;
 
-import org.example.vgtuaventory.dto.SaleRequestDTO;
 import org.example.vgtuaventory.model.Sale;
 import org.example.vgtuaventory.service.SaleService;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +17,12 @@ public class SaleController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createSale(@RequestBody SaleRequestDTO dto) {
+    public ResponseEntity<?> createSale(@RequestBody SaleService.SaleRequest request){
         try {
-            Sale savedSale = saleService.registerSale(dto);
+            Sale savedSale = saleService.registerSale(request);
             return ResponseEntity.ok(savedSale);
         } catch (RuntimeException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
-
 }
