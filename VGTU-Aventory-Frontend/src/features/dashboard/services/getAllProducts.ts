@@ -1,9 +1,8 @@
 import { ApiProduct, Product, mapApiProduct } from "@/features/dashboard/types/product";
-
-const PRODUCTS_URL = "http://localhost:8080/api/products/all";
+import { apiUrl } from "@/lib/api/url";
 
 export async function getAllProducts(signal?: AbortSignal): Promise<Product[]> {
-  const response = await fetch(PRODUCTS_URL, { signal });
+  const response = await fetch(apiUrl("/api/products/all"), { signal });
 
   if (!response.ok) {
     throw new Error(`API returned ${response.status} ${response.statusText}`);

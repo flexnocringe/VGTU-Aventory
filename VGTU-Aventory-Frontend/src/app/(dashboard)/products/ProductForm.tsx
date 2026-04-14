@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Product } from "./types";
+import { Product } from "@/features/dashboard/types/product";
 
 interface ProductFormProps {
   product?: Product;
@@ -25,73 +25,73 @@ export function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-gray-700">Name</label>
+        <label className="block text-sm font-medium text-[#5b4a37]">Name</label>
         <input
           type="text"
           value={form.name}
           onChange={(e) => setForm({ ...form, name: e.target.value })}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="mt-1 block w-full rounded-md border border-[#e9dfcc] bg-white px-3 py-2 shadow-sm outline-none focus:border-[#f59e0b] focus:ring-2 focus:ring-[#f59e0b]/20"
           required
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700">Quantity</label>
+        <label className="block text-sm font-medium text-[#5b4a37]">Quantity</label>
         <input
           type="number"
           value={form.quantity}
           onChange={(e) => setForm({ ...form, quantity: Number(e.target.value) })}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="mt-1 block w-full rounded-md border border-[#e9dfcc] bg-white px-3 py-2 shadow-sm outline-none focus:border-[#f59e0b] focus:ring-2 focus:ring-[#f59e0b]/20"
           required
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700">Price</label>
+        <label className="block text-sm font-medium text-[#5b4a37]">Price</label>
         <input
           type="number"
           step="0.01"
           value={form.price}
           onChange={(e) => setForm({ ...form, price: Number(e.target.value) })}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="mt-1 block w-full rounded-md border border-[#e9dfcc] bg-white px-3 py-2 shadow-sm outline-none focus:border-[#f59e0b] focus:ring-2 focus:ring-[#f59e0b]/20"
           required
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700">Description</label>
+        <label className="block text-sm font-medium text-[#5b4a37]">Description</label>
         <textarea
           value={form.description}
           onChange={(e) => setForm({ ...form, description: e.target.value })}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="mt-1 block w-full rounded-md border border-[#e9dfcc] bg-white px-3 py-2 shadow-sm outline-none focus:border-[#f59e0b] focus:ring-2 focus:ring-[#f59e0b]/20"
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700">Photo URL</label>
+        <label className="block text-sm font-medium text-[#5b4a37]">Photo URL</label>
         <input
           type="url"
           value={form.photoUrl}
           onChange={(e) => setForm({ ...form, photoUrl: e.target.value })}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="mt-1 block w-full rounded-md border border-[#e9dfcc] bg-white px-3 py-2 shadow-sm outline-none focus:border-[#f59e0b] focus:ring-2 focus:ring-[#f59e0b]/20"
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700">QR Code</label>
+        <label className="block text-sm font-medium text-[#5b4a37]">QR Code</label>
         <input
           type="text"
           value={form.qrCode}
           onChange={(e) => setForm({ ...form, qrCode: e.target.value })}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="mt-1 block w-full rounded-md border border-[#e9dfcc] bg-white px-3 py-2 shadow-sm outline-none focus:border-[#f59e0b] focus:ring-2 focus:ring-[#f59e0b]/20"
         />
       </div>
       <div className="flex gap-2">
         <button
           type="submit"
-          className="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+          className="rounded-md bg-[#f59e0b] px-4 py-2 text-white shadow-sm transition hover:bg-[#ea8c08] hover:shadow-md"
         >
           {product ? "Update" : "Add"} Product
         </button>
         <button
           type="button"
           onClick={onCancel}
-          className="rounded-md bg-gray-600 px-4 py-2 text-white hover:bg-gray-700"
+          className="rounded-md bg-[#8a6b45] px-4 py-2 text-white shadow-sm transition hover:bg-[#6a5841] hover:shadow-md"
         >
           Cancel
         </button>
