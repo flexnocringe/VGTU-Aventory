@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { EventForm } from "./EventForm";
 
 interface EventDTO {
+  id?: number;
   startDate: string;
   endDate: string;
   description: string;
@@ -14,6 +15,7 @@ export default function MyEvents() {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState<string | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [editingEvent, setEditingEvent] = useState<EventDTO | null>(null);
 
   async function fetchEvents() {
     setLoading(true);
@@ -59,12 +61,62 @@ export default function MyEvents() {
         fetchEvents();
       } else {
         const errorData = await response.json();
-        alert(errorData.message || "Failed to create event.");
+        alert(errorData.message || errorData.error || "Failed to create event.");
       }
     } catch (error) {
       console.error("Create error:", error);
       alert("An error occurred while creating the event.");
     }
+  };
+
+  const handleUpdateEvent = async (data: { startDate: string; endDate: string; description: string }) => {
+    if (!editingEvent?.id) return;
+
+    try {
+      const response = await fetch(`/api/events/edit/${editingEvent.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        setEditingEvent(null);
+        fetchEvents();
+      } else {
+        const errorData = await response.json();
+        alert(errorData.message || errorData.error || "Failed to update event.");
+      }
+    } catch (error) {
+      console.error("Update error:", error);
+      alert("An error occurred while updating the event.");
+    }
+  };
+
+  const handleDeleteEvent = async (id: number) => {
+    if (!confirm("Are you sure you want to delete this event?")) return;
+
+    try {
+      const response = await fetch(`/api/events/delete/${id}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        fetchEvents();
+      } else {
+        const errorData = await response.json();
+        alert(errorData.message || errorData.error || "Failed to delete event.");
+      }
+    } catch (error) {
+      console.error("Delete error:", error);
+      alert("An error occurred while deleting the event.");
+    }
+  };
+
+  const openEditForm = (event: EventDTO) => {
+    setEditingEvent(event);
+    setIsFormOpen(false); // Close create form if open
   };
 
   const formatDate = (dateString: string) => {
@@ -80,7 +132,7 @@ export default function MyEvents() {
             View and manage your created events.
           </p>
         </div>
-        {!isFormOpen && (
+        {!isFormOpen && !editingEvent && (
           <button
             onClick={() => setIsFormOpen(true)}
             className="rounded-full bg-[#f59e0b] px-6 py-2.5 text-sm font-bold text-white shadow-[0_4px_14px_rgba(245,158,11,0.39)] transition-all hover:bg-[#ea8c08] hover:shadow-[0_6px_20px_rgba(245,158,11,0.23)] focus:outline-none focus:ring-2 focus:ring-[#f59e0b]/50"
@@ -95,6 +147,17 @@ export default function MyEvents() {
           <EventForm
             onSave={handleCreateEvent}
             onCancel={() => setIsFormOpen(false)}
+          />
+        </div>
+      )}
+
+      {editingEvent && (
+        <div className="mb-6">
+          <EventForm
+            isEditing
+            initialData={editingEvent}
+            onSave={handleUpdateEvent}
+            onCancel={() => setEditingEvent(null)}
           />
         </div>
       )}
@@ -125,6 +188,20 @@ export default function MyEvents() {
                 <p className="text-[#5b4a37] text-base leading-relaxed">
                   {event.description}
                 </p>
+                <div className="flex justify-end gap-4 pt-2">
+                  <button
+                    onClick={() => openEditForm(event)}
+                    className="text-sm font-semibold text-[#f59e0b] hover:text-[#ea8c08] transition-colors"
+                  >
+                    Edit Event
+                  </button>
+                  <button
+                    onClick={() => event.id && handleDeleteEvent(event.id)}
+                    className="text-sm font-semibold text-red-600 hover:text-red-800 transition-colors"
+                  >
+                    Delete Event
+                  </button>
+                </div>
               </div>
             </div>
           ))}

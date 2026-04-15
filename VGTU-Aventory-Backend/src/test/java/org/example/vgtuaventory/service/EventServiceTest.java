@@ -102,9 +102,42 @@ class EventServiceTest {
 
         EventDTO result = eventService.createEvent(inputDTO);
 
+        assertEquals(10, result.getId());
         assertEquals("New Event", result.getDescription());
         assertEquals(start, result.getStartDate());
         assertEquals(end, result.getEndDate());
         verify(eventRepository).save(any(Event.class));
+    }
+
+    @Test
+    void testUpdateEvent_Success() {
+        int eventId = 1;
+        LocalDateTime start = LocalDateTime.now().plusDays(1);
+        LocalDateTime end = start.plusHours(2);
+        EventDTO updateDTO = new EventDTO(start, end, "Updated Event");
+
+        Event existingEvent = new Event(eventId, null, start.minusDays(1), end.minusDays(1), "Old Event");
+        when(eventRepository.findById(eventId)).thenReturn(java.util.Optional.of(existingEvent));
+        when(eventRepository.save(any(Event.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        EventDTO result = eventService.updateEvent(eventId, updateDTO);
+
+        assertEquals(eventId, result.getId());
+        assertEquals("Updated Event", result.getDescription());
+        assertEquals(start, result.getStartDate());
+        assertEquals(end, result.getEndDate());
+        verify(eventRepository).save(existingEvent);
+    }
+
+    @Test
+    void testUpdateEvent_NotFound() {
+        int eventId = 1;
+        EventDTO updateDTO = new EventDTO(LocalDateTime.now(), LocalDateTime.now().plusHours(1), "Updated Event");
+
+        when(eventRepository.findById(eventId)).thenReturn(java.util.Optional.empty());
+
+        org.junit.jupiter.api.Assertions.assertThrows(RuntimeException.class, () -> {
+            eventService.updateEvent(eventId, updateDTO);
+        });
     }
 }

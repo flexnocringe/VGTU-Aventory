@@ -3,13 +3,15 @@ import { useState } from "react";
 interface EventFormProps {
   onSave: (data: { startDate: string; endDate: string; description: string }) => void;
   onCancel: () => void;
+  initialData?: { startDate: string; endDate: string; description: string };
+  isEditing?: boolean;
 }
 
-export function EventForm({ onSave, onCancel }: EventFormProps) {
+export function EventForm({ onSave, onCancel, initialData, isEditing = false }: EventFormProps) {
   const [form, setForm] = useState({
-    startDate: "",
-    endDate: "",
-    description: "",
+    startDate: initialData?.startDate ? new Date(initialData.startDate).toISOString().slice(0, 16) : "",
+    endDate: initialData?.endDate ? new Date(initialData.endDate).toISOString().slice(0, 16) : "",
+    description: initialData?.description || "",
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -19,7 +21,9 @@ export function EventForm({ onSave, onCancel }: EventFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 rounded-2xl border border-[#f0dfc5] bg-white p-6 shadow-[0_12px_30px_rgba(154,107,47,0.08)]">
-      <h2 className="text-xl font-bold text-[#2d2418]">Create New Event</h2>
+      <h2 className="text-xl font-bold text-[#2d2418]">
+        {isEditing ? "Edit Event" : "Create New Event"}
+      </h2>
       <div>
         <label className="block text-sm font-medium text-[#5b4a37]">Start Date & Time</label>
         <input
@@ -54,7 +58,7 @@ export function EventForm({ onSave, onCancel }: EventFormProps) {
           type="submit"
           className="rounded-md bg-[#f59e0b] px-4 py-2 text-white shadow-sm transition hover:bg-[#ea8c08] hover:shadow-md font-semibold"
         >
-          Create Event
+          {isEditing ? "Update Event" : "Create Event"}
         </button>
         <button
           type="button"

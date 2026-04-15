@@ -31,7 +31,7 @@ public class EventServiceImpl implements EventService {
         return events.stream()
                 .sorted(Comparator.comparing((Event event) -> event.getStartDate().isBefore(now))
                         .thenComparing(Event::getStartDate))
-                .map(event -> new EventDTO(event.getStartDate(), event.getEndDate(), event.getDescription()))
+                .map(event -> new EventDTO(event.getId(), event.getStartDate(), event.getEndDate(), event.getDescription()))
                 .collect(Collectors.toList());
     }
 
@@ -44,6 +44,28 @@ public class EventServiceImpl implements EventService {
         
         Event savedEvent = eventRepository.save(event);
         
-        return new EventDTO(savedEvent.getStartDate(), savedEvent.getEndDate(), savedEvent.getDescription());
+        return new EventDTO(savedEvent.getId(), savedEvent.getStartDate(), savedEvent.getEndDate(), savedEvent.getDescription());
+    }
+
+    @Override
+    public EventDTO updateEvent(int id, EventDTO eventDTO) {
+        Event existingEvent = eventRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Event not found with id: " + id));
+
+        existingEvent.setStartDate(eventDTO.getStartDate());
+        existingEvent.setEndDate(eventDTO.getEndDate());
+        existingEvent.setDescription(eventDTO.getDescription());
+
+        Event updatedEvent = eventRepository.save(existingEvent);
+
+        return new EventDTO(updatedEvent.getId(), updatedEvent.getStartDate(), updatedEvent.getEndDate(), updatedEvent.getDescription());
+    }
+
+    @Override
+    public void deleteEvent(int id) {
+        if (!eventRepository.existsById(id)) {
+            throw new RuntimeException("Event not found with id: " + id);
+        }
+        eventRepository.deleteById(id);
     }
 }

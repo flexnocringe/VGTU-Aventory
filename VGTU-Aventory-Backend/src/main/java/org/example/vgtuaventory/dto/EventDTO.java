@@ -13,9 +13,16 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EventDTO {
+    private int id;
     @NotNull(message = "Start date is required")
     private LocalDateTime startDate;
     @NotNull(message = "End date is required")
     private LocalDateTime endDate;
     private String description;
+
+    public EventDTO(LocalDateTime startDate, LocalDateTime endDate, String description) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.description = description;
+    }
 }

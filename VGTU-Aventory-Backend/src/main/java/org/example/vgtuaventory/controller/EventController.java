@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(originPatterns = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS}, allowCredentials = "true")
 @RestController
 @RequestMapping("/api/events")
 public class EventController {
@@ -41,11 +41,46 @@ public class EventController {
         EventDTO createdEvent = eventService.createEvent(eventDTO);
         
         Map<String, Object> response = new HashMap<>();
+        response.put("id", createdEvent.getId());
         response.put("startDate", createdEvent.getStartDate());
         response.put("endDate", createdEvent.getEndDate());
         response.put("description", createdEvent.getDescription());
         response.put("message", "Event created successfully.");
         
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<?> editEvent(@PathVariable int id, @Valid @RequestBody EventDTO eventDTO) {
+        try {
+            EventDTO updatedEvent = eventService.updateEvent(id, eventDTO);
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("id", updatedEvent.getId());
+            response.put("startDate", updatedEvent.getStartDate());
+            response.put("endDate", updatedEvent.getEndDate());
+            response.put("description", updatedEvent.getDescription());
+            response.put("message", "Event updated successfully.");
+            
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            Map<String, String> response = new HashMap<>();
+            response.put("message", e.getMessage());
+            return ResponseEntity.status(404).body(response);
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteEvent(@PathVariable int id) {
+        try {
+            eventService.deleteEvent(id);
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Event deleted successfully.");
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            Map<String, String> response = new HashMap<>();
+            response.put("message", e.getMessage());
+            return ResponseEntity.status(404).body(response);
+        }
     }
 }
