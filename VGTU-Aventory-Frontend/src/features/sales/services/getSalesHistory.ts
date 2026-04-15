@@ -1,6 +1,5 @@
 import { apiUrl } from "@/lib/api/url";
 import { createAuthHeaders } from "@/features/auth/session";
-import { ProductWithOwner } from "../sales/types/sale";
 
 export interface SalesHistoryRecord {
     id: number;
