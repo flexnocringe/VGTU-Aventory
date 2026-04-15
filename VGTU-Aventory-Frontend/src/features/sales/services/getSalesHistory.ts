@@ -1,4 +1,5 @@
 import { apiUrl } from "@/lib/api/url";
+import { createAuthHeaders } from "@/features/auth/session";
 import { ProductWithOwner } from "../sales/types/sale";
 
 export interface SalesHistoryRecord {
@@ -21,7 +22,9 @@ export interface SalesHistoryRecord {
 }
 
 export async function getSalesHistory(): Promise<SalesHistoryRecord[]> {
-    const res = await fetch(apiUrl("/sales"));
+    const res = await fetch(apiUrl("/sales"), {
+        headers: createAuthHeaders(),
+    });
 
     if (!res.ok) {
         throw new Error(`Failed to fetch sales history: ${res.status}`);
