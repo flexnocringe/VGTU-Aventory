@@ -44,12 +44,24 @@ function AnalyticsIcon() {
     );
 }
 
+function SalesIcon() {
+    return (
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="h-5 w-5">
+            <path d="M3 9L12 3L21 9V19C21 19.55 20.55 20 20 20H4C3.45 20 3 19.55 3 19V9Z" stroke="currentColor" strokeWidth="1.7" />
+            <path d="M9 20V12H15V20" stroke="currentColor" strokeWidth="1.7" />
+            <path d="M9 14L12 11L15 14" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+    );
+}
+
 function MenuIcon({ icon }: { icon: (typeof dashboardMenu)[number]["icon"] }) {
     switch (icon) {
         case "products":
             return <ProductsIcon />;
         case "analytics":
             return <AnalyticsIcon />;
+        case "sales":
+            return <SalesIcon />;
         case "dashboard":
         default:
             return <DashboardIcon />;
