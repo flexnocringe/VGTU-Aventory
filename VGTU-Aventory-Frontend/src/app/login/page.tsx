@@ -1,12 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { loginUser } from "@/features/auth/services/loginUser";
 import { setAuthSession } from "@/features/auth/session";
-
-const emailRegex = /^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
 
 export default function LoginPage() {
   const router = useRouter();
@@ -15,33 +12,12 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const clientError = useMemo(() => {
-    if (!email || !password) {
-      return null;
-    }
-
-    if (!emailRegex.test(email.trim())) {
-      return "Email format is invalid";
-    }
-
-    if (!passwordRegex.test(password)) {
-      return "Password must be at least 8 characters and contain at least one letter and one number";
-    }
-
-    return null;
-  }, [email, password]);
-
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError(null);
 
     if (!email || !password) {
       setError("Email and password are required");
-      return;
-    }
-
-    if (clientError) {
-      setError(clientError);
       return;
     }
 
@@ -98,10 +74,6 @@ export default function LoginPage() {
               className="w-full rounded-lg border border-[var(--border)] bg-white px-3 py-2 text-sm outline-none transition focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary-soft)]"
             />
           </div>
-
-          {clientError && !error && (
-            <p className="text-sm text-[var(--danger)]">{clientError}</p>
-          )}
 
           {error && <p className="text-sm text-[var(--danger)]">{error}</p>}
 
