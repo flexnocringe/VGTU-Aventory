@@ -3,7 +3,11 @@
 import { useEffect, useState } from "react";
 import { getSalesHistory, SalesHistoryRecord } from "../services/getSalesHistory";
 
-export function SalesHistory() {
+interface SalesHistoryProps {
+    refreshTrigger?: number;
+}
+
+export function SalesHistory({ refreshTrigger = 0 }: SalesHistoryProps) {
     const [sales, setSales] = useState<SalesHistoryRecord[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -21,7 +25,7 @@ export function SalesHistory() {
         };
 
         loadSalesHistory();
-    }, []);
+    }, [refreshTrigger]);
 
     const formatDate = (dateString: string) => {
         try {

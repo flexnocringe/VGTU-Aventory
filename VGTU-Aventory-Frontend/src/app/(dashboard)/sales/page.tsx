@@ -9,6 +9,7 @@ import { ProductWithOwner, SaleType } from "@/features/sales/types/sale";
 export default function SalesPage() {
     const [products, setProducts] = useState<ProductWithOwner[]>([]);
     const [loadingProducts, setLoadingProducts] = useState(true);
+    const [refreshTrigger, setRefreshTrigger] = useState(0);
     const [form, setForm] = useState({
         productId: "",
         quantity: "",
@@ -34,7 +35,7 @@ export default function SalesPage() {
         };
 
         loadProducts();
-    }, []);
+    }, [refreshTrigger]);
 
     const selectedProduct = products.find((p) => p.productId === parseInt(form.productId));
     const ownerId = selectedProduct?.owner?.id;
@@ -85,6 +86,8 @@ export default function SalesPage() {
                 saleType: "SALE",
                 saleNote: "",
             });
+
+            setRefreshTrigger((prev) => prev + 1);
 
             setTimeout(() => setSuccess(false), 3000);
         } catch (err) {
@@ -213,7 +216,7 @@ export default function SalesPage() {
                 </form>
                 </div>
 
-                <SalesHistory />
+                <SalesHistory refreshTrigger={refreshTrigger} />
             </div>
         </main>
     );
