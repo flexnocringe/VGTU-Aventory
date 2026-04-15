@@ -62,8 +62,7 @@ class SaleServiceTest {
         when(saleRepository.save(any())).thenAnswer(i -> i.getArgument(0));
 
         Sale result = saleService.registerSale(
-            req(1, 1, 5, SaleType.SALE),
-            1
+            req(1, 1, 5, SaleType.SALE),1
         );
 
         assertEquals(20, product.getQuantity());
@@ -86,7 +85,7 @@ class SaleServiceTest {
         when(userRepository.findById(1)).thenReturn(Optional.of(owner));
 
         RuntimeException ex = assertThrows(RuntimeException.class,
-            () -> saleService.registerSale(req(1, 1, 5, SaleType.SALE), 1)
+            () -> saleService.registerSale(req(1, 1, 5, SaleType.SALE),1)
         );
 
         assertTrue(ex.getMessage().contains("Not enough stock"));
@@ -112,13 +111,36 @@ class SaleServiceTest {
         when(saleRepository.save(any())).thenAnswer(i -> i.getArgument(0));
 
         Sale result = saleService.registerSale(
-            req(1, 1, 4, SaleType.SALE),
-            1
+            req(1, 1, 4, SaleType.SALE),1
         );
 
         assertEquals(12.0, result.getTotalPrice());
         verify(productRepository, times(1)).save(product);
         verify(saleRepository, times(1)).save(any(Sale.class));
+    }
+
+    @Test
+    void registerSale_shouldThrowExceptionWhenQuantityIsZero() {
+
+        RuntimeException ex = assertThrows(RuntimeException.class,
+                () -> saleService.registerSale(req(1, 1, 0, SaleType.SALE),1)
+        );
+
+        assertTrue(ex.getMessage().contains("Quantity must be greater than 0"));
+        verify(productRepository, never()).save(any());
+        verify(saleRepository, never()).save(any());
+    }
+
+    @Test
+    void registerSale_shouldThrowExceptionWhenQuantityIsNegative() {
+
+        RuntimeException ex = assertThrows(RuntimeException.class,
+                () -> saleService.registerSale(req(1, 1, -5, SaleType.SALE),1)
+        );
+
+        assertTrue(ex.getMessage().contains("Quantity must be greater than 0"));
+        verify(productRepository, never()).save(any());
+        verify(saleRepository, never()).save(any());
     }
 
     @Test
@@ -135,7 +157,7 @@ class SaleServiceTest {
         when(userRepository.findById(1)).thenReturn(Optional.of(owner));
 
         IllegalStateException ex = assertThrows(IllegalStateException.class,
-                () -> saleService.registerSale(req(1, 2, 4, SaleType.SALE), 1));
+                () -> saleService.registerSale(req(1, 2, 4, SaleType.SALE),1));
 
         assertTrue(ex.getMessage().contains("own account"));
         verify(saleRepository, never()).save(any());
