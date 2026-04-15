@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { loginUser } from "@/features/auth/services/loginUser";
-import { setAuthToken } from "@/features/auth/session";
+import { setAuthSession } from "@/features/auth/session";
 
 const emailRegex = /^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
@@ -52,7 +52,7 @@ export default function LoginPage() {
         password,
       });
 
-      setAuthToken(result.token);
+      setAuthSession(result.token, result.email);
       router.push("/");
       router.refresh();
     } catch (err) {

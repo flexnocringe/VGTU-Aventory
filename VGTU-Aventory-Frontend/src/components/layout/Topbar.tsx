@@ -1,5 +1,8 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { getAuthUserEmail } from "@/features/auth/session";
+
 type TopbarProps = {
     onOpenMobileMenu: () => void;
     onToggleSidebar: () => void;
@@ -7,6 +10,13 @@ type TopbarProps = {
 };
 
 export function Topbar({ onOpenMobileMenu, onToggleSidebar, sidebarCollapsed }: TopbarProps) {
+    const [userEmail, setUserEmail] = useState<string>("User");
+
+    useEffect(() => {
+        const email = getAuthUserEmail();
+        setUserEmail(email && email.trim() ? email : "User");
+    }, []);
+
     return (
         <header className="sticky top-0 z-20 flex h-14 items-center justify-between border-b border-[#f0dfc5] bg-white/85 px-4 backdrop-blur">
             <div className="flex items-center gap-2">
@@ -38,7 +48,7 @@ export function Topbar({ onOpenMobileMenu, onToggleSidebar, sidebarCollapsed }: 
             </div>
 
             <p className="text-sm font-medium text-[#2d2418]">Inventory Management</p>
-            <span className="text-sm text-[#8a6b45]">Admin</span>
+            <span className="text-sm text-[#8a6b45]">{userEmail}</span>
         </header>
     );
 }
