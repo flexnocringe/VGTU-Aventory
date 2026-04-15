@@ -1,11 +1,9 @@
 import { apiUrl } from "@/lib/api/url";
-import { createAuthHeaders } from "@/features/auth/session";
 import { ProductWithOwner } from "../types/sale";
+import { fetchWithSession } from "@/features/auth/services/fetchWithSession";
 
 export async function getSalesProducts(): Promise<ProductWithOwner[]> {
-    const res = await fetch(apiUrl("/api/products/all"), {
-        headers: createAuthHeaders(),
-    });
+    const res = await fetchWithSession(apiUrl("/api/products/all"));
 
     if (!res.ok) {
         throw new Error(`Failed to fetch products: ${res.status}`);

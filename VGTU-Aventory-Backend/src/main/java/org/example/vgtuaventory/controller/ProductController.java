@@ -2,6 +2,7 @@ package org.example.vgtuaventory.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.vgtuaventory.model.Product;
+import org.example.vgtuaventory.model.User;
 import org.example.vgtuaventory.repository.ProductRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.example.vgtuaventory.utils.AuthSessionAttributes;
 
 @CrossOrigin(origins = "http://localhost:3000")
 
@@ -21,27 +23,39 @@ public class ProductController {
     private final ProductRepository productRepository;
 
     @GetMapping("/all")
-    public ResponseEntity<List<Product>> list() {
-        return ResponseEntity.ok(productRepository.findAll());
+    public ResponseEntity<List<Product>> list(@RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId) {
+        return ResponseEntity.ok(productRepository.findAllByOwner_Id(currentUserId));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable int id) {
+    public ResponseEntity<?> getById(
+            @PathVariable int id,
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId) {
         return productRepository.findById(id)
-                .<ResponseEntity<?>>map(ResponseEntity::ok)
+                .<ResponseEntity<?>>map(product -> {
+                    if (product.getOwner() == null || product.getOwner().getId() != currentUserId) {
+                        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only access your own products");
+                    }
+                    return ResponseEntity.ok(product);
+                })
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found"));
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody ProductRequest request) {
+    public ResponseEntity<?> create(
+            @RequestBody ProductRequest request,
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId) {
         if (request.productName() == null || request.productName().isBlank()) {
             return ResponseEntity.badRequest().body("productName is required");
         }
-        if (productRepository.existsByProductName(request.productName().trim())) {
+        if (productRepository.existsByProductNameAndOwner_Id(request.productName().trim(), currentUserId)) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("productName already exists");
         }
 
         Product p = new Product();
+        User owner = new User();
+        owner.setId(currentUserId);
+        p.setOwner(owner);
         p.setProductName(request.productName().trim());
         p.setPrice(request.price());
         p.setProductDescription(request.productDescription());
@@ -54,12 +68,15 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable int id, @RequestBody ProductRequest request) {
-        return productRepository.findById(id)
+    public ResponseEntity<?> update(
+            @PathVariable int id,
+            @RequestBody ProductRequest request,
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId) {
+        return productRepository.findByProductIdAndOwner_Id(id, currentUserId)
                 .<ResponseEntity<?>>map(existing -> {
                     if (request.productName() != null && !request.productName().isBlank()) {
                         String newName = request.productName().trim();
-                        boolean nameTaken = productRepository.findByProductName(newName)
+                        boolean nameTaken = productRepository.findByProductNameAndOwner_Id(newName, currentUserId)
                                 .filter(p -> p.getProductId() != id)
                                 .isPresent();
                         if (nameTaken) {
@@ -77,13 +94,19 @@ public class ProductController {
                     Product saved = productRepository.save(existing);
                     return ResponseEntity.ok(saved);
                 })
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found"));
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only modify your own products"));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable int id) {
-        if (!productRepository.existsById(id)) {
+    public ResponseEntity<?> delete(
+            @PathVariable int id,
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId) {
+        Product product = productRepository.findById(id).orElse(null);
+        if (product == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
+        }
+        if (product.getOwner() == null || product.getOwner().getId() != currentUserId) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only delete your own products");
         }
         productRepository.deleteById(id);
         return ResponseEntity.noContent().build();

@@ -25,13 +25,17 @@ public class SaleService {
         this.userRepository = userRepository;
     }
     @Transactional
-    public Sale registerSale(SaleRequest request) {
+        public Sale registerSale(SaleRequest request, int currentUserId) {
 
-        Product product = productRepository.findById(request.productId)
-                .orElseThrow(() -> new RuntimeException("Product not found with ID: " + request.productId));
+        Product product = productRepository.findByProductIdAndOwner_Id(request.productId, currentUserId)
+            .orElseThrow(() -> new RuntimeException("Product not found with ID: " + request.productId));
 
-        User owner = userRepository.findById(request.ownerId)
-                .orElseThrow(() -> new RuntimeException("User not found with ID: " + request.ownerId));
+        User owner = userRepository.findById(currentUserId)
+            .orElseThrow(() -> new RuntimeException("User not found with ID: " + currentUserId));
+
+        if (request.ownerId != 0 && request.ownerId != currentUserId) {
+            throw new IllegalStateException("You can only create sales for your own account");
+        }
 
         Sale sale = new Sale();
         sale.setProduct(product);

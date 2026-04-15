@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { apiUrl } from "@/lib/api/url";
+import { fetchWithSession } from "@/features/auth/services/fetchWithSession";
 
 import { Product, ApiProduct, mapApiProduct } from "@/features/dashboard/types/product";
 import { ProductForm } from "./ProductForm";
@@ -18,7 +19,7 @@ export default function ProductsPage() {
       setLoading(true);
       setError(null);
 
-      const res = await fetch(apiUrl("/api/products/all"));
+      const res = await fetchWithSession(apiUrl("/api/products/all"));
       if (!res.ok) throw new Error(`API error: ${res.status}`);
 
       const data: ApiProduct[] = await res.json();
@@ -36,7 +37,7 @@ export default function ProductsPage() {
 
   const handleAdd = async (data: Omit<Product, "id">) => {
     try {
-      const res = await fetch(apiUrl("/api/products"), {
+      const res = await fetchWithSession(apiUrl("/api/products"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -62,7 +63,7 @@ export default function ProductsPage() {
     if (!editingProduct) return;
 
     try {
-      const res = await fetch(apiUrl(`/api/products/${editingProduct.id}`), {
+      const res = await fetchWithSession(apiUrl(`/api/products/${editingProduct.id}`), {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -88,7 +89,7 @@ export default function ProductsPage() {
     if (!confirm("Are you sure you want to delete this product?")) return;
 
     try {
-      const res = await fetch(apiUrl(`/api/products/${id}`), {
+      const res = await fetchWithSession(apiUrl(`/api/products/${id}`), {
         method: "DELETE",
       });
 

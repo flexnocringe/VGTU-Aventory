@@ -1,11 +1,10 @@
 import { ApiProduct, Product, mapApiProduct } from "@/features/dashboard/types/product";
-import { createAuthHeaders } from "@/features/auth/session";
 import { apiUrl } from "@/lib/api/url";
+import { fetchWithSession } from "@/features/auth/services/fetchWithSession";
 
 export async function getAllProducts(signal?: AbortSignal): Promise<Product[]> {
-  const response = await fetch(apiUrl("/api/products/all"), {
+  const response = await fetchWithSession(apiUrl("/api/products/all"), {
     signal,
-    headers: createAuthHeaders(),
   });
 
   if (!response.ok) {

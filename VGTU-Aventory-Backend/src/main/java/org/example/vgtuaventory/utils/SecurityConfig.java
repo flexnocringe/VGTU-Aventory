@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.example.vgtuaventory.service.TokenService;
+import org.example.vgtuaventory.utils.AuthSessionAttributes;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -87,6 +88,14 @@ public class SecurityConfig {
                 sendUnauthorized(response);
                 return;
             }
+
+            Integer currentUserId = tokenService.getUserIdForToken(token).orElse(null);
+            if (currentUserId == null) {
+                sendUnauthorized(response);
+                return;
+            }
+
+            request.setAttribute(AuthSessionAttributes.CURRENT_USER_ID, currentUserId);
 
             filterChain.doFilter(request, response);
         }
