@@ -177,4 +177,48 @@ class AuthServiceTest {
 
         assertEquals("Password must be at least 8 characters and contain at least one letter and one number", ex.getMessage());
     }
+
+        @Test
+        void changePassword_shouldUpdatePassword_andRevokeToken_whenCredentialsAreValid() {
+                User user = new User();
+                user.setId(1);
+                user.setEmail("test@test.com");
+                user.setPassword("hashedCurrentPassword");
+                user.setRole(UserRole.SELLER);
+
+                when(tokenService.getUserIdForToken("token-123")).thenReturn(Optional.of(1));
+                when(userRepository.findById(1)).thenReturn(Optional.of(user));
+                when(passwordService.verifyPassword("currentPassword1", "hashedCurrentPassword")).thenReturn(true);
+                when(passwordService.hashPassword("newPassword1")).thenReturn("hashedNewPassword");
+
+                authService.changePassword("token-123", "currentPassword1", "newPassword1");
+
+                assertEquals("hashedNewPassword", user.getPassword());
+                verify(userRepository).save(user);
+                verify(tokenService).revokeToken("token-123");
+        }
+
+        @Test
+        void changePassword_shouldThrowException_whenNewPasswordIsTooWeak() {
+                IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                                () -> authService.changePassword("token-123", "currentPassword1", "weakpass"));
+
+                assertEquals("Password must be at least 8 characters and contain at least one letter and one number", ex.getMessage());
+        }
+
+        @Test
+        void changePassword_shouldThrowException_whenCurrentPasswordIsIncorrect() {
+                User user = new User();
+                user.setId(1);
+                user.setPassword("hashedCurrentPassword");
+
+                when(tokenService.getUserIdForToken("token-123")).thenReturn(Optional.of(1));
+                when(userRepository.findById(1)).thenReturn(Optional.of(user));
+                when(passwordService.verifyPassword("wrongCurrentPassword", "hashedCurrentPassword")).thenReturn(false);
+
+                IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                                () -> authService.changePassword("token-123", "wrongCurrentPassword", "newPassword1"));
+
+                assertEquals("Current password is incorrect", ex.getMessage());
+        }
 }

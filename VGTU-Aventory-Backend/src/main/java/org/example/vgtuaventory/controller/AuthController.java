@@ -64,6 +64,30 @@ public class AuthController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/change-password")
+    public ResponseEntity<?> changePassword(
+            @RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String authorization,
+            @RequestBody ChangePasswordRequest request
+    ) {
+        if (authorization == null || !authorization.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        }
+
+        String token = authorization.substring("Bearer ".length()).trim();
+        if (token.isBlank()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        }
+
+        try {
+            authService.changePassword(token, request.currentPassword(), request.newPassword());
+            return ResponseEntity.noContent().build();
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        } catch (IllegalStateException ex) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
+        }
+    }
+
     public record RegisterRequest(String email, String password) {
     }
 
@@ -74,5 +98,8 @@ public class AuthController {
     }
 
     public record LoginResponse(String token, int id, String email, String role) {
+    }
+
+    public record ChangePasswordRequest(String currentPassword, String newPassword) {
     }
 }

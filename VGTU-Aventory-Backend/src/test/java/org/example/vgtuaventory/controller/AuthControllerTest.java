@@ -77,4 +77,26 @@ class AuthControllerTest {
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
         assertEquals("Unauthorized", response.getBody());
     }
+
+    @Test
+    void changePassword_shouldReturnNoContent_whenRequestIsValid() {
+        ResponseEntity<?> response = authController.changePassword(
+                "Bearer token-123",
+                new AuthController.ChangePasswordRequest("currentPassword1", "newPassword1")
+        );
+
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        verify(authService).changePassword("token-123", "currentPassword1", "newPassword1");
+    }
+
+    @Test
+    void changePassword_shouldReturnUnauthorized_whenAuthorizationHeaderMissing() {
+        ResponseEntity<?> response = authController.changePassword(
+                null,
+                new AuthController.ChangePasswordRequest("currentPassword1", "newPassword1")
+        );
+
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        assertEquals("Unauthorized", response.getBody());
+    }
 }

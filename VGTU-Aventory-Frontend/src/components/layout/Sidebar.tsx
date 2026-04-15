@@ -54,6 +54,16 @@ function SalesIcon() {
     );
 }
 
+function SecurityIcon() {
+    return (
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="h-5 w-5">
+            <path d="M12 3.75L18 6.5V11.5C18 15.45 15.4 18.95 12 20.25C8.6 18.95 6 15.45 6 11.5V6.5L12 3.75Z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
+            <path d="M12 9.25V12.75" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+            <path d="M12 15.5H12.01" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
+        </svg>
+    );
+}
+
 function MenuIcon({ icon }: { icon: (typeof dashboardMenu)[number]["icon"] }) {
     switch (icon) {
         case "products":
@@ -62,6 +72,8 @@ function MenuIcon({ icon }: { icon: (typeof dashboardMenu)[number]["icon"] }) {
             return <AnalyticsIcon />;
         case "sales":
             return <SalesIcon />;
+        case "security":
+            return <SecurityIcon />;
         case "dashboard":
         default:
             return <DashboardIcon />;

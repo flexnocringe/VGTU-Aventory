@@ -114,4 +114,32 @@ public class AuthService {
 
         return userRepository.save(user);
     }
+
+    public void changePassword(String token, String currentPassword, String newPassword) {
+        if (token == null || token.isBlank()) {
+            throw new IllegalStateException("Unauthorized");
+        }
+
+        if (currentPassword == null || newPassword == null || currentPassword.isBlank() || newPassword.isBlank()) {
+            throw new IllegalArgumentException("Current password and new password must not be empty");
+        }
+
+        if (!PASSWORD_PATTERN.matcher(newPassword).matches()) {
+            throw new IllegalArgumentException("Password must be at least 8 characters and contain at least one letter and one number");
+        }
+
+        Integer userId = tokenService.getUserIdForToken(token)
+                .orElseThrow(() -> new IllegalStateException("Unauthorized"));
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalStateException("Unauthorized"));
+
+        if (!passwordService.verifyPassword(currentPassword, user.getPassword())) {
+            throw new IllegalArgumentException("Current password is incorrect");
+        }
+
+        user.setPassword(passwordService.hashPassword(newPassword));
+        userRepository.save(user);
+        tokenService.revokeToken(token);
+    }
 }
