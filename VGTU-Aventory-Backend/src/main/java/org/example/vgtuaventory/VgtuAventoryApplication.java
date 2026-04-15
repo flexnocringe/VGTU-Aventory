@@ -8,6 +8,7 @@ public class VgtuAventoryApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(VgtuAventoryApplication.class, args);
+        System.out.println("DEEZ");
     }
 
 }
