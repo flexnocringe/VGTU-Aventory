@@ -9,6 +9,7 @@ import { InventoryMovementPanel } from "@/features/dashboard/components/Inventor
 import { ProductSnapshots } from "@/features/dashboard/components/ProductSnapshots";
 import { getAllProducts } from "@/features/dashboard/services/getAllProducts";
 import { Product } from "@/features/dashboard/types/product";
+import { SalesHistory } from "@/features/sales/components/SalesHistory";
 
 export function InventoryDashboard() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -86,6 +87,8 @@ export function InventoryDashboard() {
       )}
 
       <AnalyticsProfitCalculator />
+
+      <SalesHistory />
     </section>
   );
 }

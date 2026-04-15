@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { registerSale } from "@/features/sales/services/registerSale";
 import { getSalesProducts } from "@/features/sales/services/getSalesProducts";
+import { SalesHistory } from "@/features/sales/components/SalesHistory";
 import { ProductWithOwner, SaleType } from "@/features/sales/types/sale";
 
 export default function SalesPage() {
@@ -58,10 +59,19 @@ export default function SalesPage() {
                 throw new Error(`Product "${selectedProduct.productName}" does not have an owner assigned`);
             }
 
+            const quantity = parseInt(form.quantity);
+            if (quantity <= 0) {
+                throw new Error("Quantity must be greater than 0");
+            }
+
+            if (quantity > selectedProduct.quantity) {
+                throw new Error(`Not enough stock. Available: ${selectedProduct.quantity}, Requested: ${quantity}`);
+            }
+
             await registerSale({
                 productId: parseInt(form.productId),
                 ownerId: ownerId,
-                quantity: parseInt(form.quantity),
+                quantity: quantity,
                 saleLocation: form.saleLocation,
                 saleType: form.saleType,
                 saleNote: form.saleNote,
@@ -86,8 +96,9 @@ export default function SalesPage() {
 
     return (
         <main className="min-h-screen bg-transparent p-6">
-            <div className="mx-auto max-w-2xl">
-                <header className="mb-6">
+            <div className="mx-auto w-full max-w-6xl flex flex-col gap-6">
+                <div className="max-w-2xl">
+                    <header className="mb-6">
                     <h1 className="text-3xl font-bold text-[#2d2418]">Register Sale</h1>
                     <p className="mt-2 text-sm text-[#6a5841]">Record a new sale or return transaction</p>
                 </header>
@@ -128,7 +139,9 @@ export default function SalesPage() {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-[#5b4a37]">Quantity</label>
+                            <label className="block text-sm font-medium text-[#5b4a37]">
+                                Quantity {selectedProduct && <span className="text-[#8a6b45]">(max: {selectedProduct.quantity})</span>}
+                            </label>
                             <input
                                 type="number"
                                 name="quantity"
@@ -136,6 +149,7 @@ export default function SalesPage() {
                                 onChange={handleChange}
                                 placeholder="Enter quantity"
                                 min="1"
+                                max={selectedProduct?.quantity}
                                 className="mt-1 block w-full rounded-md border border-[#e9dfcc] bg-white px-3 py-2 shadow-sm outline-none focus:border-[#f59e0b] focus:ring-2 focus:ring-[#f59e0b]/20"
                                 required
                             />
@@ -197,6 +211,9 @@ export default function SalesPage() {
                         </button>
                     </div>
                 </form>
+                </div>
+
+                <SalesHistory />
             </div>
         </main>
     );
