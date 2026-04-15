@@ -5,6 +5,8 @@ import org.example.vgtuaventory.service.SaleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/sales")
@@ -24,5 +26,10 @@ public class SaleController {
         } catch (RuntimeException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Sale>> getAllSales() {
+        return ResponseEntity.ok(saleService.getAllSales());
     }
 }

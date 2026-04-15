@@ -118,4 +118,28 @@ class SaleServiceTest {
         verify(productRepository, times(1)).save(product);
         verify(saleRepository, times(1)).save(any(Sale.class));
     }
+
+    @Test
+    void registerSale_shouldThrowExceptionWhenQuantityIsZero() {
+
+        RuntimeException ex = assertThrows(RuntimeException.class,
+                () -> saleService.registerSale(req(1, 1, 0, SaleType.SALE))
+        );
+
+        assertTrue(ex.getMessage().contains("Quantity must be greater than 0"));
+        verify(productRepository, never()).save(any());
+        verify(saleRepository, never()).save(any());
+    }
+
+    @Test
+    void registerSale_shouldThrowExceptionWhenQuantityIsNegative() {
+
+        RuntimeException ex = assertThrows(RuntimeException.class,
+                () -> saleService.registerSale(req(1, 1, -5, SaleType.SALE))
+        );
+
+        assertTrue(ex.getMessage().contains("Quantity must be greater than 0"));
+        verify(productRepository, never()).save(any());
+        verify(saleRepository, never()).save(any());
+    }
 }

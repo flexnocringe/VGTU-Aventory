@@ -10,6 +10,8 @@ import org.example.vgtuaventory.repository.ProductRepository;
 import org.example.vgtuaventory.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class SaleService {
 
@@ -26,6 +28,9 @@ public class SaleService {
     }
     @Transactional
     public Sale registerSale(SaleRequest request) {
+        if (request.quantity <= 0) {
+            throw new RuntimeException("Quantity must be greater than 0");
+        }
 
         Product product = productRepository.findById(request.productId)
                 .orElseThrow(() -> new RuntimeException("Product not found with ID: " + request.productId));
@@ -40,6 +45,7 @@ public class SaleService {
         sale.setSaleLocation(request.saleLocation);
         sale.setSaleType(request.saleType);
         sale.setSaleNote(request.saleNote);
+        sale.setSaleDate(java.time.LocalDateTime.now());
 
         sale.setSaleProductPrice(product.getPrice());
         sale.setTotalPrice(product.getPrice() * request.quantity);
@@ -56,6 +62,11 @@ public class SaleService {
         productRepository.save(product);
         return saleRepository.save(sale);
     }
+
+    public List<Sale> getAllSales() {
+        return saleRepository.findAll();
+    }
+
     public static class SaleRequest {
         public int productId;
         public int ownerId;
