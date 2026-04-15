@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createAuthHeaders } from "@/features/auth/session";
 
 export async function GET(request: NextRequest) {
   const startDate = request.nextUrl.searchParams.get("startDate");
@@ -30,9 +31,11 @@ export async function GET(request: NextRequest) {
 
   const backendBaseUrl = process.env.BACKEND_URL ?? "http://localhost:8080";
   const backendUrl = `${backendBaseUrl}/totalProfitInInterval/${encodeURIComponent(startDate)}/${encodeURIComponent(endDate)}`;
+  const cookieHeader = request.headers.get("cookie") ?? undefined;
 
   const backendResponse = await fetch(backendUrl, {
     method: "GET",
+    headers: createAuthHeaders(undefined, cookieHeader),
     cache: "no-store",
   });
 
