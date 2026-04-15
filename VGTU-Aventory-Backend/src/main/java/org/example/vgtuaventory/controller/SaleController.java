@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 
 import org.example.vgtuaventory.utils.AuthSessionAttributes;
 
+import java.util.List;
+
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/sales")
@@ -33,7 +35,9 @@ public class SaleController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Sale>> getAllSales() {
-        return ResponseEntity.ok(saleService.getAllSales());
+    public ResponseEntity<List<Sale>> getUserSales(
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId) {
+
+        return ResponseEntity.ok(saleService.getSalesByUser(currentUserId));
     }
 }

@@ -27,7 +27,7 @@ public class SaleService {
         this.userRepository = userRepository;
     }
     @Transactional
-    public Sale registerSale(SaleRequest request) {
+    public Sale registerSale(SaleRequest request, int currentUserId) {
         if (request.quantity <= 0) {
             throw new RuntimeException("Quantity must be greater than 0");
         }
@@ -65,6 +65,10 @@ public class SaleService {
 
         productRepository.save(product);
         return saleRepository.save(sale);
+    }
+
+    public List<Sale> getSalesByUser(int userId) {
+        return saleRepository.findByOwnerId(userId);
     }
 
     public List<Sale> getAllSales() {

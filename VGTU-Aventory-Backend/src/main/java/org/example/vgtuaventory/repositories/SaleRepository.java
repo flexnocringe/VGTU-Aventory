@@ -11,5 +11,6 @@ public interface SaleRepository extends JpaRepository<Sale, Integer> {
 
      List<Sale> findAllBySaleDateBetween(LocalDateTime start, LocalDateTime end);
      List<Sale> findAllByOwner_Id(int ownerId);
+    List<Sale> findByOwnerId(int ownerId);
      List<Sale> findAllByOwner_IdAndSaleDateBetween(int ownerId, LocalDateTime start, LocalDateTime end);
 }
