@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.Optional;
 
 @Service
 public class TokenService {
@@ -18,6 +19,14 @@ public class TokenService {
 
     public boolean isTokenValid(String token) {
         return token != null && activeTokens.containsKey(token);
+    }
+
+    public Optional<Integer> getUserIdForToken(String token) {
+        if (token == null) {
+            return Optional.empty();
+        }
+
+        return Optional.ofNullable(activeTokens.get(token));
     }
 
     public void revokeToken(String token) {
