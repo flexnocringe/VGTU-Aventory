@@ -3,6 +3,8 @@ package org.example.vgtuaventory.controller;
 import lombok.RequiredArgsConstructor;
 import org.example.vgtuaventory.model.User;
 import org.example.vgtuaventory.service.AuthService;
+import org.example.vgtuaventory.service.TokenService;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
+    private final TokenService tokenService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
@@ -44,6 +47,21 @@ public class AuthController {
         } catch (IllegalArgumentException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String authorization) {
+        if (authorization == null || !authorization.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        }
+
+        String token = authorization.substring("Bearer ".length()).trim();
+        if (token.isBlank()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        }
+
+        tokenService.revokeToken(token);
+        return ResponseEntity.noContent().build();
     }
 
     public record RegisterRequest(String email, String password) {
