@@ -99,6 +99,40 @@ class AuthServiceTest {
                 authService.authenticate(null, "password123"));
     }
 
+        @Test
+        void login_shouldReturnUserAndToken_whenCredentialsValid() {
+                User user = new User();
+                user.setId(2);
+                user.setEmail("test@test.com");
+                user.setPassword("hashedPassword");
+                user.setRole(UserRole.SELLER);
+
+                when(userRepository.findByEmailIgnoreCase("test@test.com")).thenReturn(Optional.of(user));
+                when(passwordService.verifyPassword("password123", "hashedPassword")).thenReturn(true);
+                when(tokenService.generateToken(user)).thenReturn("token-abc");
+
+                AuthService.LoginResult result = authService.login("test@test.com", "password123");
+
+                assertEquals("token-abc", result.token());
+                assertEquals("test@test.com", result.user().getEmail());
+        }
+
+        @Test
+        void login_shouldLockAccount_afterFiveFailedAttempts() {
+                when(userRepository.findByEmailIgnoreCase("test@test.com")).thenReturn(Optional.empty());
+
+                for (int attempt = 0; attempt < 4; attempt++) {
+                        RuntimeException ex = assertThrows(RuntimeException.class,
+                                        () -> authService.login("test@test.com", "password123"));
+                        assertEquals("Invalid credentials", ex.getMessage());
+                }
+
+                IllegalStateException locked = assertThrows(IllegalStateException.class,
+                                () -> authService.login("test@test.com", "password123"));
+
+                assertEquals("Account is temporarily blocked. Try again later.", locked.getMessage());
+        }
+
     @Test
     void register_shouldCreateUser_whenInputValid() {
         User saved = new User();

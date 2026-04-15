@@ -15,6 +15,26 @@ public class AuthController {
 
     private final AuthService authService;
 
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+        try {
+            AuthService.LoginResult loginResult = authService.login(request.email(), request.password());
+            User user = loginResult.user();
+            return ResponseEntity.ok(new LoginResponse(
+                    loginResult.token(),
+                    user.getId(),
+                    user.getEmail(),
+                    user.getRole().name()
+            ));
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        } catch (IllegalStateException ex) {
+            return ResponseEntity.status(HttpStatus.LOCKED).body(ex.getMessage());
+        } catch (RuntimeException ex) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
+        }
+    }
+
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
         try {
@@ -30,5 +50,11 @@ public class AuthController {
     }
 
     public record RegisterResponse(int id, String email, String role) {
+    }
+
+    public record LoginRequest(String email, String password) {
+    }
+
+    public record LoginResponse(String token, int id, String email, String role) {
     }
 }

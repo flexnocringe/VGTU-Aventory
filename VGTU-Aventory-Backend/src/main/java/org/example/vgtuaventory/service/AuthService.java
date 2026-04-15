@@ -8,11 +8,17 @@ import org.example.vgtuaventory.repository.UserRepository;
 import org.example.vgtuaventory.security.PasswordService;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Locale;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
 public class AuthService {
+    private static final int MAX_FAILED_LOGIN_ATTEMPTS = 5;
+    private static final Duration LOCK_DURATION = Duration.ofMinutes(5);
     private static final Pattern EMAIL_PATTERN =
         Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
     private static final Pattern PASSWORD_PATTERN =
@@ -21,22 +27,65 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordService passwordService;
     private final TokenService tokenService;
+    private final ConcurrentHashMap<String, Integer> failedLoginAttempts = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, Instant> lockedUntil = new ConcurrentHashMap<>();
+
+    public record LoginResult(String token, User user) {
+    }
 
     public String authenticate(String email, String password){
+        return login(email, password).token();
+    }
+
+    public LoginResult login(String email, String password) {
+        User user = authenticateUser(email, password);
+        return new LoginResult(tokenService.generateToken(user), user);
+    }
+
+    private User authenticateUser(String email, String password) {
         if(email == null || password == null || email.isBlank() || password.isBlank()) {
             throw new IllegalArgumentException("Email and password must not be empty");
         }
 
-        User user = userRepository.findByEmailIgnoreCase(email.trim())
-                .orElseThrow(() -> new RuntimeException("Invalid credentials"));
+        String normalizedEmail = email.trim();
+        String loginKey = normalizedEmail.toLowerCase(Locale.ROOT);
+        Instant now = Instant.now();
+
+        Instant blockedUntil = lockedUntil.get(loginKey);
+        if (blockedUntil != null && blockedUntil.isAfter(now)) {
+            throw new IllegalStateException("Account is temporarily blocked. Try again later.");
+        }
+
+        if (blockedUntil != null && !blockedUntil.isAfter(now)) {
+            lockedUntil.remove(loginKey);
+            failedLoginAttempts.remove(loginKey);
+        }
+
+        User user = userRepository.findByEmailIgnoreCase(normalizedEmail)
+                .orElseThrow(() -> handleFailedLogin(loginKey));
 
         boolean valid = passwordService.verifyPassword(password, user.getPassword());
 
         if (!valid) {
-            throw new RuntimeException("Invalid credentials");
+            throw handleFailedLogin(loginKey);
         }
 
-        return tokenService.generateToken(user);
+        failedLoginAttempts.remove(loginKey);
+        lockedUntil.remove(loginKey);
+
+        return user;
+    }
+
+    private RuntimeException handleFailedLogin(String loginKey) {
+        int attempts = failedLoginAttempts.merge(loginKey, 1, Integer::sum);
+
+        if (attempts >= MAX_FAILED_LOGIN_ATTEMPTS) {
+            lockedUntil.put(loginKey, Instant.now().plus(LOCK_DURATION));
+            failedLoginAttempts.remove(loginKey);
+            throw new IllegalStateException("Account is temporarily blocked. Try again later.");
+        }
+
+        return new RuntimeException("Invalid credentials");
     }
 
     public User register(String email, String password) {
