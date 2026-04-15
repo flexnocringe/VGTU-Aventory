@@ -56,13 +56,14 @@ class SaleServiceTest {
         User owner = new User();
         owner.setId(1);
 
-        when(productRepository.findById(1)).thenReturn(Optional.of(product));
+        when(productRepository.findByProductIdAndOwner_Id(1, 1)).thenReturn(Optional.of(product));
         when(userRepository.findById(1)).thenReturn(Optional.of(owner));
         when(productRepository.save(any())).thenAnswer(i -> i.getArgument(0));
         when(saleRepository.save(any())).thenAnswer(i -> i.getArgument(0));
 
         Sale result = saleService.registerSale(
-                req(1, 1, 5, SaleType.SALE)
+            req(1, 1, 5, SaleType.SALE),
+            1
         );
 
         assertEquals(20, product.getQuantity());
@@ -81,11 +82,11 @@ class SaleServiceTest {
         User owner = new User();
         owner.setId(1);
 
-        when(productRepository.findById(1)).thenReturn(Optional.of(product));
+        when(productRepository.findByProductIdAndOwner_Id(1, 1)).thenReturn(Optional.of(product));
         when(userRepository.findById(1)).thenReturn(Optional.of(owner));
 
         RuntimeException ex = assertThrows(RuntimeException.class,
-                () -> saleService.registerSale(req(1, 1, 5, SaleType.SALE))
+            () -> saleService.registerSale(req(1, 1, 5, SaleType.SALE), 1)
         );
 
         assertTrue(ex.getMessage().contains("Not enough stock"));
@@ -105,13 +106,14 @@ class SaleServiceTest {
         User owner = new User();
         owner.setId(1);
 
-        when(productRepository.findById(1)).thenReturn(Optional.of(product));
+        when(productRepository.findByProductIdAndOwner_Id(1, 1)).thenReturn(Optional.of(product));
         when(userRepository.findById(1)).thenReturn(Optional.of(owner));
         when(productRepository.save(any())).thenAnswer(i -> i.getArgument(0));
         when(saleRepository.save(any())).thenAnswer(i -> i.getArgument(0));
 
         Sale result = saleService.registerSale(
-                req(1, 1, 4, SaleType.SALE)
+            req(1, 1, 4, SaleType.SALE),
+            1
         );
 
         assertEquals(12.0, result.getTotalPrice());
@@ -140,6 +142,26 @@ class SaleServiceTest {
 
         assertTrue(ex.getMessage().contains("Quantity must be greater than 0"));
         verify(productRepository, never()).save(any());
+        verify(saleRepository, never()).save(any());
+    }
+
+    @Test
+    void registerSale_shouldRejectWhenRequestOwnerDoesNotMatchAuthenticatedUser() {
+        Product product = new Product();
+        product.setProductId(1);
+        product.setPrice(3.0);
+        product.setQuantity(10);
+
+        User owner = new User();
+        owner.setId(1);
+
+        when(productRepository.findByProductIdAndOwner_Id(1, 1)).thenReturn(Optional.of(product));
+        when(userRepository.findById(1)).thenReturn(Optional.of(owner));
+
+        IllegalStateException ex = assertThrows(IllegalStateException.class,
+                () -> saleService.registerSale(req(1, 2, 4, SaleType.SALE), 1));
+
+        assertTrue(ex.getMessage().contains("own account"));
         verify(saleRepository, never()).save(any());
     }
 }

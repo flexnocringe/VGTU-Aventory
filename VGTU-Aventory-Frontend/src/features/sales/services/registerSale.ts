@@ -1,11 +1,11 @@
 import { apiUrl } from "@/lib/api/url";
 import { Sale, SaleRequest } from "../types/sale";
-import { createAuthHeaders } from "@/features/auth/session";
+import { fetchWithSession } from "@/features/auth/services/fetchWithSession";
 
 export async function registerSale(request: SaleRequest): Promise<Sale> {
-    const res = await fetch(apiUrl("/sales"), {
+    const res = await fetchWithSession(apiUrl("/sales"), {
         method: "POST",
-        headers: createAuthHeaders({ "Content-Type": "application/json" }),
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(request),
     });
 

@@ -1,4 +1,4 @@
-import { AUTH_TOKEN_COOKIE } from "@/features/auth/constants";
+import { AUTH_TOKEN_COOKIE, AUTH_USER_EMAIL_COOKIE } from "@/features/auth/constants";
 
 function readCookieValue(cookieSource: string | undefined, cookieName: string): string | undefined {
   if (!cookieSource) {
@@ -27,6 +27,18 @@ export function getAuthToken(cookieSource?: string): string | undefined {
   return readCookieValue(document.cookie, AUTH_TOKEN_COOKIE);
 }
 
+export function getAuthUserEmail(cookieSource?: string): string | undefined {
+  if (cookieSource) {
+    return readCookieValue(cookieSource, AUTH_USER_EMAIL_COOKIE);
+  }
+
+  if (typeof document === "undefined") {
+    return undefined;
+  }
+
+  return readCookieValue(document.cookie, AUTH_USER_EMAIL_COOKIE);
+}
+
 export function createAuthHeaders(initHeaders?: HeadersInit, cookieSource?: string): Headers {
   const headers = new Headers(initHeaders);
   const token = getAuthToken(cookieSource);
@@ -47,10 +59,21 @@ export function setAuthToken(token: string): void {
   document.cookie = `${AUTH_TOKEN_COOKIE}=${encodeURIComponent(token)}; path=/; max-age=${maxAgeSeconds}; samesite=lax`;
 }
 
+export function setAuthSession(token: string, email: string): void {
+  if (typeof document === "undefined") {
+    return;
+  }
+
+  const maxAgeSeconds = 60 * 60 * 8;
+  document.cookie = `${AUTH_TOKEN_COOKIE}=${encodeURIComponent(token)}; path=/; max-age=${maxAgeSeconds}; samesite=lax`;
+  document.cookie = `${AUTH_USER_EMAIL_COOKIE}=${encodeURIComponent(email)}; path=/; max-age=${maxAgeSeconds}; samesite=lax`;
+}
+
 export function clearAuthToken(): void {
   if (typeof document === "undefined") {
     return;
   }
 
   document.cookie = `${AUTH_TOKEN_COOKIE}=; path=/; max-age=0; samesite=lax`;
+  document.cookie = `${AUTH_USER_EMAIL_COOKIE}=; path=/; max-age=0; samesite=lax`;
 }
