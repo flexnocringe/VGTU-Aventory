@@ -68,7 +68,8 @@ public class SecurityConfig {
         protected boolean shouldNotFilter(HttpServletRequest request) {
             String path = request.getRequestURI();
             return HttpMethod.OPTIONS.matches(request.getMethod())
-                    || path.startsWith("/auth/")
+                    || path.equals("/auth/login")
+                    || path.equals("/auth/register")
                     || path.equals("/error");
         }
 
