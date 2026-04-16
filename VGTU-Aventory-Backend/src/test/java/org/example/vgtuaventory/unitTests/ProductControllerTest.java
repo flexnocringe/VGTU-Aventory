@@ -1,15 +1,19 @@
 package org.example.vgtuaventory.unitTests;
 
-import org.example.vgtuaventory.model.Product;
 import org.example.vgtuaventory.controller.ProductController;
+import org.example.vgtuaventory.model.Product;
+import org.example.vgtuaventory.model.User;
 import org.example.vgtuaventory.repository.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -24,64 +28,100 @@ class ProductControllerTest {
     private ProductController productController;
 
     @Test
-    void getAllProducts_returnsAllProductsFromRepository() {
+    void list_returnsAllProducts() {
         Product p1 = new Product();
         p1.setProductId(1);
+        p1.setProductName("Pen");
+
         Product p2 = new Product();
         p2.setProductId(2);
+        p2.setProductName("Notebook");
 
-        when(productRepository.findAll()).thenReturn(List.of(p1, p2));
+        when(productRepository.findAllByOwner_Id(1)).thenReturn(List.of(p1, p2));
 
-        Iterable<Product> result = productController.getAllProducts();
+        var response = productController.list(1);
 
-        assertNotNull(result);
-        assertEquals(2, ((List<Product>) result).size());
-        verify(productRepository, times(1)).findAll();
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(2, response.getBody().size());
+        assertEquals("Pen", response.getBody().get(0).getProductName());
+        assertEquals("Notebook", response.getBody().get(1).getProductName());
+
+        verify(productRepository, times(1)).findAllByOwner_Id(1);
     }
 
     @Test
-    void editProduct_returnsNull_whenProductDoesNotExist() {
-        Product incoming = new Product();
-        incoming.setProductId(99);
+    void getById_whenFound_returnsProduct() {
+        Product p = new Product();
+        p.setProductId(7);
+        p.setProductName("Marker");
+        User owner = new User();
+        owner.setId(1);
+        p.setOwner(owner);
 
-        when(productRepository.findById(99)).thenReturn(null);
+        when(productRepository.findById(7)).thenReturn(Optional.of(p));
 
-        Product result = productController.editProduct(incoming);
+        ResponseEntity<?> response = productController.getById(7, 1);
 
-        assertNull(result);
-        verify(productRepository, times(1)).findById(99);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        Product body = assertInstanceOf(Product.class, response.getBody());
+        assertEquals(7, body.getProductId());
+        assertEquals("Marker", body.getProductName());
+
+        verify(productRepository, times(1)).findById(7);
+    }
+
+    @Test
+    void getById_whenMissing_returns404WithMessage() {
+        when(productRepository.findById(999)).thenReturn(Optional.empty());
+
+        ResponseEntity<?> response = productController.getById(999, 1);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("Product not found", response.getBody());
+
+        verify(productRepository, times(1)).findById(999);
+    }
+
+    @Test
+    void create_whenProductNameBlank_returns400() {
+        ProductController.ProductRequest request = new ProductController.ProductRequest(
+                "   ",
+                1.99,
+                null,
+                null,
+                1,
+                null
+        );
+
+        ResponseEntity<?> response = productController.create(request, 1);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("productName is required", response.getBody());
+
         verify(productRepository, never()).save(any(Product.class));
+        verify(productRepository, never()).existsByProductNameAndOwner_Id(anyString(), anyInt());
     }
 
     @Test
-    void editProduct_updatesAndReturnsProduct_whenProductExists() {
-        Product incoming = new Product();
-        incoming.setProductId(1);
-        incoming.setProductName("New Name");
-        incoming.setProductDescription("New Desc");
-        incoming.setPrice(12.5);
-        incoming.setPhotoUrl("new-url");
+    void create_whenProductNameAlreadyExists_returns409() {
+        when(productRepository.existsByProductNameAndOwner_Id("Pencil", 1)).thenReturn(true);
 
-        Product existing = new Product();
-        existing.setProductId(1);
-        existing.setProductName("Old Name");
-        existing.setProductDescription("Old Desc");
-        existing.setPrice(5.0);
-        existing.setPhotoUrl("old-url");
+        ProductController.ProductRequest request = new ProductController.ProductRequest(
+                "Pencil",
+                0.50,
+                null,
+                null,
+                10,
+                null
+        );
 
-        when(productRepository.findById(1))
-                .thenReturn(existing) // first call inside editProduct
-                .thenReturn(existing); // second call for return
+        ResponseEntity<?> response = productController.create(request, 1);
 
-        Product result = productController.editProduct(incoming);
+        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+        assertEquals("productName already exists", response.getBody());
 
-        assertNotNull(result);
-        assertEquals("New Name", result.getProductName());
-        assertEquals("New Desc", result.getProductDescription());
-        assertEquals(12.5, result.getPrice());
-        assertEquals("new-url", result.getPhotoUrl());
-
-        verify(productRepository, times(2)).findById(1);
-        verify(productRepository, times(1)).save(existing);
+        verify(productRepository, times(1)).existsByProductNameAndOwner_Id("Pencil", 1);
+        verify(productRepository, never()).save(any(Product.class));
     }
 }
