@@ -5,7 +5,7 @@ import org.example.vgtuaventory.model.Product;
 import org.example.vgtuaventory.model.Sale;
 import org.example.vgtuaventory.model.SaleType;
 import org.example.vgtuaventory.model.User;
-import org.example.vgtuaventory.repositories.SaleRepository;
+import org.example.vgtuaventory.repository.SaleRepository;
 import org.example.vgtuaventory.repository.ProductRepository;
 import org.example.vgtuaventory.repository.UserRepository;
 import org.springframework.stereotype.Service;

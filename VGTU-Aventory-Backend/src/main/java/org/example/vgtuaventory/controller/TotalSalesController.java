@@ -1,21 +1,17 @@
-package org.example.vgtuaventory.controllers;
+package org.example.vgtuaventory.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import org.example.vgtuaventory.model.Sale;
-import org.example.vgtuaventory.repositories.SaleRepository;
-import org.example.vgtuaventory.utils.LocalDateAdapter;
+import org.example.vgtuaventory.repository.SaleRepository;
 import org.example.vgtuaventory.utils.LocalDateTimeAdapter;
 import org.example.vgtuaventory.utils.AuthSessionAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

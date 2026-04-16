@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class ProductControllerTests {
+class ProductControllerTest {
 
     @Mock
     private ProductRepository productRepository;
@@ -39,7 +39,7 @@ class ProductControllerTests {
 
         when(productRepository.findAllByOwner_Id(1)).thenReturn(List.of(p1, p2));
 
-        ResponseEntity<List<Product>> response = productController.list(1);
+        var response = productController.list(1);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -64,8 +64,7 @@ class ProductControllerTests {
         ResponseEntity<?> response = productController.getById(7, 1);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertTrue(response.getBody() instanceof Product);
-        Product body = (Product) response.getBody();
+        Product body = assertInstanceOf(Product.class, response.getBody());
         assertEquals(7, body.getProductId());
         assertEquals("Marker", body.getProductName());
 
@@ -95,7 +94,7 @@ class ProductControllerTests {
                 null
         );
 
-            ResponseEntity<?> response = productController.create(request, 1);
+        ResponseEntity<?> response = productController.create(request, 1);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("productName is required", response.getBody());
@@ -117,7 +116,7 @@ class ProductControllerTests {
                 null
         );
 
-            ResponseEntity<?> response = productController.create(request, 1);
+        ResponseEntity<?> response = productController.create(request, 1);
 
         assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
         assertEquals("productName already exists", response.getBody());
