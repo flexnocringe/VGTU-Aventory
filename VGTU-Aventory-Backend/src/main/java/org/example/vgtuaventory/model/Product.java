@@ -1,5 +1,6 @@
 package org.example.vgtuaventory.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,6 +23,7 @@ public class Product {
     @ManyToOne
     protected User owner;
     @OneToMany(mappedBy ="product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Sale> sales;
     protected Double price;
     protected String productDescription;
