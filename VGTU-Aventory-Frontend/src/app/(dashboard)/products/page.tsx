@@ -20,6 +20,7 @@ export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [viewingProduct, setViewingProduct] = useState<Product | null>(null);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [editForm, setEditForm] = useState<EditFormState | null>(null);
   const [savingEdit, setSavingEdit] = useState(false);
@@ -81,6 +82,15 @@ export default function ProductsPage() {
       qrCode: product.qrCode,
       price: String(product.price),
     });
+  };
+
+  const openOverviewModal = (product: Product) => {
+    setError(null);
+    setViewingProduct(product);
+  };
+
+  const closeOverviewModal = () => {
+    setViewingProduct(null);
   };
 
   const closeEditModal = () => {
@@ -216,29 +226,33 @@ export default function ProductsPage() {
             <div className="p-6 text-center text-[#8a6b45]">No products found.</div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full">
+              <table className="min-w-full table-fixed">
                 <thead className="border-b border-[#f0dfc5] bg-[#fff4e2]">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
+                    <th className="w-[28%] bg-[#fff4e2] px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
                       Name
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
+                    <th className="w-[15%] bg-[#fff4e2] px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
                       Quantity
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
+                    <th className="w-[17%] bg-[#fff4e2] px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
                       Price
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
+                    <th className="w-[20%] bg-[#fff4e2] px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
                       QR Code
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
+                    <th className="w-[20%] bg-[#fff4e2] px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
                       Actions
                     </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#f0dfc5]">
                   {products.map((product) => (
-                    <tr key={product.id} className="hover:bg-[#fffaf3]">
+                    <tr
+                      key={product.id}
+                      className="cursor-pointer hover:bg-[#fffaf3]"
+                      onClick={() => openOverviewModal(product)}
+                    >
                       <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-[#2d2418]">
                         {product.name}
                       </td>
@@ -251,19 +265,27 @@ export default function ProductsPage() {
                       <td className="whitespace-nowrap px-6 py-4 text-sm text-[#6a5841]">
                         {product.qrCode}
                       </td>
-                      <td className="whitespace-nowrap px-6 py-4 text-sm font-medium">
-                        <button
-                          onClick={() => openEditModal(product)}
-                          className="mr-2 text-[#f59e0b] hover:text-[#9a6b2f]"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => handleDelete(product.id)}
-                          className="text-[#c2410c] hover:text-[#9a3412]"
-                        >
-                          Delete
-                        </button>
+                      <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
+                        <div className="flex justify-end gap-2">
+                          <button
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              openEditModal(product);
+                            }}
+                            className="rounded-md bg-[#f59e0b] px-4 py-2 text-white shadow-sm transition hover:bg-[#ea8c08] hover:shadow-md"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              void handleDelete(product.id);
+                            }}
+                            className="rounded-md bg-[#c2410c] px-4 py-2 text-white shadow-sm transition hover:bg-[#9a3412] hover:shadow-md"
+                          >
+                            Delete
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -365,6 +387,94 @@ export default function ProductsPage() {
                   disabled={savingEdit}
                 >
                   {savingEdit ? "Saving..." : "Save Changes"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {viewingProduct && (
+          <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-slate-900/40 px-4 py-6 sm:items-center">
+            <div className="w-full max-w-2xl rounded-xl bg-white p-6 shadow-2xl sm:p-7">
+              <h2 className="text-xl font-bold text-slate-900">
+                Product Overview #{viewingProduct.id}
+              </h2>
+
+              <div className="mt-4 grid max-h-[70vh] grid-cols-1 gap-4 overflow-y-auto pr-1 sm:grid-cols-2">
+                <label className="text-sm font-medium text-slate-700">
+                  <span>Name</span>
+                  <input
+                    type="text"
+                    className="mt-1 w-full rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-slate-700 outline-none"
+                    value={viewingProduct.name}
+                    readOnly
+                    disabled
+                  />
+                </label>
+
+                <label className="text-sm font-medium text-slate-700">
+                  <span>Quantity</span>
+                  <input
+                    type="number"
+                    className="mt-1 w-full rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-slate-700 outline-none"
+                    value={viewingProduct.quantity}
+                    readOnly
+                    disabled
+                  />
+                </label>
+
+                <label className="text-sm font-medium text-slate-700 sm:col-span-2">
+                  <span>Description</span>
+                  <textarea
+                    className="mt-1 min-h-24 w-full rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-slate-700 outline-none"
+                    value={viewingProduct.description}
+                    readOnly
+                    disabled
+                  />
+                </label>
+
+                <label className="text-sm font-medium text-slate-700 sm:col-span-2">
+                  <span>Photo URL</span>
+                  <input
+                    type="url"
+                    className="mt-1 w-full rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-slate-700 outline-none"
+                    value={viewingProduct.photoUrl}
+                    readOnly
+                    disabled
+                  />
+                </label>
+
+                <label className="text-sm font-medium text-slate-700">
+                  <span>QR Code</span>
+                  <input
+                    type="text"
+                    className="mt-1 w-full rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-slate-700 outline-none"
+                    value={viewingProduct.qrCode}
+                    readOnly
+                    disabled
+                  />
+                </label>
+
+                <label className="text-sm font-medium text-slate-700">
+                  <span>Price</span>
+                  <input
+                    type="number"
+                    step="0.01"
+                    className="mt-1 w-full rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-slate-700 outline-none"
+                    value={viewingProduct.price}
+                    readOnly
+                    disabled
+                  />
+                </label>
+              </div>
+
+              <div className="mt-6 flex justify-end">
+                <button
+                  type="button"
+                  className="rounded-md bg-[#f59e0b] px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-[#ea8c08] hover:shadow-md"
+                  onClick={closeOverviewModal}
+                >
+                  Close
                 </button>
               </div>
             </div>
