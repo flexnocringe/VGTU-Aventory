@@ -5,6 +5,7 @@ import ProductsPage from "@/app/(dashboard)/products/page";
 describe("ProductsPage", () => {
   const mockFetch = jest.fn();
   const originalApiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const originalConfirm = global.confirm;
 
   beforeAll(() => {
     process.env.NEXT_PUBLIC_API_BASE_URL = "http://localhost";
@@ -13,10 +14,12 @@ describe("ProductsPage", () => {
   beforeEach(() => {
     global.fetch = mockFetch as unknown as typeof fetch;
     mockFetch.mockReset();
+    global.confirm = jest.fn(() => true);
   });
 
   afterAll(() => {
     process.env.NEXT_PUBLIC_API_BASE_URL = originalApiBaseUrl;
+    global.confirm = originalConfirm;
   });
 
   it("loads and displays products", async () => {
@@ -84,6 +87,115 @@ describe("ProductsPage", () => {
 
     await waitFor(() => {
       expect(screen.queryByText("Product Overview #1")).not.toBeInTheDocument();
+    });
+  });
+
+  it("selects all products and updates delete selected count", async () => {
+    const user = userEvent.setup();
+
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => [
+        {
+          productId: 1,
+          productName: "Laptop",
+          quantity: 5,
+          price: 1000,
+          productDescription: "Business laptop",
+          photoUrl: "https://example.com/laptop.jpg",
+          qrCode: "QR-1",
+        },
+        {
+          productId: 2,
+          productName: "Mouse",
+          quantity: 10,
+          price: 50,
+          productDescription: "Wireless mouse",
+          photoUrl: "https://example.com/mouse.jpg",
+          qrCode: "QR-2",
+        },
+      ],
+    } as Response);
+
+    render(<ProductsPage />);
+
+    await waitFor(() => {
+      expect(screen.getByLabelText("Select all products")).toBeInTheDocument();
+    });
+
+    await user.click(screen.getByLabelText("Select all products"));
+
+    expect(screen.getByRole("button", { name: /Delete selected \(2\)/ })).toBeInTheDocument();
+  });
+
+  it("deletes selected products and refreshes list", async () => {
+    const user = userEvent.setup();
+
+    mockFetch
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => [
+          {
+            productId: 1,
+            productName: "Laptop",
+            quantity: 5,
+            price: 1000,
+            productDescription: "Business laptop",
+            photoUrl: "https://example.com/laptop.jpg",
+            qrCode: "QR-1",
+          },
+          {
+            productId: 2,
+            productName: "Mouse",
+            quantity: 10,
+            price: 50,
+            productDescription: "Wireless mouse",
+            photoUrl: "https://example.com/mouse.jpg",
+            qrCode: "QR-2",
+          },
+        ],
+      } as Response)
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({}),
+      } as Response)
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({}),
+      } as Response)
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => [],
+      } as Response);
+
+    render(<ProductsPage />);
+
+    await waitFor(() => {
+      expect(screen.getByLabelText("Select product 1")).toBeInTheDocument();
+    });
+
+    await user.click(screen.getByLabelText("Select product 1"));
+    await user.click(screen.getByLabelText("Select product 2"));
+    await user.click(screen.getByRole("button", { name: /Delete selected \(2\)/ }));
+
+    await waitFor(() => {
+      const deleteCalls = mockFetch.mock.calls.filter(
+        ([url, init]) =>
+          String(url).includes("/api/products/") &&
+          typeof init === "object" &&
+          init !== null &&
+          "method" in init &&
+          (init as RequestInit).method === "DELETE",
+      );
+
+      expect(deleteCalls).toHaveLength(2);
+      expect(deleteCalls.some(([url]) => String(url).includes("/api/products/1"))).toBe(true);
+      expect(deleteCalls.some(([url]) => String(url).includes("/api/products/2"))).toBe(true);
+    });
+
+    await waitFor(() => {
+      expect(screen.queryByText("Laptop")).not.toBeInTheDocument();
+      expect(screen.queryByText("Mouse")).not.toBeInTheDocument();
     });
   });
 

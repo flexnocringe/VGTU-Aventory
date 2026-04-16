@@ -18,6 +18,7 @@ type EditFormState = {
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [viewingProduct, setViewingProduct] = useState<Product | null>(null);
@@ -25,6 +26,7 @@ export default function ProductsPage() {
   const [editForm, setEditForm] = useState<EditFormState | null>(null);
   const [savingEdit, setSavingEdit] = useState(false);
   const [addingProduct, setAddingProduct] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const fetchProducts = async () => {
     try {
@@ -36,6 +38,7 @@ export default function ProductsPage() {
 
       const data: ApiProduct[] = await res.json();
       setProducts(data.map(mapApiProduct));
+      setSelectedIds([]);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to fetch products");
     } finally {
@@ -44,7 +47,7 @@ export default function ProductsPage() {
   };
 
   useEffect(() => {
-    fetchProducts();
+    void fetchProducts();
   }, []);
 
   const handleAdd = async (data: Omit<Product, "id">) => {
@@ -82,15 +85,6 @@ export default function ProductsPage() {
       qrCode: product.qrCode,
       price: String(product.price),
     });
-  };
-
-  const openOverviewModal = (product: Product) => {
-    setError(null);
-    setViewingProduct(product);
-  };
-
-  const closeOverviewModal = () => {
-    setViewingProduct(null);
   };
 
   const closeEditModal = () => {
@@ -173,6 +167,8 @@ export default function ProductsPage() {
     if (!confirm("Are you sure you want to delete this product?")) return;
 
     try {
+      setIsDeleting(true);
+
       const res = await fetchWithSession(apiUrl(`/api/products/${id}`), {
         method: "DELETE",
       });
@@ -182,23 +178,89 @@ export default function ProductsPage() {
       await fetchProducts();
     } catch (err) {
       alert(`Error deleting product: ${err instanceof Error ? err.message : "Unknown error"}`);
+    } finally {
+      setIsDeleting(false);
     }
+  };
+
+  const handleDeleteSelected = async () => {
+    if (selectedIds.length === 0) {
+      return;
+    }
+
+    if (!confirm("Are you sure you want to delete the selected products?")) {
+      return;
+    }
+
+    try {
+      setIsDeleting(true);
+
+      const responses = await Promise.all(
+        selectedIds.map((id) =>
+          fetchWithSession(apiUrl(`/api/products/${id}`), {
+            method: "DELETE",
+          }),
+        ),
+      );
+
+      if (responses.some((res) => !res.ok)) {
+        throw new Error("Failed to delete one or more selected products.");
+      }
+
+      await fetchProducts();
+    } catch (err) {
+      alert(`Error deleting products: ${err instanceof Error ? err.message : "Unknown error"}`);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const allSelected = products.length > 0 && selectedIds.length === products.length;
+
+  const toggleSelectAll = () => {
+    if (allSelected) {
+      setSelectedIds([]);
+      return;
+    }
+
+    setSelectedIds(products.map((product) => product.id));
+  };
+
+  const toggleSelectOne = (id: string) => {
+    setSelectedIds((prevSelected) => {
+      if (prevSelected.includes(id)) {
+        return prevSelected.filter((selectedId) => selectedId !== id);
+      }
+
+      return [...prevSelected, id];
+    });
   };
 
   return (
     <main className="min-h-screen bg-transparent p-6">
       <div className="mx-auto max-w-6xl">
-        <header className="mb-6 flex items-center justify-between">
+        <header className="mb-6 flex items-center justify-between gap-3">
           <div>
             <h1 className="text-3xl font-bold text-[#2d2418]">Products</h1>
             <p className="text-sm text-[#6a5841]">Manage your inventory items</p>
           </div>
-          <button
-            onClick={() => setAddingProduct(true)}
-            className="rounded-md bg-[#f59e0b] px-4 py-2 text-white shadow-sm transition hover:bg-[#ea8c08] hover:shadow-md"
-          >
-            Add Product
-          </button>
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => void handleDeleteSelected()}
+              className="rounded-md bg-red-600 px-4 py-2 text-white shadow-sm transition hover:bg-red-700 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60"
+              disabled={selectedIds.length === 0 || loading || isDeleting}
+            >
+              Delete selected ({selectedIds.length})
+            </button>
+            <button
+              onClick={() => setAddingProduct(true)}
+              className="rounded-md bg-[#f59e0b] px-4 py-2 text-white shadow-sm transition hover:bg-[#ea8c08] hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60"
+              disabled={loading || isDeleting}
+            >
+              Add Product
+            </button>
+          </div>
         </header>
 
         {error && (
@@ -226,16 +288,24 @@ export default function ProductsPage() {
             <div className="p-6 text-center text-[#8a6b45]">No products found.</div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="min-w-full table-fixed">
+              <table className="min-w-full table-fixed border-collapse text-left text-sm">
                 <thead className="border-b border-[#f0dfc5] bg-[#fff4e2]">
                   <tr>
-                    <th className="w-[28%] bg-[#fff4e2] px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
+                    <th className="w-[6%] bg-[#fff4e2] px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
+                      <input
+                        type="checkbox"
+                        checked={allSelected}
+                        onChange={toggleSelectAll}
+                        aria-label="Select all products"
+                      />
+                    </th>
+                    <th className="w-[24%] bg-[#fff4e2] px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
                       Name
                     </th>
                     <th className="w-[15%] bg-[#fff4e2] px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
                       Quantity
                     </th>
-                    <th className="w-[17%] bg-[#fff4e2] px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
+                    <th className="w-[15%] bg-[#fff4e2] px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
                       Price
                     </th>
                     <th className="w-[20%] bg-[#fff4e2] px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
@@ -251,8 +321,18 @@ export default function ProductsPage() {
                     <tr
                       key={product.id}
                       className="cursor-pointer hover:bg-[#fffaf3]"
-                      onClick={() => openOverviewModal(product)}
+                      onClick={() => setViewingProduct(product)}
                     >
+                      <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-[#2d2418]">
+                        <input
+                          type="checkbox"
+                          checked={selectedIds.includes(product.id)}
+                          onClick={(event) => event.stopPropagation()}
+                          onChange={() => toggleSelectOne(product.id)}
+                          aria-label={`Select product ${product.id}`}
+                          disabled={isDeleting}
+                        />
+                      </td>
                       <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-[#2d2418]">
                         {product.name}
                       </td>
@@ -281,7 +361,8 @@ export default function ProductsPage() {
                               event.stopPropagation();
                               void handleDelete(product.id);
                             }}
-                            className="rounded-md bg-[#c2410c] px-4 py-2 text-white shadow-sm transition hover:bg-[#9a3412] hover:shadow-md"
+                            className="rounded-md bg-[#c2410c] px-4 py-2 text-white shadow-sm transition hover:bg-[#9a3412] hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60"
+                            disabled={isDeleting}
                           >
                             Delete
                           </button>
@@ -472,7 +553,7 @@ export default function ProductsPage() {
                 <button
                   type="button"
                   className="rounded-md bg-[#f59e0b] px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-[#ea8c08] hover:shadow-md"
-                  onClick={closeOverviewModal}
+                  onClick={() => setViewingProduct(null)}
                 >
                   Close
                 </button>
