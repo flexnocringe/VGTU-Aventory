@@ -4,10 +4,19 @@ import ProductsPage from "@/app/(dashboard)/products/page";
 
 describe("ProductsPage", () => {
   const mockFetch = jest.fn();
+  const originalApiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+  beforeAll(() => {
+    process.env.NEXT_PUBLIC_API_BASE_URL = "http://localhost";
+  });
 
   beforeEach(() => {
     global.fetch = mockFetch as unknown as typeof fetch;
     mockFetch.mockReset();
+  });
+
+  afterAll(() => {
+    process.env.NEXT_PUBLIC_API_BASE_URL = originalApiBaseUrl;
   });
 
   it("loads and displays products", async () => {
