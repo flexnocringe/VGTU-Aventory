@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
@@ -18,6 +20,7 @@ public class Sale {
     @ManyToOne
     private User owner;
     private String saleLocation;
+    private LocalDateTime saleDate;
     private Double saleProductPrice;
     private String saleNote;
     private int quantity;

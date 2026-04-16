@@ -1,34 +1,123 @@
 package org.example.vgtuaventory.controller;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
+import lombok.RequiredArgsConstructor;
 import org.example.vgtuaventory.model.Product;
-import org.example.vgtuaventory.repositories.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.example.vgtuaventory.model.User;
+import org.example.vgtuaventory.repository.ProductRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.example.vgtuaventory.utils.AuthSessionAttributes;
+
+@CrossOrigin(origins = "http://localhost:3000")
+
 @RestController
+@RequestMapping("/api/products")
+@RequiredArgsConstructor
 public class ProductController {
-    @Autowired
-    private ProductRepository productRepository;
 
-    @GetMapping(value = "/getAllProducts")
-    public Iterable<Product> getAllProducts(){
-        return productRepository.findAll();
+    private final ProductRepository productRepository;
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Product>> list(@RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId) {
+        return ResponseEntity.ok(productRepository.findAllByOwner_Id(currentUserId));
     }
 
-    @DeleteMapping(value = "/deleteProducts")
-    public String deleteProduct(@RequestBody String idListJson) {
-        Gson gson = new Gson();
-        JsonObject idList = gson.fromJson(idListJson, JsonObject.class);
-        List<Integer> ids = gson.fromJson(idList.getAsJsonArray("productId"), new TypeToken<List<Integer>>(){}.getType());
-        System.out.println(ids);
-        for (Integer id : ids) {
-            productRepository.deleteById(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getById(
+            @PathVariable int id,
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId) {
+        return productRepository.findById(id)
+                .<ResponseEntity<?>>map(product -> {
+                    if (product.getOwner() == null || product.getOwner().getId() != currentUserId) {
+                        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only access your own products");
+                    }
+                    return ResponseEntity.ok(product);
+                })
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found"));
+    }
+
+    @PostMapping
+    public ResponseEntity<?> create(
+            @RequestBody ProductRequest request,
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId) {
+        if (request.productName() == null || request.productName().isBlank()) {
+            return ResponseEntity.badRequest().body("productName is required");
         }
-        return "Products deleted successfully";
+        if (productRepository.existsByProductNameAndOwner_Id(request.productName().trim(), currentUserId)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("productName already exists");
+        }
+
+        Product p = new Product();
+        User owner = new User();
+        owner.setId(currentUserId);
+        p.setOwner(owner);
+        p.setProductName(request.productName().trim());
+        p.setPrice(request.price());
+        p.setProductDescription(request.productDescription());
+        p.setPhotoUrl(request.photoUrl());
+        p.setQuantity(request.quantity());
+        p.setQrCode(request.qrCode());
+
+        Product saved = productRepository.save(p);
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(
+            @PathVariable int id,
+            @RequestBody ProductRequest request,
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId) {
+        return productRepository.findByProductIdAndOwner_Id(id, currentUserId)
+                .<ResponseEntity<?>>map(existing -> {
+                    if (request.productName() != null && !request.productName().isBlank()) {
+                        String newName = request.productName().trim();
+                        boolean nameTaken = productRepository.findByProductNameAndOwner_Id(newName, currentUserId)
+                                .filter(p -> p.getProductId() != id)
+                                .isPresent();
+                        if (nameTaken) {
+                            return ResponseEntity.status(HttpStatus.CONFLICT).body("productName already exists");
+                        }
+                        existing.setProductName(newName);
+                    }
+
+                    if (request.price() != null) existing.setPrice(request.price());
+                    if (request.productDescription() != null) existing.setProductDescription(request.productDescription());
+                    if (request.photoUrl() != null) existing.setPhotoUrl(request.photoUrl());
+                    if (request.quantity() != null) existing.setQuantity(request.quantity());
+                    if (request.qrCode() != null) existing.setQrCode(request.qrCode());
+
+                    Product saved = productRepository.save(existing);
+                    return ResponseEntity.ok(saved);
+                })
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only modify your own products"));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(
+            @PathVariable int id,
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId) {
+        Product product = productRepository.findById(id).orElse(null);
+        if (product == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
+        }
+        if (product.getOwner() == null || product.getOwner().getId() != currentUserId) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only delete your own products");
+        }
+        productRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    public record ProductRequest(
+            String productName,
+            Double price,
+            String productDescription,
+            String photoUrl,
+            Integer quantity,
+            String qrCode
+    ) {}
 }
