@@ -81,7 +81,7 @@ describe("ProductsPage", () => {
     expect(screen.getByDisplayValue("Laptop")).toBeInTheDocument();
     expect(screen.getByDisplayValue("Business laptop")).toBeInTheDocument();
     expect(screen.getByDisplayValue("https://example.com/laptop.jpg")).toBeInTheDocument();
-    expect(screen.getByDisplayValue("QR-1")).toBeInTheDocument();
+    expect(screen.getAllByText("QR-1")[1]).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: "Close" }));
 
