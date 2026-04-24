@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { QRCodeCanvas } from "qrcode.react";
 import { apiUrl } from "@/lib/api/url";
 import { fetchWithSession } from "@/features/auth/services/fetchWithSession";
 
@@ -343,7 +344,12 @@ export default function ProductsPage() {
                         ${product.price.toFixed(2)}
                       </td>
                       <td className="whitespace-nowrap px-6 py-4 text-sm text-[#6a5841]">
-                        {product.qrCode}
+                        <div className="flex items-center gap-3">
+                          <QRCodeCanvas value={product.qrCode} size={72} includeMargin />
+                          <span className="max-w-[12rem] break-all text-xs text-[#8a6b45]">
+                            {product.qrCode}
+                          </span>
+                        </div>
                       </td>
                       <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
                         <div className="flex justify-end gap-2">
@@ -527,13 +533,10 @@ export default function ProductsPage() {
 
                 <label className="text-sm font-medium text-slate-700">
                   <span>QR Code</span>
-                  <input
-                    type="text"
-                    className="mt-1 w-full rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-slate-700 outline-none"
-                    value={viewingProduct.qrCode}
-                    readOnly
-                    disabled
-                  />
+                  <div className="mt-1 flex flex-col items-start gap-3 rounded-md border border-slate-200 bg-slate-50 px-3 py-3 text-slate-700">
+                    <QRCodeCanvas value={viewingProduct.qrCode} size={180} includeMargin />
+                    <span className="break-all text-xs text-slate-600">{viewingProduct.qrCode}</span>
+                  </div>
                 </label>
 
                 <label className="text-sm font-medium text-slate-700">

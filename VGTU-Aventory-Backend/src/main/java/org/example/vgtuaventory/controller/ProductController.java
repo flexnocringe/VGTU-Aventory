@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.vgtuaventory.model.Product;
 import org.example.vgtuaventory.model.User;
 import org.example.vgtuaventory.repository.ProductRepository;
+import org.example.vgtuaventory.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ import org.example.vgtuaventory.utils.AuthSessionAttributes;
 public class ProductController {
 
     private final ProductRepository productRepository;
+    private final ProductService productService;
 
     @GetMapping("/all")
     public ResponseEntity<List<Product>> list(@RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId) {
@@ -39,6 +41,26 @@ public class ProductController {
                     return ResponseEntity.ok(product);
                 })
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found"));
+    }
+
+    @GetMapping("/scan")
+    public ResponseEntity<?> getByQrCode(
+            @RequestParam String qrCode,
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId) {
+        try {
+            Product product = productService.getProductByQrCodeForOwner(qrCode, currentUserId);
+            return ResponseEntity.ok(new ProductScanResponse(
+                    product.getProductId(),
+                    product.getProductName(),
+                    product.getPrice(),
+                    product.getProductDescription(),
+                    product.getPhotoUrl(),
+                    product.getQuantity(),
+                    product.getQrCode()
+            ));
+        } catch (RuntimeException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
+        }
     }
 
     @PostMapping
@@ -120,4 +142,14 @@ public class ProductController {
             Integer quantity,
             String qrCode
     ) {}
+
+        public record ProductScanResponse(
+            int productId,
+            String productName,
+            Double price,
+            String productDescription,
+            String photoUrl,
+            int quantity,
+            String qrCode
+        ) {}
 }

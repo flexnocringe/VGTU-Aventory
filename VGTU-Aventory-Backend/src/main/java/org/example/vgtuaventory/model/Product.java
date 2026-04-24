@@ -29,5 +29,5 @@ public class Product {
     protected String productDescription;
     protected String photoUrl;
     protected int quantity;
-    protected String qrCode; //veliau zaisim
+    protected String qrCode;
 }
