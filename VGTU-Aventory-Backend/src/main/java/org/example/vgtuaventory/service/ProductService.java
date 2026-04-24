@@ -12,9 +12,9 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public Product getProductByQrCode(String qrCode) {
+    public Product getProductByQrCodeForOwner(String qrCode, int ownerId) {
         return productRepository
-                .findByQrCode(qrCode)
+                .findByQrCodeAndOwner_Id(qrCode, ownerId)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
     }
 }
