@@ -16,6 +16,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String categoryName;
+    private String color;
     @ManyToOne
     private User owner;
 }
