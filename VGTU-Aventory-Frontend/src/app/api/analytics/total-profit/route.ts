@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAuthHeaders } from "@/features/auth/session";
 
+function getTodayIsoDate(): string {
+  return new Date().toISOString().split("T")[0];
+}
+
 export async function GET(request: NextRequest) {
   const startDate = request.nextUrl.searchParams.get("startDate");
   const endDate = request.nextUrl.searchParams.get("endDate");
@@ -25,6 +29,14 @@ export async function GET(request: NextRequest) {
   if (start.getTime() > end.getTime()) {
     return NextResponse.json(
       { error: "startDate cannot be later than endDate." },
+      { status: 400 },
+    );
+  }
+
+  const today = getTodayIsoDate();
+  if (endDate > today) {
+    return NextResponse.json(
+      { error: "endDate cannot be in the future." },
       { status: 400 },
     );
   }

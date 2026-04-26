@@ -37,8 +37,10 @@ public class TotalSalesController {
             return ResponseEntity.badRequest().body(response);
         }
 
-        LocalDateTime startDate = LocalDate.parse(dateInterval.get("startDate").getAsString()).atStartOfDay();
-        LocalDateTime endDate = LocalDate.parse(dateInterval.get("endDate").getAsString()).atStartOfDay();
+        LocalDate parsedStartDate = LocalDate.parse(dateInterval.get("startDate").getAsString());
+        LocalDate parsedEndDate = LocalDate.parse(dateInterval.get("endDate").getAsString());
+        LocalDateTime startDate = parsedStartDate.atStartOfDay();
+        LocalDateTime endDate = parsedEndDate.plusDays(1).atStartOfDay().minusNanos(1);
 
         if (startDate.isAfter(endDate)) {
             Map<String, String> response = new HashMap<>();
@@ -63,10 +65,12 @@ public class TotalSalesController {
         build.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter());
         Gson gson = build.setPrettyPrinting().create();
         
-        LocalDateTime startDateFormatted = LocalDate.parse(startDate).atStartOfDay();
-        LocalDateTime endDateFormatted = LocalDate.parse(endDate).atStartOfDay();
+        LocalDate parsedStartDate = LocalDate.parse(startDate);
+        LocalDate parsedEndDate = LocalDate.parse(endDate);
+        LocalDateTime startDateFormatted = parsedStartDate.atStartOfDay();
+        LocalDateTime endDateFormatted = parsedEndDate.plusDays(1).atStartOfDay().minusNanos(1);
 
-        if (endDateFormatted.isAfter(LocalDateTime.now())) {
+        if (parsedEndDate.isAfter(LocalDate.now())) {
             Map<String, String> response = new HashMap<>();
             response.put("error", "End date cannot be in the future.");
             return ResponseEntity.badRequest().body(response);

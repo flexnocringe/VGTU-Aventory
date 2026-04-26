@@ -48,7 +48,7 @@ class TotalProfitTest {
 
         when(saleRepository.findAllByOwner_IdAndSaleDateBetween(1,
                 LocalDateTime.parse("2026-03-01T00:00:00"),
-                LocalDateTime.parse("2026-03-10T00:00:00")))
+                LocalDateTime.parse("2026-03-10T23:59:59.999999999")))
                 .thenReturn(List.of(sale1, sale2));
 
         String dateInfo = "{\"startDate\":\"2026-03-01\",\"endDate\":\"2026-03-10\"}";
@@ -61,7 +61,7 @@ class TotalProfitTest {
         assertEquals(22.0, result.get(2));
         verify(saleRepository, times(1)).findAllByOwner_IdAndSaleDateBetween(1,
                 LocalDateTime.parse("2026-03-01T00:00:00"),
-                LocalDateTime.parse("2026-03-10T00:00:00"));
+                LocalDateTime.parse("2026-03-10T23:59:59.999999999"));
     }
 
     @Test
@@ -78,7 +78,7 @@ class TotalProfitTest {
 
         when(saleRepository.findAllByOwner_IdAndSaleDateBetween(1,
                 LocalDateTime.parse("2026-03-01T00:00:00"),
-                LocalDateTime.parse("2026-03-10T00:00:00")))
+                LocalDateTime.parse("2026-03-10T23:59:59.999999999")))
                 .thenReturn(List.of(sale1, sale2));
 
         ResponseEntity<?> response = totalSalesController.getTotalProfitInInterval("2026-03-01", "2026-03-10", 1);
@@ -88,14 +88,14 @@ class TotalProfitTest {
         assertEquals(20.0, json.get("totalProfit").getAsDouble());
         verify(saleRepository, times(1)).findAllByOwner_IdAndSaleDateBetween(1,
                 LocalDateTime.parse("2026-03-01T00:00:00"),
-                LocalDateTime.parse("2026-03-10T00:00:00"));
+                LocalDateTime.parse("2026-03-10T23:59:59.999999999"));
     }
 
     @Test
     void getTotalProfitInInterval_returnsZeroForNoSales() {
         when(saleRepository.findAllByOwner_IdAndSaleDateBetween(1,
                 LocalDateTime.parse("2026-03-01T00:00:00"),
-                LocalDateTime.parse("2026-03-10T00:00:00")))
+                LocalDateTime.parse("2026-03-10T23:59:59.999999999")))
                 .thenReturn(List.of());
 
         ResponseEntity<?> response = totalSalesController.getTotalProfitInInterval("2026-03-01", "2026-03-10", 1);
@@ -105,7 +105,7 @@ class TotalProfitTest {
         assertEquals(0.0, json.get("totalProfit").getAsDouble());
         verify(saleRepository, times(1)).findAllByOwner_IdAndSaleDateBetween(1,
                 LocalDateTime.parse("2026-03-01T00:00:00"),
-                LocalDateTime.parse("2026-03-10T00:00:00"));
+                LocalDateTime.parse("2026-03-10T23:59:59.999999999"));
     }
 
     @Test

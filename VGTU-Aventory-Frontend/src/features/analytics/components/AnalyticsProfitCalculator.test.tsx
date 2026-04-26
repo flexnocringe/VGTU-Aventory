@@ -1,6 +1,7 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { AnalyticsProfitCalculator } from "@/features/analytics/components/AnalyticsProfitCalculator";
 import { getTotalProfit } from "@/features/analytics/services/getTotalProfit";
+import { AnalyticsDatesProvider } from "@/features/analytics/context/AnalyticsDatesContext";
 
 jest.mock("@/features/analytics/services/getTotalProfit", () => ({
   getTotalProfit: jest.fn(),
@@ -10,36 +11,46 @@ const mockedGetTotalProfit = getTotalProfit as jest.MockedFunction<typeof getTot
 
 describe("AnalyticsProfitCalculator", () => {
   beforeEach(() => {
+    jest.useFakeTimers();
+    jest.setSystemTime(new Date("2026-04-26T10:00:00.000Z"));
     mockedGetTotalProfit.mockReset();
   });
 
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
+  function renderWithProvider() {
+    return render(
+      <AnalyticsDatesProvider>
+        <AnalyticsProfitCalculator />
+      </AnalyticsDatesProvider>,
+    );
+  }
+
   it("renders initial state", () => {
-    render(<AnalyticsProfitCalculator />);
+    mockedGetTotalProfit.mockImplementation(
+      () => new Promise(() => {
+        // Keep the request pending so the component remains in loading state for this assertion.
+      }),
+    );
+
+    renderWithProvider();
 
     expect(screen.getByRole("heading", { name: "Total Profit" })).toBeInTheDocument();
     expect(screen.getByText("Total profit")).toBeInTheDocument();
-    expect(screen.getByText("-")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Calculate" })).toBeInTheDocument();
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
-  it("submits selected dates and shows calculated profit", async () => {
+  it("loads total profit for current date range and shows result", async () => {
     mockedGetTotalProfit.mockResolvedValue({ totalProfit: 1500 });
 
-    render(<AnalyticsProfitCalculator />);
-
-    fireEvent.change(screen.getByLabelText("Start date"), {
-      target: { value: "2026-03-01" },
-    });
-    fireEvent.change(screen.getByLabelText("End date"), {
-      target: { value: "2026-03-17" },
-    });
-
-    fireEvent.click(screen.getByRole("button", { name: "Calculate" }));
+    renderWithProvider();
 
     await waitFor(() => {
       expect(mockedGetTotalProfit).toHaveBeenCalledWith({
-        startDate: "2026-03-01",
-        endDate: "2026-03-17",
+        startDate: "2026-04-26",
+        endDate: "2026-04-26",
       });
     });
 
@@ -51,14 +62,12 @@ describe("AnalyticsProfitCalculator", () => {
   it("shows an error when calculation request fails", async () => {
     mockedGetTotalProfit.mockRejectedValue(new Error("Request failed."));
 
-    render(<AnalyticsProfitCalculator />);
-
-    fireEvent.click(screen.getByRole("button", { name: "Calculate" }));
+    renderWithProvider();
 
     await waitFor(() => {
       expect(screen.getByText("Request failed.")).toBeInTheDocument();
     });
 
-    expect(screen.getByText("-")).toBeInTheDocument();
+    expect(screen.queryByText("-")).not.toBeInTheDocument();
   });
 });

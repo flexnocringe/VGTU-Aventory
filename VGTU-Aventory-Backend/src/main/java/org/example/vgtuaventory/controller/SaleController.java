@@ -56,4 +56,24 @@ public class SaleController {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
+
+    @PostMapping("/sales-comparison/{startDate}/{endDate}")
+    public ResponseEntity<?> getProductSalesComparison(
+            @PathVariable LocalDate startDate,
+            @PathVariable LocalDate endDate,
+            @RequestBody ProductSalesComparisonRequest request,
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId
+    ) {
+        try {
+            List<SaleService.ProductSalesComparisonResponse> comparison =
+                    saleService.getProductSalesComparison(currentUserId, startDate, endDate, request.productIds);
+            return ResponseEntity.ok(comparison);
+        } catch (RuntimeException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
+    public static class ProductSalesComparisonRequest {
+        public List<Integer> productIds;
+    }
 }

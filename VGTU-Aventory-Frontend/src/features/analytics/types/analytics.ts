@@ -17,3 +17,14 @@ export type TopSellingProduct = {
   productName: string;
   salesCount: number;
 };
+
+export type ProductSalesComparison = {
+  productId: number;
+  productName: string;
+  totalSalesCount: number;
+};
+
+export type AnalyticsDateRange = {
+  startDate: string;
+  endDate: string;
+};
