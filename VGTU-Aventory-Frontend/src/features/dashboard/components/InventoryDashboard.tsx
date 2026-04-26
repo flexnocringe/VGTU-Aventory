@@ -3,8 +3,6 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
-import { AnalyticsProfitCalculator } from "@/features/analytics/components/AnalyticsProfitCalculator";
-import { TopSellingProducts } from "@/features/analytics/components/TopSellingProducts";
 import { DashboardSummaryCards } from "@/features/dashboard/components/DashboardSummaryCards";
 import { InventoryMovementPanel } from "@/features/dashboard/components/InventoryMovementPanel";
 import { ProductSnapshots } from "@/features/dashboard/components/ProductSnapshots";
@@ -94,10 +92,6 @@ export function InventoryDashboard() {
           </section>
         </>
       )}
-
-      <AnalyticsProfitCalculator />
-
-      <TopSellingProducts />
 
       <SalesHistory />
     </section>
