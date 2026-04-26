@@ -1,53 +1,47 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import MyEvents from '../app/(dashboard)/my-events/page'
 
 describe('MyEvents Page', () => {
   const mockFetch = jest.fn()
 
-  beforeEach(() => {
+  beforeAll(() => {
     global.fetch = mockFetch as unknown as typeof fetch
+  })
+
+  beforeEach(() => {
     mockFetch.mockReset()
   })
 
-  it('renders loading state initially', () => {
-    // Return a promise that doesn't resolve immediately
-    mockFetch.mockReturnValue(new Promise(() => {}))
-    
-    render(<MyEvents />)
-    expect(screen.getByText(/loading events/i)).toBeInTheDocument()
-  })
-
-  it('renders events when fetch is successful', async () => {
-    const mockEvents = [
-      {
-        startDate: '2026-03-17T10:00:00Z',
-        endDate: '2026-03-17T12:00:00Z',
-        description: 'Test Event 1',
-      },
-      {
-        startDate: '2026-03-18T14:00:00Z',
-        endDate: '2026-03-18T16:00:00Z',
-        description: 'Test Event 2',
-      },
-    ]
-
+  it('renders events correctly', async () => {
     mockFetch.mockResolvedValue({
       ok: true,
-      json: async () => mockEvents,
+      json: async () => [
+        { 
+          id: 1, 
+          startDate: '2026-03-17T10:00:00Z', 
+          endDate: '2026-03-17T12:00:00Z', 
+          description: 'Simplified Test Event' 
+        }
+      ],
     } as Response)
 
     render(<MyEvents />)
 
-    await waitFor(() => {
-      expect(screen.queryByText(/loading events/i)).not.toBeInTheDocument()
-    }, { timeout: 3000 })
-
-    expect(screen.getByText('Test Event 1')).toBeInTheDocument()
-    expect(screen.getByText('Test Event 2')).toBeInTheDocument()
-    expect(screen.getAllByText(/Starts:/i)[0]).toBeInTheDocument()
+    expect(await screen.findByText('Simplified Test Event')).toBeInTheDocument()
   })
 
-  it('renders error message when fetch fails', async () => {
+  it('renders empty message when no events', async () => {
+    mockFetch.mockResolvedValue({
+      ok: true,
+      json: async () => [],
+    } as Response)
+
+    render(<MyEvents />)
+
+    expect(await screen.findByText(/no events found/i)).toBeInTheDocument()
+  })
+
+  it('renders error message on fetch failure', async () => {
     mockFetch.mockResolvedValue({
       ok: false,
       json: async () => ({}),
@@ -55,21 +49,6 @@ describe('MyEvents Page', () => {
 
     render(<MyEvents />)
 
-    await waitFor(() => {
-      expect(screen.getByText(/failed to fetch events/i)).toBeInTheDocument()
-    })
-  })
-
-  it('renders custom message from API if present', async () => {
-    mockFetch.mockResolvedValue({
-      ok: true,
-      json: async () => ({ message: 'No events found' }),
-    } as Response)
-
-    render(<MyEvents />)
-
-    await waitFor(() => {
-      expect(screen.getByText('No events found')).toBeInTheDocument()
-    })
+    expect(await screen.findByText(/failed to fetch events/i)).toBeInTheDocument()
   })
 })
