@@ -7,7 +7,7 @@ type ProductSnapshotsProps = {
 
 export function ProductSnapshots({ products, loading }: ProductSnapshotsProps) {
   return (
-    <section className="rounded-2xl border border-[#f0dfc5] bg-white p-6 shadow-[0_12px_30px_rgba(154,107,47,0.08)]">
+    <section className="flex h-full flex-col rounded-2xl border border-[#f0dfc5] bg-white p-6 shadow-[0_12px_30px_rgba(154,107,47,0.08)]">
       <div className="flex items-start justify-between">
         <div>
           <h2 className="text-xl font-semibold text-[#2d2418]">Product snapshots</h2>

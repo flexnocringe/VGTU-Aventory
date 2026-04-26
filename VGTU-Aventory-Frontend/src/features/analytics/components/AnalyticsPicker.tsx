@@ -1,15 +1,9 @@
 "use client";
 
-import { FormEvent } from "react";
 import { useAnalyticsDates } from "@/features/analytics/context/AnalyticsDatesContext";
 
-function getTodayIsoDate(): string {
-  return new Date().toISOString().split("T")[0];
-}
-
 export function AnalyticsPicker() {
-  const today = getTodayIsoDate();
-  const { dateRange, setDateRange, error } = useAnalyticsDates();
+  const { dateRange, setDateRange, minStartDate, maxEndDate, error } = useAnalyticsDates();
 
   const handleChangeStartDate = (value: string) => {
     setDateRange({ startDate: value, endDate: dateRange.endDate });
@@ -30,6 +24,8 @@ export function AnalyticsPicker() {
           <input
             id="analytics-start-date"
             type="date"
+            min={minStartDate}
+            max={maxEndDate}
             value={dateRange.startDate}
             onChange={(event) => handleChangeStartDate(event.target.value)}
             className="w-full rounded-lg border border-[#e9dfcc] px-3 py-2 text-[#2d2418] outline-none ring-offset-2 transition focus:border-[#f59e0b] focus:ring-2 focus:ring-[#f59e0b]/20"
@@ -42,7 +38,8 @@ export function AnalyticsPicker() {
           <input
             id="analytics-end-date"
             type="date"
-            max={today}
+            min={dateRange.startDate || minStartDate}
+            max={maxEndDate}
             value={dateRange.endDate}
             onChange={(event) => handleChangeEndDate(event.target.value)}
             className="w-full rounded-lg border border-[#e9dfcc] px-3 py-2 text-[#2d2418] outline-none ring-offset-2 transition focus:border-[#f59e0b] focus:ring-2 focus:ring-[#f59e0b]/20"

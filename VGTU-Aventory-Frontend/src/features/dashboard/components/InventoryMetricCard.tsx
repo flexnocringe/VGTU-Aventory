@@ -58,12 +58,6 @@ export function InventoryMetricCard({
                     "mt-2 text-[1rem] font-medium",
                     labelClassName,
                 ].join(" ")}>{title}</p>
-
-                <div className="mt-4 h-px w-full bg-white/10" />
-
-                <p className="mt-3 text-xs text-white/65">
-                    Lorem ipsum perchance
-                </p>
             </div>
         </article>
     );

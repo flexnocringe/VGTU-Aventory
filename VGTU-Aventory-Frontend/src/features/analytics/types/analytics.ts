@@ -7,6 +7,15 @@ export type TotalProfitResponse = {
   totalProfit: number;
 };
 
+export type TotalSalesCountResponse = {
+  totalSalesCount: number;
+};
+
+export type AnalyticsDateBoundsResponse = {
+  firstSaleDate: string;
+  today: string;
+};
+
 export type TopSellingProductsRequest = {
   startDate: string;
   endDate: string;

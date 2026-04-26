@@ -85,10 +85,12 @@ export function InventoryDashboard() {
           <DashboardSummaryCards summary={summary} loading={loading} />
 
           <section className="grid gap-6 lg:grid-cols-3">
-            <div className="lg:col-span-2">
+            <div className="h-full lg:col-span-2">
               <InventoryMovementPanel products={products} loading={loading} />
             </div>
-            <ProductSnapshots products={products} loading={loading} />
+            <div className="h-full">
+              <ProductSnapshots products={products} loading={loading} />
+            </div>
           </section>
         </>
       )}
