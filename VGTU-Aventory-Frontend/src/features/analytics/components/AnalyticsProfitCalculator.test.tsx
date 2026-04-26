@@ -16,7 +16,7 @@ describe("AnalyticsProfitCalculator", () => {
   it("renders initial state", () => {
     render(<AnalyticsProfitCalculator />);
 
-    expect(screen.getByRole("heading", { name: "Analytics" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Total Profit" })).toBeInTheDocument();
     expect(screen.getByText("Total profit")).toBeInTheDocument();
     expect(screen.getByText("-")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Calculate" })).toBeInTheDocument();

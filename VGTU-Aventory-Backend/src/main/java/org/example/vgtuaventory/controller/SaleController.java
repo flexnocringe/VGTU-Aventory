@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import org.example.vgtuaventory.utils.AuthSessionAttributes;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -39,5 +40,20 @@ public class SaleController {
             @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId) {
 
         return ResponseEntity.ok(saleService.getSalesByUser(currentUserId));
+    }
+
+    @GetMapping("/top-selling/{startDate}/{endDate}")
+    public ResponseEntity<?> getTopSellingProducts(
+            @PathVariable LocalDate startDate,
+            @PathVariable LocalDate endDate,
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId
+    ) {
+        try {
+            List<SaleService.TopSellingProductResponse> topSellingProducts =
+                    saleService.getTopSellingProductsByDateRange(currentUserId, startDate, endDate);
+            return ResponseEntity.ok(topSellingProducts);
+        } catch (RuntimeException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
     }
 }
