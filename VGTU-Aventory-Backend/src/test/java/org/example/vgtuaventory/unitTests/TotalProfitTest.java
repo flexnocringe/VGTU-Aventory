@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -46,6 +47,10 @@ class TotalProfitTest {
         sale2.setTotalPrice(22.0);
         sale2.setOwner(owner);
 
+        Sale firstSale = new Sale();
+        firstSale.setSaleDate(LocalDateTime.parse("2026-03-01T00:00:00"));
+        when(saleRepository.findFirstByOrderBySaleDateAsc()).thenReturn(Optional.of(firstSale));
+
         when(saleRepository.findAllByOwner_IdAndSaleDateBetween(1,
                 LocalDateTime.parse("2026-03-01T00:00:00"),
                 LocalDateTime.parse("2026-03-10T23:59:59.999999999")))
@@ -62,6 +67,7 @@ class TotalProfitTest {
         verify(saleRepository, times(1)).findAllByOwner_IdAndSaleDateBetween(1,
                 LocalDateTime.parse("2026-03-01T00:00:00"),
                 LocalDateTime.parse("2026-03-10T23:59:59.999999999"));
+        verify(saleRepository, times(1)).findFirstByOrderBySaleDateAsc();
     }
 
     @Test
@@ -76,6 +82,10 @@ class TotalProfitTest {
         sale2.setTotalPrice(8.75);
         sale2.setOwner(owner);
 
+        Sale firstSale = new Sale();
+        firstSale.setSaleDate(LocalDateTime.parse("2026-03-01T00:00:00"));
+        when(saleRepository.findFirstByOrderBySaleDateAsc()).thenReturn(Optional.of(firstSale));
+
         when(saleRepository.findAllByOwner_IdAndSaleDateBetween(1,
                 LocalDateTime.parse("2026-03-01T00:00:00"),
                 LocalDateTime.parse("2026-03-10T23:59:59.999999999")))
@@ -89,10 +99,15 @@ class TotalProfitTest {
         verify(saleRepository, times(1)).findAllByOwner_IdAndSaleDateBetween(1,
                 LocalDateTime.parse("2026-03-01T00:00:00"),
                 LocalDateTime.parse("2026-03-10T23:59:59.999999999"));
+        verify(saleRepository, times(1)).findFirstByOrderBySaleDateAsc();
     }
 
     @Test
     void getTotalProfitInInterval_returnsZeroForNoSales() {
+                Sale firstSale = new Sale();
+                firstSale.setSaleDate(LocalDateTime.parse("2026-03-01T00:00:00"));
+                when(saleRepository.findFirstByOrderBySaleDateAsc()).thenReturn(Optional.of(firstSale));
+
         when(saleRepository.findAllByOwner_IdAndSaleDateBetween(1,
                 LocalDateTime.parse("2026-03-01T00:00:00"),
                 LocalDateTime.parse("2026-03-10T23:59:59.999999999")))
@@ -106,6 +121,30 @@ class TotalProfitTest {
         verify(saleRepository, times(1)).findAllByOwner_IdAndSaleDateBetween(1,
                 LocalDateTime.parse("2026-03-01T00:00:00"),
                 LocalDateTime.parse("2026-03-10T23:59:59.999999999"));
+        verify(saleRepository, times(1)).findFirstByOrderBySaleDateAsc();
+    }
+
+    @Test
+    void getTotalSalesCountInInterval_returnsSummedSalesCountAsJson() {
+        Sale firstSale = new Sale();
+        firstSale.setSaleDate(LocalDateTime.parse("2026-03-01T00:00:00"));
+        when(saleRepository.findFirstByOrderBySaleDateAsc()).thenReturn(Optional.of(firstSale));
+
+        Sale sale1 = new Sale();
+        sale1.setQuantity(4);
+        Sale sale2 = new Sale();
+        sale2.setQuantity(6);
+
+        when(saleRepository.findAllByOwner_IdAndSaleDateBetween(1,
+                LocalDateTime.parse("2026-03-01T00:00:00"),
+                LocalDateTime.parse("2026-03-10T23:59:59.999999999")))
+                .thenReturn(List.of(sale1, sale2));
+
+        ResponseEntity<?> response = totalSalesController.getTotalSalesCountInInterval("2026-03-01", "2026-03-10", 1);
+        String result = (String) response.getBody();
+        JsonObject json = new Gson().fromJson(result, JsonObject.class);
+
+        assertEquals(10, json.get("totalSalesCount").getAsInt());
     }
 
     @Test

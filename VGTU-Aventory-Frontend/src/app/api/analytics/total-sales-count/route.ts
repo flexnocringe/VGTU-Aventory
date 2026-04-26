@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
   }
 
   const backendBaseUrl = process.env.BACKEND_URL ?? "http://localhost:8080";
-  const backendUrl = `${backendBaseUrl}/totalProfitInInterval/${encodeURIComponent(startDate)}/${encodeURIComponent(endDate)}`;
+  const backendUrl = `${backendBaseUrl}/totalSalesCountInInterval/${encodeURIComponent(startDate)}/${encodeURIComponent(endDate)}`;
   const cookieHeader = request.headers.get("cookie") ?? undefined;
 
   const backendResponse = await fetch(backendUrl, {
@@ -54,26 +54,26 @@ export async function GET(request: NextRequest) {
   if (!backendResponse.ok) {
     const errorText = await backendResponse.text();
     return NextResponse.json(
-      { error: errorText || "Failed to fetch total profit from backend." },
+      { error: errorText || "Failed to fetch total sales count from backend." },
       { status: backendResponse.status },
     );
   }
 
   const data = (await backendResponse.json()) as unknown;
 
-  const totalProfit =
+  const totalSalesCount =
     typeof data === "number"
       ? data
-      : typeof data === "object" && data !== null && "totalProfit" in data
-        ? Number((data as { totalProfit: unknown }).totalProfit)
+      : typeof data === "object" && data !== null && "totalSalesCount" in data
+        ? Number((data as { totalSalesCount: unknown }).totalSalesCount)
         : Number.NaN;
 
-  if (Number.isNaN(totalProfit)) {
+  if (!Number.isFinite(totalSalesCount) || !Number.isInteger(totalSalesCount) || totalSalesCount < 0) {
     return NextResponse.json(
-      { error: "Backend returned an invalid total profit payload." },
+      { error: "Backend returned an invalid total sales count payload." },
       { status: 502 },
     );
   }
 
-  return NextResponse.json({ totalProfit });
+  return NextResponse.json({ totalSalesCount });
 }

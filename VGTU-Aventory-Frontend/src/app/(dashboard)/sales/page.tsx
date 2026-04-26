@@ -60,12 +60,16 @@ export default function SalesPage() {
                 throw new Error(`Product "${selectedProduct.productName}" does not have an owner assigned`);
             }
 
-            const quantity = parseInt(form.quantity);
+            const quantity = Number(form.quantity);
+            if (!Number.isInteger(quantity)) {
+                throw new Error("Quantity must be an integer");
+            }
+
             if (quantity <= 0) {
                 throw new Error("Quantity must be greater than 0");
             }
 
-            if (quantity > selectedProduct.quantity) {
+            if (form.saleType === "SALE" && quantity > selectedProduct.quantity) {
                 throw new Error(`Not enough stock. Available: ${selectedProduct.quantity}, Requested: ${quantity}`);
             }
 

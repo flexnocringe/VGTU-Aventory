@@ -13,14 +13,53 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 public class TotalSalesController {
+    private final SaleRepository saleRepository;
+
     @Autowired
-    private SaleRepository saleRepository;
+    public TotalSalesController(SaleRepository saleRepository) {
+        this.saleRepository = saleRepository;
+    }
+
+    private record DateInterval(LocalDate startDate, LocalDate endDate, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+    }
+
+    private ResponseEntity<Map<String, String>> badRequest(String message) {
+        Map<String, String> response = new HashMap<>();
+        response.put("error", message);
+        return ResponseEntity.badRequest().body(response);
+    }
+
+    private DateInterval validateInterval(LocalDate parsedStartDate, LocalDate parsedEndDate) {
+        if (parsedEndDate.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("End date cannot be in the future.");
+        }
+
+        if (parsedStartDate.isAfter(parsedEndDate)) {
+            throw new IllegalArgumentException("Start date cannot be later than end date.");
+        }
+
+        Optional<Sale> firstSaleOptional = saleRepository.findFirstByOrderBySaleDateAsc();
+        if (firstSaleOptional.isEmpty()) {
+            throw new IllegalArgumentException("No sales found in the system.");
+        }
+
+        LocalDate firstSaleDate = firstSaleOptional.get().getSaleDate().toLocalDate();
+        if (parsedStartDate.isBefore(firstSaleDate)) {
+            throw new IllegalArgumentException("Start date cannot be earlier than first recorded sale date.");
+        }
+
+        LocalDateTime startDate = parsedStartDate.atStartOfDay();
+        LocalDateTime endDate = parsedEndDate.plusDays(1).atStartOfDay().minusNanos(1);
+        return new DateInterval(parsedStartDate, parsedEndDate, startDate, endDate);
+    }
 
     @GetMapping(value  = "/allSalesInPeriod")
     public ResponseEntity<?> findAllBySaleDateBetween(
@@ -37,18 +76,18 @@ public class TotalSalesController {
             return ResponseEntity.badRequest().body(response);
         }
 
-        LocalDate parsedStartDate = LocalDate.parse(dateInterval.get("startDate").getAsString());
-        LocalDate parsedEndDate = LocalDate.parse(dateInterval.get("endDate").getAsString());
-        LocalDateTime startDate = parsedStartDate.atStartOfDay();
-        LocalDateTime endDate = parsedEndDate.plusDays(1).atStartOfDay().minusNanos(1);
-
-        if (startDate.isAfter(endDate)) {
-            Map<String, String> response = new HashMap<>();
-            response.put("error", "Start date cannot be later than end date.");
-            return ResponseEntity.badRequest().body(response);
+        DateInterval interval;
+        try {
+            LocalDate parsedStartDate = LocalDate.parse(dateInterval.get("startDate").getAsString());
+            LocalDate parsedEndDate = LocalDate.parse(dateInterval.get("endDate").getAsString());
+            interval = validateInterval(parsedStartDate, parsedEndDate);
+        } catch (DateTimeParseException exception) {
+            return badRequest("Dates must be valid ISO date strings (YYYY-MM-DD).");
+        } catch (IllegalArgumentException exception) {
+            return badRequest(exception.getMessage());
         }
 
-        List<Sale> sales = saleRepository.findAllByOwner_IdAndSaleDateBetween(currentUserId, startDate, endDate);
+        List<Sale> sales = saleRepository.findAllByOwner_IdAndSaleDateBetween(currentUserId, interval.startDateTime(), interval.endDateTime());
         Map<Integer, Double> totalProfit = new HashMap<>();
         for(Sale sale : sales) {
             totalProfit.put(sale.getId(), sale.getTotalPrice());
@@ -65,24 +104,18 @@ public class TotalSalesController {
         build.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter());
         Gson gson = build.setPrettyPrinting().create();
         
-        LocalDate parsedStartDate = LocalDate.parse(startDate);
-        LocalDate parsedEndDate = LocalDate.parse(endDate);
-        LocalDateTime startDateFormatted = parsedStartDate.atStartOfDay();
-        LocalDateTime endDateFormatted = parsedEndDate.plusDays(1).atStartOfDay().minusNanos(1);
-
-        if (parsedEndDate.isAfter(LocalDate.now())) {
-            Map<String, String> response = new HashMap<>();
-            response.put("error", "End date cannot be in the future.");
-            return ResponseEntity.badRequest().body(response);
+        DateInterval interval;
+        try {
+            LocalDate parsedStartDate = LocalDate.parse(startDate);
+            LocalDate parsedEndDate = LocalDate.parse(endDate);
+            interval = validateInterval(parsedStartDate, parsedEndDate);
+        } catch (DateTimeParseException exception) {
+            return badRequest("Dates must be valid ISO date strings (YYYY-MM-DD).");
+        } catch (IllegalArgumentException exception) {
+            return badRequest(exception.getMessage());
         }
 
-        if (startDateFormatted.isAfter(endDateFormatted)) {
-            Map<String, String> response = new HashMap<>();
-            response.put("error", "Start date cannot be later than end date.");
-            return ResponseEntity.badRequest().body(response);
-        }
-
-        List<Sale> sales = saleRepository.findAllByOwner_IdAndSaleDateBetween(currentUserId, startDateFormatted, endDateFormatted);
+        List<Sale> sales = saleRepository.findAllByOwner_IdAndSaleDateBetween(currentUserId, interval.startDateTime(), interval.endDateTime());
         Double sum = 0.0;
         for(Sale sale : sales) {
             sum += sale.getTotalPrice();
@@ -90,6 +123,56 @@ public class TotalSalesController {
         JsonObject totalProfit = new JsonObject();
         totalProfit.addProperty("totalProfit", sum);
         return ResponseEntity.ok(gson.toJson(totalProfit));
+    }
+
+    @GetMapping(value = "/totalSalesCountInInterval/{startDate}/{endDate}")
+    public ResponseEntity<?> getTotalSalesCountInInterval(
+            @PathVariable String startDate,
+            @PathVariable String endDate,
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        DateInterval interval;
+        try {
+            LocalDate parsedStartDate = LocalDate.parse(startDate);
+            LocalDate parsedEndDate = LocalDate.parse(endDate);
+            interval = validateInterval(parsedStartDate, parsedEndDate);
+        } catch (DateTimeParseException exception) {
+            return badRequest("Dates must be valid ISO date strings (YYYY-MM-DD).");
+        } catch (IllegalArgumentException exception) {
+            return badRequest(exception.getMessage());
+        }
+
+        List<Sale> sales = saleRepository.findAllByOwner_IdAndSaleDateBetween(
+                currentUserId,
+                interval.startDateTime(),
+                interval.endDateTime()
+        );
+
+        int totalSalesCount = 0;
+        for (Sale sale : sales) {
+            int quantity = sale.getQuantity();
+            if (quantity < 0) {
+                return badRequest("Sales count cannot be negative.");
+            }
+            totalSalesCount += quantity;
+        }
+
+        JsonObject totalSalesCountJson = new JsonObject();
+        totalSalesCountJson.addProperty("totalSalesCount", totalSalesCount);
+        return ResponseEntity.ok(gson.toJson(totalSalesCountJson));
+    }
+
+    @GetMapping(value = "/firstSaleDate")
+    public ResponseEntity<?> getFirstSaleDate() {
+        Optional<Sale> firstSaleOptional = saleRepository.findFirstByOrderBySaleDateAsc();
+        if (firstSaleOptional.isEmpty()) {
+            return badRequest("No sales found in the system.");
+        }
+
+        JsonObject response = new JsonObject();
+        response.addProperty("firstSaleDate", firstSaleOptional.get().getSaleDate().toLocalDate().toString());
+        return ResponseEntity.ok(response.toString());
     }
 
 }
