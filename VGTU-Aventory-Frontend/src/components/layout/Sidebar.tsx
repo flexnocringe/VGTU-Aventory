@@ -44,10 +44,23 @@ function AnalyticsIcon() {
     );
 }
 
+function SalesIcon() {
+    return (
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="h-5 w-5">
+            <path d="M3 9L12 3L21 9V19C21 19.55 20.55 20 20 20H4C3.45 20 3 19.55 3 19V9Z" stroke="currentColor" strokeWidth="1.7" />
+            <path d="M9 20V12H15V20" stroke="currentColor" strokeWidth="1.7" />
+            <path d="M9 14L12 11L15 14" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+    );
+}
+
 function EventsIcon() {
     return (
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="h-5 w-5">
-            <path d="M8 3V5M16 3V5M3 10H21M5 5H19C20.1046 5 21 5.89543 21 7V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V7C3 5.89543 3.89543 5 5 5Z" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke="currentColor" strokeWidth="1.7" />
+            <line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+            <line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+            <line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
         </svg>
     );
 }
@@ -58,6 +71,8 @@ function MenuIcon({ icon }: { icon: (typeof dashboardMenu)[number]["icon"] }) {
             return <ProductsIcon />;
         case "analytics":
             return <AnalyticsIcon />;
+        case "sales":
+            return <SalesIcon />;
         case "events":
             return <EventsIcon />;
         case "dashboard":

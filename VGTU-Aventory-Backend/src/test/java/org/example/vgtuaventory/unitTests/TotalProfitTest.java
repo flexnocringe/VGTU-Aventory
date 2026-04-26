@@ -3,8 +3,10 @@ package org.example.vgtuaventory.unitTests;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.example.vgtuaventory.model.Sale;
+import org.example.vgtuaventory.model.User;
 import org.example.vgtuaventory.repository.SaleRepository;
 import org.example.vgtuaventory.controller.TotalSalesController;
+import org.springframework.http.ResponseEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -35,24 +37,29 @@ class TotalProfitTest {
         Sale sale1 = new Sale();
         sale1.setId(1);
         sale1.setTotalPrice(10.5);
+        User owner = new User();
+        owner.setId(1);
+        sale1.setOwner(owner);
 
         Sale sale2 = new Sale();
         sale2.setId(2);
         sale2.setTotalPrice(22.0);
+        sale2.setOwner(owner);
 
-        when(saleRepository.findAllBySaleDateBetween(
+        when(saleRepository.findAllByOwner_IdAndSaleDateBetween(1,
                 LocalDateTime.parse("2026-03-01T00:00:00"),
                 LocalDateTime.parse("2026-03-10T00:00:00")))
                 .thenReturn(List.of(sale1, sale2));
 
         String dateInfo = "{\"startDate\":\"2026-03-01\",\"endDate\":\"2026-03-10\"}";
 
-        Map<Integer, Double> result = totalSalesController.findAllBySaleDateBetween(dateInfo);
+        ResponseEntity<?> response = totalSalesController.findAllBySaleDateBetween(dateInfo, 1);
+        Map<Integer, Double> result = (Map<Integer, Double>) response.getBody();
 
         assertEquals(2, result.size());
         assertEquals(10.5, result.get(1));
         assertEquals(22.0, result.get(2));
-        verify(saleRepository, times(1)).findAllBySaleDateBetween(
+        verify(saleRepository, times(1)).findAllByOwner_IdAndSaleDateBetween(1,
                 LocalDateTime.parse("2026-03-01T00:00:00"),
                 LocalDateTime.parse("2026-03-10T00:00:00"));
     }
@@ -61,46 +68,52 @@ class TotalProfitTest {
     void getTotalProfitInInterval_returnsSummedTotalProfitAsJson() {
         Sale sale1 = new Sale();
         sale1.setTotalPrice(11.25);
+        User owner = new User();
+        owner.setId(1);
+        sale1.setOwner(owner);
 
         Sale sale2 = new Sale();
         sale2.setTotalPrice(8.75);
+        sale2.setOwner(owner);
 
-        when(saleRepository.findAllBySaleDateBetween(
+        when(saleRepository.findAllByOwner_IdAndSaleDateBetween(1,
                 LocalDateTime.parse("2026-03-01T00:00:00"),
-                LocalDateTime.parse("2026-03-31T00:00:00")))
+                LocalDateTime.parse("2026-03-10T00:00:00")))
                 .thenReturn(List.of(sale1, sale2));
 
-        String result = totalSalesController.getTotalProfitInInterval("2026-03-01", "2026-03-31");
+        ResponseEntity<?> response = totalSalesController.getTotalProfitInInterval("2026-03-01", "2026-03-10", 1);
+        String result = (String) response.getBody();
         JsonObject json = new Gson().fromJson(result, JsonObject.class);
 
         assertEquals(20.0, json.get("totalProfit").getAsDouble());
-        verify(saleRepository, times(1)).findAllBySaleDateBetween(
+        verify(saleRepository, times(1)).findAllByOwner_IdAndSaleDateBetween(1,
                 LocalDateTime.parse("2026-03-01T00:00:00"),
-                LocalDateTime.parse("2026-03-31T00:00:00"));
+                LocalDateTime.parse("2026-03-10T00:00:00"));
     }
 
     @Test
     void getTotalProfitInInterval_returnsZeroForNoSales() {
-        when(saleRepository.findAllBySaleDateBetween(
+        when(saleRepository.findAllByOwner_IdAndSaleDateBetween(1,
                 LocalDateTime.parse("2026-03-01T00:00:00"),
-                LocalDateTime.parse("2026-03-31T00:00:00")))
+                LocalDateTime.parse("2026-03-10T00:00:00")))
                 .thenReturn(List.of());
 
-        String result = totalSalesController.getTotalProfitInInterval("2026-03-01", "2026-03-31");
+        ResponseEntity<?> response = totalSalesController.getTotalProfitInInterval("2026-03-01", "2026-03-10", 1);
+        String result = (String) response.getBody();
         JsonObject json = new Gson().fromJson(result, JsonObject.class);
 
         assertEquals(0.0, json.get("totalProfit").getAsDouble());
-        verify(saleRepository, times(1)).findAllBySaleDateBetween(
+        verify(saleRepository, times(1)).findAllByOwner_IdAndSaleDateBetween(1,
                 LocalDateTime.parse("2026-03-01T00:00:00"),
-                LocalDateTime.parse("2026-03-31T00:00:00"));
+                LocalDateTime.parse("2026-03-10T00:00:00"));
     }
 
     @Test
     void findAllBySaleDateBetween_throwsWhenDateFieldIsMissing() {
         String invalidDateInfo = "{\"startDate\":\"2026-03-01\"}";
 
-        assertThrows(NullPointerException.class,
-                () -> totalSalesController.findAllBySaleDateBetween(invalidDateInfo));
+        ResponseEntity<?> response = totalSalesController.findAllBySaleDateBetween(invalidDateInfo, 1);
+        assertEquals(400, response.getStatusCode().value());
     }
 }
 

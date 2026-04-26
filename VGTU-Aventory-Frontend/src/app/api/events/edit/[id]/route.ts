@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createAuthHeaders } from "@/features/auth/session";
 
 export async function PUT(
   request: NextRequest,
@@ -7,14 +8,16 @@ export async function PUT(
   const { id } = await params;
   const backendBaseUrl = process.env.BACKEND_URL ?? "http://localhost:8080";
   const backendUrl = `${backendBaseUrl}/api/events/edit/${id}`;
+  const cookieHeader = request.headers.get("cookie") ?? undefined;
 
   try {
     const body = await request.json();
     const backendResponse = await fetch(backendUrl, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: createAuthHeaders(
+        { "Content-Type": "application/json" },
+        cookieHeader
+      ),
       body: JSON.stringify(body),
     });
 

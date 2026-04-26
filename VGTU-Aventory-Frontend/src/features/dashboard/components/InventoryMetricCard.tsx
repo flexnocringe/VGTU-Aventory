@@ -4,6 +4,8 @@ type InventoryMetricCardProps = {
     accentClassName: string;
     labelClassName: string;
     bgClassName: string;
+    ringClassName?: string;
+    valueClassName?: string;
     trend: "up" | "down";
 };
 
@@ -13,6 +15,8 @@ export function InventoryMetricCard({
     accentClassName,
     labelClassName,
     bgClassName,
+    ringClassName = "",
+    valueClassName = "",
     trend,
 }: InventoryMetricCardProps) {
     return (
@@ -20,6 +24,7 @@ export function InventoryMetricCard({
             className={[
                 "relative overflow-hidden rounded-[20px] border border-transparent text-white shadow-[0_18px_40px_rgba(45,36,24,0.18)]",
                 bgClassName,
+                ringClassName,
             ].join(" ")}
         >
             <div
@@ -38,7 +43,10 @@ export function InventoryMetricCard({
             <div className="relative z-10 p-6">
 
                 <div className="mt-5 flex items-end gap-3">
-                    <div className="text-[2.125rem] font-medium leading-none tracking-tight text-white">
+                    <div className={[
+                        "text-[2.125rem] font-medium leading-none tracking-tight text-white",
+                        valueClassName,
+                    ].join(" ")}>
                         {value}
                     </div>
                     <div className="mb-1 flex h-7 w-7 items-center justify-center rounded-full bg-white/15 text-sm font-semibold text-white/90">

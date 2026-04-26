@@ -1,5 +1,11 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { getAuthUserEmail } from "@/features/auth/session";
+import { clearAuthToken } from "@/features/auth/session";
+import { logoutUser } from "@/features/auth/services/logoutUser";
+
 type TopbarProps = {
     onOpenMobileMenu: () => void;
     onToggleSidebar: () => void;
@@ -7,6 +13,26 @@ type TopbarProps = {
 };
 
 export function Topbar({ onOpenMobileMenu, onToggleSidebar, sidebarCollapsed }: TopbarProps) {
+    const router = useRouter();
+    const [isLoggingOut, setIsLoggingOut] = useState(false);
+    const userEmail = getAuthUserEmail()?.trim() || "User";
+
+    async function handleLogout() {
+        if (isLoggingOut) {
+            return;
+        }
+
+        setIsLoggingOut(true);
+        try {
+            await logoutUser();
+        } finally {
+            clearAuthToken();
+            router.push("/login");
+            router.refresh();
+            setIsLoggingOut(false);
+        }
+    }
+
     return (
         <header className="sticky top-0 z-20 flex h-14 items-center justify-between border-b border-[#f0dfc5] bg-white/85 px-4 backdrop-blur">
             <div className="flex items-center gap-2">
@@ -38,7 +64,17 @@ export function Topbar({ onOpenMobileMenu, onToggleSidebar, sidebarCollapsed }: 
             </div>
 
             <p className="text-sm font-medium text-[#2d2418]">Inventory Management</p>
-            <span className="text-sm text-[#8a6b45]">Admin</span>
+            <div className="flex items-center gap-3">
+                <span className="text-sm text-[#8a6b45]">{userEmail}</span>
+                <button
+                    type="button"
+                    onClick={handleLogout}
+                    disabled={isLoggingOut}
+                    className="rounded-md border border-[#f0dfc5] px-3 py-1 text-xs font-semibold text-[#6a5841] transition hover:border-[#f59e0b] hover:text-[#2d2418] disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                    {isLoggingOut ? "Signing out..." : "Sign out"}
+                </button>
+            </div>
         </header>
     );
 }

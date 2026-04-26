@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ea5a4d5a-268a-412e-972c-65a4b5a5cdd8" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/VGTU-Aventory.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/copilot.data.migration.ask2agent.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../VGTU-Aventory-Android/app/src/main/java/com/example/aventory/LoginActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../VGTU-Aventory-Android/app/src/main/java/com/example/aventory/SaleActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../VGTU-Aventory-Android/app/src/main/java/com/example/aventory/network/ApiClient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../VGTU-Aventory-Android/app/src/main/java/com/example/aventory/network/ApiModels.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../VGTU-Aventory-Android/app/src/main/java/com/example/aventory/network/AventoryApi.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../VGTU-Aventory-Android/app/src/main/java/com/example/aventory/session/SessionManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../VGTU-Aventory-Android/app/src/main/res/layout/activity_login.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../VGTU-Aventory-Android/app/src/main/res/layout/activity_sale.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../VGTU-Aventory-Android/app/src/main/res/xml/network_security_config.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/java/org/example/vgtuaventory/controller/AuthController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/java/org/example/vgtuaventory/controller/SaleController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/java/org/example/vgtuaventory/security/PasswordService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/java/org/example/vgtuaventory/service/AuthService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/java/org/example/vgtuaventory/service/ProductService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/java/org/example/vgtuaventory/service/SaleService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/java/org/example/vgtuaventory/service/TokenService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/java/org/example/vgtuaventory/utils/AuthSessionAttributes.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/test/java/org/example/vgtuaventory/controller/AuthControllerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/test/java/org/example/vgtuaventory/security/PasswordServiceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/test/java/org/example/vgtuaventory/service/AuthServiceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/test/java/org/example/vgtuaventory/service/TokenServiceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/test/java/org/example/vgtuaventory/unitTests/SaleServiceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/middleware.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/(dashboard)/sales/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/login/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/register/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/auth/constants.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/auth/services/fetchWithSession.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/auth/services/loginUser.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/auth/services/logoutUser.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/auth/services/registerUser.test.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/auth/services/registerUser.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/auth/session.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/auth/types/auth.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/sales/components/SalesHistory.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/sales/services/getSalesHistory.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/sales/services/getSalesProducts.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/sales/services/registerSale.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/sales/types/sale.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/productPage.test.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../VGTU-Aventory-Android/.idea/deploymentTargetSelector.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../VGTU-Aventory-Android/.idea/deploymentTargetSelector.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../VGTU-Aventory-Android/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../VGTU-Aventory-Android/app/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../VGTU-Aventory-Android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../VGTU-Aventory-Android/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../VGTU-Aventory-Android/app/src/main/java/com/example/aventory/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../VGTU-Aventory-Android/app/src/main/java/com/example/aventory/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../VGTU-Aventory-Android/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../VGTU-Aventory-Android/app/src/main/res/layout/activity_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../VGTU-Aventory-Android/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../VGTU-Aventory-Android/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../VGTU-Aventory-Backend/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../VGTU-Aventory-Backend/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/java/org/example/vgtuaventory/VgtuAventoryApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/java/org/example/vgtuaventory/VgtuAventoryApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/java/org/example/vgtuaventory/controller/EventController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/java/org/example/vgtuaventory/controller/EventController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/java/org/example/vgtuaventory/controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/java/org/example/vgtuaventory/controller/ProductController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/java/org/example/vgtuaventory/controller/TotalSalesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/java/org/example/vgtuaventory/controller/TotalSalesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/java/org/example/vgtuaventory/model/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/java/org/example/vgtuaventory/model/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/java/org/example/vgtuaventory/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/java/org/example/vgtuaventory/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/java/org/example/vgtuaventory/repository/EventRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/java/org/example/vgtuaventory/repository/EventRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/java/org/example/vgtuaventory/repository/ProductRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/java/org/example/vgtuaventory/repository/ProductRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/java/org/example/vgtuaventory/repository/SaleRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/java/org/example/vgtuaventory/repository/SaleRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/java/org/example/vgtuaventory/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/java/org/example/vgtuaventory/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/java/org/example/vgtuaventory/service/EventService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/java/org/example/vgtuaventory/service/EventService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/java/org/example/vgtuaventory/service/impl/EventServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/java/org/example/vgtuaventory/service/impl/EventServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/java/org/example/vgtuaventory/utils/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/java/org/example/vgtuaventory/utils/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/test/java/org/example/vgtuaventory/controller/EventControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/test/java/org/example/vgtuaventory/controller/EventControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/test/java/org/example/vgtuaventory/service/EventServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/test/java/org/example/vgtuaventory/service/EventServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/test/java/org/example/vgtuaventory/unitTests/ProductControllerTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/test/java/org/example/vgtuaventory/unitTests/ProductControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/test/java/org/example/vgtuaventory/unitTests/TotalProfitTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../VGTU-Aventory-Backend/src/test/java/org/example/vgtuaventory/unitTests/TotalProfitTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/next.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard)/my-events/EventForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard)/my-events/EventForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard)/my-events/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard)/my-events/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard)/products/ProductForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard)/products/ProductForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard)/products/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard)/products/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/api/analytics/total-profit/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/api/analytics/total-profit/route.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/api/events/create/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/api/events/create/route.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/api/events/delete/[id]/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/api/events/delete/[id]/route.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/api/events/edit/[id]/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/api/events/edit/[id]/route.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/api/events/my-events/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/api/events/my-events/route.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/layout/Sidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layout/Sidebar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/layout/Topbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layout/Topbar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/menu/dashboardMenu.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/menu/dashboardMenu.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/analytics/services/getTotalProfit.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/analytics/services/getTotalProfit.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/dashboard/components/InventoryDashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/dashboard/components/InventoryDashboard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/dashboard/components/InventoryMetricCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/dashboard/components/InventoryMetricCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/dashboard/services/getAllProducts.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/dashboard/services/getAllProducts.ts" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="EmbeddingIndexingInfo">
+    <option name="cachedIndexableFilesCount" value="76" />
+    <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript JSX File" />
+        <option value="TypeScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="3Bys9YxwcyPyyMpTey4dSpuQPz1" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "Merging A4__FR1-Sistema-leidžia-redaguoti-esamo-renginio-info-data-laikas-aprašymas",
+    "ignore.virus.scanning.warn.message": "true",
+    "js.debugger.nextJs.config.created.client": "true",
+    "js.debugger.nextJs.config.created.server": "true",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/domci/IdeaProjects/PKP/VGTU-Aventory/VGTU-Aventory-Frontend",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "npm.Next.js: server-side.executor": "Run",
+    "to.speed.mode.migration.done": "true",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\IntelliJ IDEA 2025.2.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager" selected="npm.Next.js: server-side">
+    <configuration name="Next.js: debug client-side" type="JavascriptDebugType" uri="http://localhost:3000/">
+      <method v="2" />
+    </configuration>
+    <configuration name="Next.js: server-side" type="js.build_tools.npm">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.31033.145" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.31033.145" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ea5a4d5a-268a-412e-972c-65a4b5a5cdd8" name="Changes" comment="" />
+      <created>1775472493395</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1775472493395</updated>
+      <workItem from="1775472494620" duration="7051000" />
+      <workItem from="1777218009804" duration="2234000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

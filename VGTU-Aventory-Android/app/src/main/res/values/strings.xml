@@ -1,3 +1,38 @@
 <resources>
     <string name="app_name">Aventory</string>
+    <string name="main_title">Mobile Scanner</string>
+    <string name="logged_in_placeholder">Logged in</string>
+    <string name="logged_in_as">Logged in as: %1$s</string>
+    <string name="scan_button">Scan QR Code</string>
+    <string name="logout_button">Logout</string>
+    <string name="scan_prompt">Scan product QR code</string>
+    <string name="scan_cancelled">Scan cancelled</string>
+    <string name="scan_invalid_qr">Invalid QR code</string>
+
+    <string name="login_title">Login to Aventory</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="login_button">Login</string>
+    <string name="login_success">Login successful</string>
+    <string name="login_error_required">Email and password are required</string>
+    <string name="login_error_invalid">Invalid credentials</string>
+    <string name="login_error_network">Unable to reach backend</string>
+    <string name="login_error_network_with_detail">Unable to reach backend: %1$s</string>
+
+    <string name="sale_title">Sale / Refund</string>
+    <string name="loading_product">Loading product...</string>
+    <string name="product_details_template">Stock: %1$d\nPrice: %2$.2f\nDescription: %3$s</string>
+    <string name="product_not_found_title">Product not found</string>
+    <string name="product_not_found_message">The scanned QR code is not linked to a product in your account.</string>
+    <string name="quantity_hint">Quantity</string>
+    <string name="sale_radio">Sell</string>
+    <string name="return_radio">Refund</string>
+    <string name="note_hint">Optional description</string>
+    <string name="confirm_button">Confirm</string>
+    <string name="cancel_button">Back</string>
+    <string name="sale_invalid_quantity">Please enter a valid quantity</string>
+    <string name="sale_submit_failed">Failed to submit transaction</string>
+    <string name="sale_success_title">Confirmed</string>
+    <string name="sale_success_message">Transaction saved successfully.</string>
+    <string name="go_back">Go back</string>
 </resources>

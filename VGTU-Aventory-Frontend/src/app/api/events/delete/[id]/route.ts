@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createAuthHeaders } from "@/features/auth/session";
 
 export async function DELETE(
   request: NextRequest,
@@ -7,10 +8,12 @@ export async function DELETE(
   const { id } = await params;
   const backendBaseUrl = process.env.BACKEND_URL ?? "http://localhost:8080";
   const backendUrl = `${backendBaseUrl}/api/events/delete/${id}`;
+  const cookieHeader = request.headers.get("cookie") ?? undefined;
 
   try {
     const backendResponse = await fetch(backendUrl, {
       method: "DELETE",
+      headers: createAuthHeaders(undefined, cookieHeader),
     });
 
     if (!backendResponse.ok) {

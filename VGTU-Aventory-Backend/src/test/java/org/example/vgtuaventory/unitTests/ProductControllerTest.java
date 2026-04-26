@@ -2,6 +2,7 @@ package org.example.vgtuaventory.unitTests;
 
 import org.example.vgtuaventory.controller.ProductController;
 import org.example.vgtuaventory.model.Product;
+import org.example.vgtuaventory.model.User;
 import org.example.vgtuaventory.repository.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class ProductControllerTests {
+class ProductControllerTest {
 
     @Mock
     private ProductRepository productRepository;
@@ -36,9 +37,9 @@ class ProductControllerTests {
         p2.setProductId(2);
         p2.setProductName("Notebook");
 
-        when(productRepository.findAll()).thenReturn(List.of(p1, p2));
+        when(productRepository.findAllByOwner_Id(1)).thenReturn(List.of(p1, p2));
 
-        ResponseEntity<List<Product>> response = productController.list();
+        var response = productController.list(1);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -46,7 +47,7 @@ class ProductControllerTests {
         assertEquals("Pen", response.getBody().get(0).getProductName());
         assertEquals("Notebook", response.getBody().get(1).getProductName());
 
-        verify(productRepository, times(1)).findAll();
+        verify(productRepository, times(1)).findAllByOwner_Id(1);
     }
 
     @Test
@@ -54,14 +55,16 @@ class ProductControllerTests {
         Product p = new Product();
         p.setProductId(7);
         p.setProductName("Marker");
+        User owner = new User();
+        owner.setId(1);
+        p.setOwner(owner);
 
         when(productRepository.findById(7)).thenReturn(Optional.of(p));
 
-        ResponseEntity<?> response = productController.getById(7);
+        ResponseEntity<?> response = productController.getById(7, 1);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertTrue(response.getBody() instanceof Product);
-        Product body = (Product) response.getBody();
+        Product body = assertInstanceOf(Product.class, response.getBody());
         assertEquals(7, body.getProductId());
         assertEquals("Marker", body.getProductName());
 
@@ -72,7 +75,7 @@ class ProductControllerTests {
     void getById_whenMissing_returns404WithMessage() {
         when(productRepository.findById(999)).thenReturn(Optional.empty());
 
-        ResponseEntity<?> response = productController.getById(999);
+        ResponseEntity<?> response = productController.getById(999, 1);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals("Product not found", response.getBody());
@@ -91,18 +94,18 @@ class ProductControllerTests {
                 null
         );
 
-        ResponseEntity<?> response = productController.create(request);
+        ResponseEntity<?> response = productController.create(request, 1);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("productName is required", response.getBody());
 
         verify(productRepository, never()).save(any(Product.class));
-        verify(productRepository, never()).existsByProductName(anyString());
+        verify(productRepository, never()).existsByProductNameAndOwner_Id(anyString(), anyInt());
     }
 
     @Test
     void create_whenProductNameAlreadyExists_returns409() {
-        when(productRepository.existsByProductName("Pencil")).thenReturn(true);
+        when(productRepository.existsByProductNameAndOwner_Id("Pencil", 1)).thenReturn(true);
 
         ProductController.ProductRequest request = new ProductController.ProductRequest(
                 "Pencil",
@@ -113,12 +116,12 @@ class ProductControllerTests {
                 null
         );
 
-        ResponseEntity<?> response = productController.create(request);
+        ResponseEntity<?> response = productController.create(request, 1);
 
         assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
         assertEquals("productName already exists", response.getBody());
 
-        verify(productRepository, times(1)).existsByProductName("Pencil");
+        verify(productRepository, times(1)).existsByProductNameAndOwner_Id("Pencil", 1);
         verify(productRepository, never()).save(any(Product.class));
     }
 }

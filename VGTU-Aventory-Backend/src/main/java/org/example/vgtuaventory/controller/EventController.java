@@ -3,6 +3,7 @@ package org.example.vgtuaventory.controller;
 import jakarta.validation.Valid;
 import org.example.vgtuaventory.dto.EventDTO;
 import org.example.vgtuaventory.service.EventService;
+import org.example.vgtuaventory.utils.AuthSessionAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(originPatterns = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS}, allowCredentials = "true")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/events")
 public class EventController {
@@ -24,8 +25,8 @@ public class EventController {
     }
 
     @GetMapping("/my-events")
-    public ResponseEntity<?> getMyEvents() {
-        List<EventDTO> events = eventService.getAllEvents();
+    public ResponseEntity<?> getMyEvents(@RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId) {
+        List<EventDTO> events = eventService.getAllEvents(currentUserId);
         
         if (events.isEmpty()) {
             Map<String, String> response = new HashMap<>();
@@ -37,8 +38,9 @@ public class EventController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createEvent(@Valid @RequestBody EventDTO eventDTO) {
-        EventDTO createdEvent = eventService.createEvent(eventDTO);
+    public ResponseEntity<?> createEvent(@Valid @RequestBody EventDTO eventDTO, 
+                                         @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId) {
+        EventDTO createdEvent = eventService.createEvent(eventDTO, currentUserId);
         
         Map<String, Object> response = new HashMap<>();
         response.put("id", createdEvent.getId());
@@ -51,9 +53,10 @@ public class EventController {
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<?> editEvent(@PathVariable int id, @Valid @RequestBody EventDTO eventDTO) {
+    public ResponseEntity<?> editEvent(@PathVariable int id, @Valid @RequestBody EventDTO eventDTO,
+                                       @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId) {
         try {
-            EventDTO updatedEvent = eventService.updateEvent(id, eventDTO);
+            EventDTO updatedEvent = eventService.updateEvent(id, eventDTO, currentUserId);
             
             Map<String, Object> response = new HashMap<>();
             response.put("id", updatedEvent.getId());
@@ -71,9 +74,10 @@ public class EventController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteEvent(@PathVariable int id) {
+    public ResponseEntity<?> deleteEvent(@PathVariable int id, 
+                                         @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId) {
         try {
-            eventService.deleteEvent(id);
+            eventService.deleteEvent(id, currentUserId);
             Map<String, String> response = new HashMap<>();
             response.put("message", "Event deleted successfully.");
             return ResponseEntity.ok(response);

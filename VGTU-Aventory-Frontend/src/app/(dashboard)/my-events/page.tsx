@@ -28,8 +28,9 @@ export default function MyEvents() {
           setEvents(data);
           setMessage(null);
         } else if (data.message) {
-          setMessage(data.message);
+          // If backend returns a message instead of array, it likely means no events found
           setEvents([]);
+          setMessage(null); // Clear message to show the "No events found" state
         }
       } else {
         setMessage("Failed to fetch events.");
@@ -174,8 +175,8 @@ export default function MyEvents() {
         </div>
       ) : events.length > 0 ? (
         <div className="grid gap-6 md:grid-cols-2">
-          {events.map((event, index) => (
-            <div key={index} className="rounded-2xl border border-[#f0dfc5] bg-white p-6 shadow-[0_12px_30px_rgba(154,107,47,0.08)]">
+          {events.map((event) => (
+            <div key={event.id} className="rounded-2xl border border-[#f0dfc5] bg-white p-6 shadow-[0_12px_30px_rgba(154,107,47,0.08)]">
               <div className="flex flex-col gap-4">
                 <div className="flex flex-wrap justify-between gap-2 border-b border-[#f0dfc5] pb-4">
                   <div className="text-sm font-medium text-[#9a6b2f]">
