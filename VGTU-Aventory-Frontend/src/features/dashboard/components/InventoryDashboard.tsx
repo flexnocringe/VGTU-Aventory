@@ -61,12 +61,20 @@ export function InventoryDashboard() {
           </p>
         </div>
 
-        <Link
-          href="/products"
-          className="rounded-lg bg-[#f59e0b] px-4 py-2 text-white shadow-sm transition hover:bg-[#ea8c08] hover:shadow-md"
-        >
-          View All Products
-        </Link>
+        <div className="flex flex-wrap gap-3">
+          <Link
+            href="/my-events"
+            className="rounded-lg border border-[#f59e0b] px-4 py-2 text-[#f59e0b] shadow-sm transition hover:bg-[#f59e0b]/5 hover:shadow-md font-medium"
+          >
+            Manage Events
+          </Link>
+          <Link
+            href="/products"
+            className="rounded-lg bg-[#f59e0b] px-4 py-2 text-white shadow-sm transition hover:bg-[#ea8c08] hover:shadow-md font-medium"
+          >
+            View All Products
+          </Link>
+        </div>
       </header>
 
       {error ? (

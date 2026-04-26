@@ -8,6 +8,7 @@ import org.example.vgtuaventory.repository.SaleRepository;
 import org.example.vgtuaventory.utils.LocalDateTimeAdapter;
 import org.example.vgtuaventory.utils.AuthSessionAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -22,33 +23,61 @@ public class TotalSalesController {
     private SaleRepository saleRepository;
 
     @GetMapping(value  = "/allSalesInPeriod")
-    public @ResponseBody Map<Integer, Double> findAllBySaleDateBetween(
+    public ResponseEntity<?> findAllBySaleDateBetween(
             @RequestBody String dateInfo,
             @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId) {
         GsonBuilder build = new GsonBuilder();
         build.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter());
         Gson gson = build.setPrettyPrinting().create();
         JsonObject dateInterval = gson.fromJson(dateInfo, JsonObject.class);
+        
+        if (!dateInterval.has("startDate") || !dateInterval.has("endDate")) {
+            Map<String, String> response = new HashMap<>();
+            response.put("error", "startDate and endDate are required");
+            return ResponseEntity.badRequest().body(response);
+        }
+
         LocalDateTime startDate = LocalDate.parse(dateInterval.get("startDate").getAsString()).atStartOfDay();
         LocalDateTime endDate = LocalDate.parse(dateInterval.get("endDate").getAsString()).atStartOfDay();
+
+        if (startDate.isAfter(endDate)) {
+            Map<String, String> response = new HashMap<>();
+            response.put("error", "Start date cannot be later than end date.");
+            return ResponseEntity.badRequest().body(response);
+        }
+
         List<Sale> sales = saleRepository.findAllByOwner_IdAndSaleDateBetween(currentUserId, startDate, endDate);
         Map<Integer, Double> totalProfit = new HashMap<>();
         for(Sale sale : sales) {
             totalProfit.put(sale.getId(), sale.getTotalPrice());
         }
-        return totalProfit;
+        return ResponseEntity.ok(totalProfit);
     }
 
     @GetMapping(value = "/totalProfitInInterval/{startDate}/{endDate}")
-    public @ResponseBody String getTotalProfitInInterval(
+    public ResponseEntity<?> getTotalProfitInInterval(
             @PathVariable String startDate,
             @PathVariable String endDate,
             @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId) {
         GsonBuilder build = new GsonBuilder();
         build.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter());
         Gson gson = build.setPrettyPrinting().create();
+        
         LocalDateTime startDateFormatted = LocalDate.parse(startDate).atStartOfDay();
         LocalDateTime endDateFormatted = LocalDate.parse(endDate).atStartOfDay();
+
+        if (endDateFormatted.isAfter(LocalDateTime.now())) {
+            Map<String, String> response = new HashMap<>();
+            response.put("error", "End date cannot be in the future.");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        if (startDateFormatted.isAfter(endDateFormatted)) {
+            Map<String, String> response = new HashMap<>();
+            response.put("error", "Start date cannot be later than end date.");
+            return ResponseEntity.badRequest().body(response);
+        }
+
         List<Sale> sales = saleRepository.findAllByOwner_IdAndSaleDateBetween(currentUserId, startDateFormatted, endDateFormatted);
         Double sum = 0.0;
         for(Sale sale : sales) {
@@ -56,7 +85,7 @@ public class TotalSalesController {
         }
         JsonObject totalProfit = new JsonObject();
         totalProfit.addProperty("totalProfit", sum);
-        return gson.toJson(totalProfit);
+        return ResponseEntity.ok(gson.toJson(totalProfit));
     }
 
 }

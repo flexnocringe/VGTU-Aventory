@@ -3,9 +3,9 @@ type InventoryMetricCardProps = {
     value: string | number;
     accentClassName: string;
     labelClassName: string;
-    valueClassName: string;
     bgClassName: string;
-    ringClassName: string;
+    ringClassName?: string;
+    valueClassName?: string;
     trend: "up" | "down";
 };
 
@@ -14,9 +14,9 @@ export function InventoryMetricCard({
     value,
     accentClassName,
     labelClassName,
-    valueClassName,
     bgClassName,
-    ringClassName,
+    ringClassName = "",
+    valueClassName = "",
     trend,
 }: InventoryMetricCardProps) {
     return (
