@@ -2,6 +2,14 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import ProductsPage from "@/app/(dashboard)/products/page";
 
+jest.mock(
+  "qrcode.react",
+  () => ({
+    QRCodeCanvas: () => null,
+  }),
+  { virtual: true },
+);
+
 describe("ProductsPage", () => {
   const mockFetch = jest.fn();
   const originalApiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
