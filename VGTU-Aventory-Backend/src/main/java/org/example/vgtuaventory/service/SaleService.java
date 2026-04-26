@@ -10,7 +10,14 @@ import org.example.vgtuaventory.repository.ProductRepository;
 import org.example.vgtuaventory.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class SaleService {
@@ -75,6 +82,77 @@ public class SaleService {
         return saleRepository.findAll();
     }
 
+    public List<TopSellingProductResponse> getTopSellingProductsByDateRange(
+            int currentUserId,
+            LocalDate startDate,
+            LocalDate endDate
+    ) {
+        LocalDate today = LocalDate.now();
+        if (endDate.isAfter(today)) {
+            throw new RuntimeException("End date cannot be in the future");
+        }
+
+        if (startDate.isAfter(endDate)) {
+            throw new RuntimeException("Start date cannot be later than end date");
+        }
+
+        Optional<Sale> firstSaleOptional = saleRepository.findFirstByOrderBySaleDateAsc();
+        if (firstSaleOptional.isEmpty()) {
+            throw new RuntimeException("No sales found in the system");
+        }
+
+        LocalDate firstSaleDate = firstSaleOptional.get().getSaleDate().toLocalDate();
+        if (startDate.isBefore(firstSaleDate)) {
+            throw new RuntimeException("Start date cannot be earlier than first recorded sale date");
+        }
+
+        LocalDateTime startDateTime = startDate.atStartOfDay();
+        LocalDateTime endDateTime = endDate.plusDays(1).atStartOfDay().minusNanos(1);
+
+        List<Sale> sales = saleRepository.findAllByOwner_IdAndSaleTypeAndSaleDateBetween(
+                currentUserId,
+                SaleType.SALE,
+                startDateTime,
+                endDateTime
+        );
+
+        Map<Integer, TopSellingProductResponse> grouped = new HashMap<>();
+        for (Sale sale : sales) {
+            if (sale.getQuantity() <= 0) {
+                continue;
+            }
+
+            Product product = sale.getProduct();
+            if (product == null) {
+                continue;
+            }
+
+            int productId = product.getProductId();
+            String productName = product.getProductName();
+
+            TopSellingProductResponse current = grouped.get(productId);
+            if (current == null) {
+                grouped.put(productId, new TopSellingProductResponse(productId, productName, sale.getQuantity()));
+            } else {
+                current.salesCount += sale.getQuantity();
+            }
+        }
+
+        List<TopSellingProductResponse> result = new ArrayList<>();
+        for (TopSellingProductResponse item : grouped.values()) {
+            if (item.salesCount > 0) {
+                result.add(item);
+            }
+        }
+
+        result.sort(
+                Comparator.comparingInt(TopSellingProductResponse::getSalesCount).reversed()
+                        .thenComparing(TopSellingProductResponse::getProductName, String.CASE_INSENSITIVE_ORDER)
+        );
+
+        return result;
+    }
+
     public static class SaleRequest {
         public int productId;
         public int ownerId;
@@ -82,5 +160,25 @@ public class SaleService {
         public String saleLocation;
         public SaleType saleType;
         public String saleNote;
+    }
+
+    public static class TopSellingProductResponse {
+        public int productId;
+        public String productName;
+        public int salesCount;
+
+        public TopSellingProductResponse(int productId, String productName, int salesCount) {
+            this.productId = productId;
+            this.productName = productName;
+            this.salesCount = salesCount;
+        }
+
+        public String getProductName() {
+            return productName == null ? "" : productName;
+        }
+
+        public int getSalesCount() {
+            return salesCount;
+        }
     }
 }
