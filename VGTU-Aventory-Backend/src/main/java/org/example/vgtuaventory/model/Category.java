@@ -1,5 +1,6 @@
 package org.example.vgtuaventory.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,6 +18,8 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int categoryId;
     private String categoryName;
+
     @ManyToOne
+    @JsonIgnoreProperties({"categories","products","events","sales","password"})
     private User owner;
 }

@@ -21,8 +21,11 @@ export function CategoryForm({ onSave, onCancel, isSubmitting = false }: Categor
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-                <label className="block text-sm font-medium text-[#5b4a37]">Category Name</label>
+                <label htmlFor="category-name" className="block text-sm font-medium text-[#5b4a37]">
+                    Category Name
+                </label>
                 <input
+                    id="category-name"
                     type="text"
                     value={categoryName}
                     onChange={(event) => setCategoryName(event.target.value)}
