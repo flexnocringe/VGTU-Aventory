@@ -65,22 +65,28 @@ export default function ProductsPage() {
   const fetchCategories = async () => {
     try {
       const res = await fetchWithSession(apiUrl("/api/category/all"));
-      if (!res.ok) return;
-
-      const data: unknown[] = await res.json();
-      if (Array.isArray(data)) {
-        const parsed = data
-          .map((item: any) => ({
-            categoryId: item.categoryId,
-            categoryName: item.categoryName,
-          }))
-          .filter((item): item is CategoryOption =>
-            item.categoryId !== undefined && item.categoryName !== undefined
-          );
-        setCategories(parsed);
+      if (!res.ok) {
+        return;
       }
-    } catch {
-      // Silently fail category fetch
+
+      const data: unknown = await res.json();
+      if (!Array.isArray(data)) {
+        setCategories([]);
+        return;
+      }
+
+      const parsed = data
+        .map((item: any) => ({
+          categoryId: item.categoryId,
+          categoryName: item.categoryName,
+        }))
+        .filter((item): item is CategoryOption =>
+          item.categoryId !== undefined && item.categoryName !== undefined
+        );
+      setCategories(parsed);
+    } catch (err) {
+      console.error("Failed to fetch categories", err);
+      setCategories([]);
     }
   };
 
@@ -330,9 +336,12 @@ export default function ProductsPage() {
               Delete selected ({selectedIds.length})
             </button>
             <button
-              onClick={() => setAddingProduct(true)}
+              onClick={() => {
+                setAddingProduct(true);
+                void fetchCategories();
+              }}
               className="rounded-md bg-[#f59e0b] px-4 py-2 text-white shadow-sm transition hover:bg-[#ea8c08] hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60"
-              disabled={loading || isDeleting}
+              disabled={loading || isDeleting || addingCategory}
             >
               Add Product
             </button>
@@ -340,7 +349,7 @@ export default function ProductsPage() {
               type="button"
               onClick={() => setAddingCategory(true)}
               className="rounded-md bg-[#f59e0b] px-4 py-2 text-white shadow-sm transition hover:bg-[#ea8c08] hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60"
-              disabled={loading || isDeleting || savingCategory}
+              disabled={loading || isDeleting || savingCategory || addingProduct}
             >
               Add Category
             </button>
@@ -374,6 +383,19 @@ export default function ProductsPage() {
               onCancel={() => setAddingCategory(false)}
               isSubmitting={savingCategory}
             />
+
+            {categories.length > 0 && (
+              <div className="mt-8 border-t border-[#f0dfc5] pt-8">
+                <h3 className="mb-4 text-lg font-semibold text-[#2d2418]">Existing Categories</h3>
+                <div className="space-y-2">
+                  {categories.map((category) => (
+                    <div key={category.categoryId} className="flex items-center rounded-md border border-[#e9dfcc] bg-[#fffaf3] px-4 py-3">
+                      <span className="text-sm font-medium text-[#2d2418]">{category.categoryName}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
 

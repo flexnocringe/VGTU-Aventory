@@ -41,6 +41,12 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<?> list(
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId) {
+        return ResponseEntity.ok(categoryRepository.findAllByOwner_Id(currentUserId));
+    }
+
     public record CategoryRequest(
             Integer categoryId,
             String categoryName
