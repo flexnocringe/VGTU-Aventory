@@ -346,9 +346,6 @@ export default function ProductsPage() {
                       <td className="whitespace-nowrap px-6 py-4 text-sm text-[#6a5841]">
                         <div className="flex items-center gap-3">
                           <QRCodeCanvas value={product.qrCode} size={72} includeMargin />
-                          <span className="max-w-[12rem] break-all text-xs text-[#8a6b45]">
-                            {product.qrCode}
-                          </span>
                         </div>
                       </td>
                       <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
@@ -535,7 +532,14 @@ export default function ProductsPage() {
                   <span>QR Code</span>
                   <div className="mt-1 flex flex-col items-start gap-3 rounded-md border border-slate-200 bg-slate-50 px-3 py-3 text-slate-700">
                     <QRCodeCanvas value={viewingProduct.qrCode} size={180} includeMargin />
-                    <span className="break-all text-xs text-slate-600">{viewingProduct.qrCode}</span>
+                    <a
+                      className="break-all text-xs text-slate-600 underline"
+                      href={typeof window !== "undefined" ? `${window.location.origin}/products/${viewingProduct.qrCode}` : `/products/${viewingProduct.qrCode}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {typeof window !== "undefined" ? `${window.location.origin}/products/${viewingProduct.qrCode}` : `/products/${viewingProduct.qrCode}`}
+                    </a>
                   </div>
                 </label>
 

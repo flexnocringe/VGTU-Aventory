@@ -54,7 +54,6 @@ describe("ProductsPage", () => {
       expect(screen.getByText("Laptop")).toBeInTheDocument();
       expect(screen.getByText("5")).toBeInTheDocument();
       expect(screen.getByText("$1000.00")).toBeInTheDocument();
-      expect(screen.getByText("QR-1")).toBeInTheDocument();
     });
   });
 
@@ -89,7 +88,8 @@ describe("ProductsPage", () => {
     expect(screen.getByDisplayValue("Laptop")).toBeInTheDocument();
     expect(screen.getByDisplayValue("Business laptop")).toBeInTheDocument();
     expect(screen.getByDisplayValue("https://example.com/laptop.jpg")).toBeInTheDocument();
-    expect(screen.getAllByText("QR-1")[1]).toBeInTheDocument();
+    const expectedFull = `${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost'}/products/QR-1`;
+    expect(screen.getByText(expectedFull)).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: "Close" }));
 
