@@ -91,6 +91,7 @@ class ProductControllerTest {
                 null,
                 null,
                 1,
+                null,
                 null
         );
 
@@ -113,6 +114,7 @@ class ProductControllerTest {
                 null,
                 null,
                 10,
+                null,
                 null
         );
 

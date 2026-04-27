@@ -14,20 +14,37 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected int productId;
+    private int productId;
+
     @Column(unique = true)
-    protected String productName;
+    private String productName;
+
     @ManyToOne
+    private User owner;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     protected User owner;
     @OneToMany(mappedBy ="product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Sale> sales;
+    private Double price;
+    private String productDescription;
+    private String photoUrl;
+    private int quantity;
+    private String qrCode;
     protected Double price;
     protected String productDescription;
     protected String photoUrl;
     protected int quantity;
     protected String qrCode; //veliau zaisim
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+}
+
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
