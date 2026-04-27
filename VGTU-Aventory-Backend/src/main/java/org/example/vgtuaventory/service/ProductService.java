@@ -16,6 +16,6 @@ public class ProductService {
     }
 
     public List<Product> getProductsByCategory(Integer categoryId) {
-        return productRepository.findByCategoryIdOrderByProductNameAsc(categoryId);
+        return productRepository.findByCategory_IdOrderByProductNameAsc(categoryId);
     }
 }
