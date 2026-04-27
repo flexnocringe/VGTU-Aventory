@@ -7,6 +7,7 @@ import { fetchWithSession } from "@/features/auth/services/fetchWithSession";
 
 import { Product, ApiProduct, mapApiProduct } from "@/features/dashboard/types/product";
 import { ProductForm } from "./ProductForm";
+import { CategoryForm } from "./CategoryForm";
 
 type EditFormState = {
   name: string;
@@ -15,6 +16,16 @@ type EditFormState = {
   photoUrl: string;
   qrCode: string;
   price: string;
+  categoryId: string | number;
+};
+
+type CategoryFormData = {
+  categoryName: string;
+};
+
+type CategoryOption = {
+  categoryId: number;
+  categoryName: string;
 };
 
 export default function ProductsPage() {
@@ -27,6 +38,10 @@ export default function ProductsPage() {
   const [editForm, setEditForm] = useState<EditFormState | null>(null);
   const [savingEdit, setSavingEdit] = useState(false);
   const [addingProduct, setAddingProduct] = useState(false);
+  const [addingCategory, setAddingCategory] = useState(false);
+  const [savingCategory, setSavingCategory] = useState(false);
+  const [categories, setCategories] = useState<CategoryOption[]>([]);
+  const [categorySuccessMessage, setCategorySuccessMessage] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const fetchProducts = async () => {
@@ -47,8 +62,31 @@ export default function ProductsPage() {
     }
   };
 
+  const fetchCategories = async () => {
+    try {
+      const res = await fetchWithSession(apiUrl("/api/category/all"));
+      if (!res.ok) return;
+
+      const data: unknown[] = await res.json();
+      if (Array.isArray(data)) {
+        const parsed = data
+          .map((item: any) => ({
+            categoryId: item.categoryId,
+            categoryName: item.categoryName,
+          }))
+          .filter((item): item is CategoryOption =>
+            item.categoryId !== undefined && item.categoryName !== undefined
+          );
+        setCategories(parsed);
+      }
+    } catch {
+      // Silently fail category fetch
+    }
+  };
+
   useEffect(() => {
     void fetchProducts();
+    void fetchCategories();
   }, []);
 
   const handleAdd = async (data: Omit<Product, "id">) => {
@@ -63,6 +101,7 @@ export default function ProductsPage() {
           photoUrl: data.photoUrl,
           quantity: data.quantity,
           qrCode: data.qrCode,
+          categoryId: data.categoryId,
         }),
       });
 
@@ -72,6 +111,40 @@ export default function ProductsPage() {
       setAddingProduct(false);
     } catch (err) {
       alert(`Error adding product: ${err instanceof Error ? err.message : "Unknown error"}`);
+    }
+  };
+
+  const handleAddCategory = async (data: CategoryFormData) => {
+    const trimmedCategoryName = data.categoryName.trim();
+    if (!trimmedCategoryName) {
+      alert("Category name cannot be empty.");
+      return;
+    }
+
+    try {
+      setSavingCategory(true);
+
+      const res = await fetchWithSession(apiUrl("/api/category"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          categoryName: trimmedCategoryName,
+        }),
+      });
+
+      if (!res.ok) {
+        const message = await res.text();
+        throw new Error(message || `Failed to add category: ${res.status}`);
+      }
+
+      await fetchCategories();
+      setAddingCategory(false);
+      setCategorySuccessMessage(`Category "${trimmedCategoryName}" created successfully!`);
+      setTimeout(() => setCategorySuccessMessage(null), 3000);
+    } catch (err) {
+      alert(`Error adding category: ${err instanceof Error ? err.message : "Unknown error"}`);
+    } finally {
+      setSavingCategory(false);
     }
   };
 
@@ -85,6 +158,7 @@ export default function ProductsPage() {
       photoUrl: product.photoUrl,
       qrCode: product.qrCode,
       price: String(product.price),
+      categoryId: product.categoryId || "",
     });
   };
 
@@ -97,7 +171,7 @@ export default function ProductsPage() {
     setEditForm(null);
   };
 
-  const handleEditInputChange = (field: keyof EditFormState, value: string) => {
+  const handleEditInputChange = (field: keyof EditFormState, value: string | number) => {
     setEditForm((prev) => {
       if (!prev) {
         return null;
@@ -147,6 +221,7 @@ export default function ProductsPage() {
           photoUrl: editForm.photoUrl,
           quantity: parsedQuantity,
           qrCode: editForm.qrCode,
+          categoryId: editForm.categoryId || null,
         }),
       });
 
@@ -261,6 +336,14 @@ export default function ProductsPage() {
             >
               Add Product
             </button>
+            <button
+              type="button"
+              onClick={() => setAddingCategory(true)}
+              className="rounded-md bg-[#f59e0b] px-4 py-2 text-white shadow-sm transition hover:bg-[#ea8c08] hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60"
+              disabled={loading || isDeleting || savingCategory}
+            >
+              Add Category
+            </button>
           </div>
         </header>
 
@@ -273,7 +356,24 @@ export default function ProductsPage() {
         {addingProduct && (
           <div className="mb-6 rounded-xl border border-[#f0dfc5] bg-white p-6 shadow-[0_12px_30px_rgba(154,107,47,0.08)]">
             <h2 className="mb-4 text-lg font-semibold text-[#2d2418]">Add New Product</h2>
-            <ProductForm onSave={handleAdd} onCancel={() => setAddingProduct(false)} />
+            <ProductForm onSave={handleAdd} onCancel={() => setAddingProduct(false)} categories={categories} />
+          </div>
+        )}
+
+        {categorySuccessMessage && (
+          <div className="mb-6 rounded-xl border border-green-200 bg-green-50 p-4 text-green-800">
+            <strong>Success:</strong> {categorySuccessMessage}
+          </div>
+        )}
+
+        {addingCategory && (
+          <div className="mb-6 rounded-xl border border-[#f0dfc5] bg-white p-6 shadow-[0_12px_30px_rgba(154,107,47,0.08)]">
+            <h2 className="mb-4 text-lg font-semibold text-[#2d2418]">Add New Category</h2>
+            <CategoryForm
+              onSave={(data) => void handleAddCategory(data)}
+              onCancel={() => setAddingCategory(false)}
+              isSubmitting={savingCategory}
+            />
           </div>
         )}
 
@@ -455,6 +555,23 @@ export default function ProductsPage() {
                     onChange={(event) => handleEditInputChange("price", event.target.value)}
                     disabled={savingEdit}
                   />
+                </label>
+
+                <label className="text-sm font-medium text-slate-700 sm:col-span-2">
+                  <span>Category</span>
+                  <select
+                    className="mt-1 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none focus:border-slate-500"
+                    value={editForm.categoryId}
+                    onChange={(event) => handleEditInputChange("categoryId", event.target.value ? Number(event.target.value) : "")}
+                    disabled={savingEdit}
+                  >
+                    <option value="">Select a category</option>
+                    {categories.map((category) => (
+                      <option key={category.categoryId} value={category.categoryId}>
+                        {category.categoryName}
+                      </option>
+                    ))}
+                  </select>
                 </label>
               </div>
 
