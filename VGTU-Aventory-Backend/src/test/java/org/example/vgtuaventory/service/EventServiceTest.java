@@ -1,0 +1,165 @@
+package org.example.vgtuaventory.service;
+
+import org.example.vgtuaventory.dto.EventDTO;
+import org.example.vgtuaventory.model.Event;
+import org.example.vgtuaventory.model.User;
+import org.example.vgtuaventory.repository.EventRepository;
+import org.example.vgtuaventory.service.impl.EventServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+class EventServiceTest {
+
+    @Mock
+    private EventRepository eventRepository;
+
+    private EventService eventService;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        eventService = new EventServiceImpl(eventRepository);
+    }
+
+    @Test
+    void testGetAllEvents_Sorting() {
+        int userId = 1;
+        LocalDateTime now = LocalDateTime.now();
+        Event pastEvent = new Event(1, null, now.minusDays(1), now.minusDays(1).plusHours(2), "Past Event");
+        Event futureEvent1 = new Event(2, null, now.plusDays(1), now.plusDays(1).plusHours(2), "Future Event 1");
+        Event futureEvent2 = new Event(3, null, now.plusDays(2), now.plusDays(2).plusHours(2), "Future Event 2");
+        
+        // Repository returns them in some order (e.g. ID order or as they come)
+        when(eventRepository.findAllByOwner_IdOrderByStartDateAsc(userId)).thenReturn(Arrays.asList(pastEvent, futureEvent1, futureEvent2));
+
+        List<EventDTO> result = eventService.getAllEvents(userId);
+
+        assertEquals(3, result.size());
+        // Future events should come first, then past events
+        assertEquals("Future Event 1", result.get(0).getDescription());
+        assertEquals("Future Event 2", result.get(1).getDescription());
+        assertEquals("Past Event", result.get(2).getDescription());
+    }
+
+    @Test
+    void testGetAllEvents_Empty() {
+        int userId = 1;
+        when(eventRepository.findAllByOwner_IdOrderByStartDateAsc(userId)).thenReturn(java.util.Collections.emptyList());
+
+        List<EventDTO> result = eventService.getAllEvents(userId);
+
+        assertEquals(0, result.size());
+    }
+
+    @Test
+    void testGetAllEvents_AllFuture() {
+        int userId = 1;
+        LocalDateTime now = LocalDateTime.now();
+        Event e1 = new Event(1, null, now.plusDays(1), now.plusDays(1).plusHours(1), "E1");
+        Event e2 = new Event(2, null, now.plusDays(2), now.plusDays(2).plusHours(1), "E2");
+
+        when(eventRepository.findAllByOwner_IdOrderByStartDateAsc(userId)).thenReturn(Arrays.asList(e1, e2));
+
+        List<EventDTO> result = eventService.getAllEvents(userId);
+
+        assertEquals(2, result.size());
+        assertEquals("E1", result.get(0).getDescription());
+        assertEquals("E2", result.get(1).getDescription());
+    }
+
+    @Test
+    void testGetAllEvents_AllPast() {
+        int userId = 1;
+        LocalDateTime now = LocalDateTime.now();
+        Event e1 = new Event(1, null, now.minusDays(2), now.minusDays(2).plusHours(1), "E1");
+        Event e2 = new Event(2, null, now.minusDays(1), now.minusDays(1).plusHours(1), "E2");
+
+        // Note: Repository returns them sorted by date, so e1 then e2
+        when(eventRepository.findAllByOwner_IdOrderByStartDateAsc(userId)).thenReturn(Arrays.asList(e1, e2));
+
+        List<EventDTO> result = eventService.getAllEvents(userId);
+
+        assertEquals(2, result.size());
+        // Since they are all past, they should stay in ascending order (E1 then E2)
+        assertEquals("E1", result.get(0).getDescription());
+        assertEquals("E2", result.get(1).getDescription());
+    }
+
+    @Test
+    void testCreateEvent() {
+        int userId = 1;
+        LocalDateTime start = LocalDateTime.now().plusDays(1);
+        LocalDateTime end = start.plusHours(2);
+        EventDTO inputDTO = new EventDTO(start, end, "New Event");
+        
+        Event savedEvent = new Event(10, null, start, end, "New Event");
+        when(eventRepository.save(any(Event.class))).thenReturn(savedEvent);
+
+        EventDTO result = eventService.createEvent(inputDTO, userId);
+
+        assertEquals(10, result.getId());
+        assertEquals("New Event", result.getDescription());
+        assertEquals(start, result.getStartDate());
+        assertEquals(end, result.getEndDate());
+        verify(eventRepository).save(any(Event.class));
+    }
+
+    @Test
+    void testUpdateEvent_Success() {
+        int userId = 1;
+        int eventId = 1;
+        LocalDateTime start = LocalDateTime.now().plusDays(1);
+        LocalDateTime end = start.plusHours(2);
+        EventDTO updateDTO = new EventDTO(start, end, "Updated Event");
+
+        User owner = new User();
+        owner.setId(userId);
+        Event existingEvent = new Event(eventId, owner, start.minusDays(1), end.minusDays(1), "Old Event");
+        when(eventRepository.findById(eventId)).thenReturn(java.util.Optional.of(existingEvent));
+        when(eventRepository.save(any(Event.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        EventDTO result = eventService.updateEvent(eventId, updateDTO, userId);
+
+        assertEquals(eventId, result.getId());
+        assertEquals("Updated Event", result.getDescription());
+        assertEquals(start, result.getStartDate());
+        assertEquals(end, result.getEndDate());
+        verify(eventRepository).save(existingEvent);
+    }
+
+    @Test
+    void testUpdateEvent_NotFound() {
+        int userId = 1;
+        int eventId = 1;
+        EventDTO updateDTO = new EventDTO(LocalDateTime.now(), LocalDateTime.now().plusHours(1), "Updated Event");
+
+        when(eventRepository.findById(eventId)).thenReturn(java.util.Optional.empty());
+
+        org.junit.jupiter.api.Assertions.assertThrows(RuntimeException.class, () -> {
+            eventService.updateEvent(eventId, updateDTO, userId);
+        });
+    }
+
+    @Test
+    void testCreateEvent_InvalidDates() {
+        int userId = 1;
+        LocalDateTime start = LocalDateTime.now().plusDays(1);
+        LocalDateTime end = start.minusHours(2); // End before start
+        EventDTO inputDTO = new EventDTO(start, end, "Invalid Event");
+
+        org.junit.jupiter.api.Assertions.assertThrows(RuntimeException.class, () -> {
+            eventService.createEvent(inputDTO, userId);
+        });
+    }
+}
