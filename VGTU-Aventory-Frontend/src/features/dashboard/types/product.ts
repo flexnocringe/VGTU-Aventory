@@ -8,6 +8,12 @@ export type ApiProduct = {
   photoUrl: string;
   quantity: number;
   qrCode: string;
+  category?: {
+    categoryId?: number;
+    categoryName?: string;
+  };
+  categoryId?: number;
+  categoryName?: string;
 };
 
 export type Product = {
@@ -18,9 +24,14 @@ export type Product = {
   photoUrl: string;
   qrCode: string;
   price: number;
+  categoryId?: number;
+  categoryName?: string;
 };
 
 export function mapApiProduct(p: ApiProduct): Product {
+  const categoryId = p.categoryId ?? p.category?.categoryId;
+  const categoryName = p.categoryName ?? p.category?.categoryName;
+
   return {
     id: String(p.productId),
     name: p.productName,
@@ -29,5 +40,7 @@ export function mapApiProduct(p: ApiProduct): Product {
     photoUrl: p.photoUrl,
     qrCode: p.qrCode,
     price: p.price,
+    categoryId,
+    categoryName,
   };
 }

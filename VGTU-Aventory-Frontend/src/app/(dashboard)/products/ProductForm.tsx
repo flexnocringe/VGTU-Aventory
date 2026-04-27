@@ -2,13 +2,19 @@ import { useState } from "react";
 import { QRCodeCanvas } from "qrcode.react";
 import { Product } from "@/features/dashboard/types/product";
 
+type CategoryOption = {
+  categoryId: number;
+  categoryName: string;
+};
+
 interface ProductFormProps {
   product?: Product;
   onSave: (data: Omit<Product, "id">) => void;
   onCancel: () => void;
+  categories: CategoryOption[];
 }
 
-export function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
+export function ProductForm({ product, onSave, onCancel, categories }: ProductFormProps) {
   const generateQrCodeValue = () => {
     if (typeof crypto === "undefined") {
       return "";
@@ -24,11 +30,13 @@ export function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
     photoUrl: product?.photoUrl || "",
     qrCode: product?.qrCode || generateQrCodeValue(),
     price: product?.price || 0,
+    categoryId: product?.categoryId || "",
   }));
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(form);
+    const normalizedCategoryId = form.categoryId ? (typeof form.categoryId === "string" ? Number(form.categoryId) : form.categoryId) : undefined;
+    onSave({ ...form, categoryId: normalizedCategoryId });
   };
 
   return (
@@ -63,6 +71,22 @@ export function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
           className="mt-1 block w-full rounded-md border border-[#e9dfcc] bg-white px-3 py-2 shadow-sm outline-none focus:border-[#f59e0b] focus:ring-2 focus:ring-[#f59e0b]/20"
           required
         />
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-[#5b4a37]">Category</label>
+        <select
+          value={form.categoryId}
+          onChange={(e) => setForm({ ...form, categoryId: e.target.value ? Number(e.target.value) : "" })}
+          className="mt-1 block w-full rounded-md border border-[#e9dfcc] bg-white px-3 py-2 shadow-sm outline-none focus:border-[#f59e0b] focus:ring-2 focus:ring-[#f59e0b]/20"
+          required
+        >
+          <option value="">Select a category</option>
+          {categories.map((category) => (
+            <option key={category.categoryId} value={category.categoryId}>
+              {category.categoryName}
+            </option>
+          ))}
+        </select>
       </div>
       <div>
         <label className="block text-sm font-medium text-[#5b4a37]">Description</label>
