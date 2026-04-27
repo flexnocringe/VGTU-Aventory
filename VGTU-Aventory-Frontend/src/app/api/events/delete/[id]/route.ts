@@ -20,7 +20,7 @@ export async function DELETE(
       let errorData;
       try {
         errorData = await backendResponse.json();
-      } catch (e) {
+      } catch {
         errorData = { error: "Failed to delete event in backend." };
       }
       return NextResponse.json(

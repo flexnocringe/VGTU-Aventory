@@ -25,7 +25,7 @@ export async function PUT(
       let errorData;
       try {
         errorData = await backendResponse.json();
-      } catch (e) {
+      } catch {
         errorData = { error: "Failed to update event in backend." };
       }
       return NextResponse.json(

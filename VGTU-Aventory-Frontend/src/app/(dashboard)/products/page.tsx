@@ -28,6 +28,19 @@ type CategoryOption = {
   categoryName: string;
 };
 
+function isCategoryOption(item: unknown): item is CategoryOption {
+  if (typeof item !== "object" || item === null) {
+    return false;
+  }
+
+  const candidate = item as Partial<CategoryOption>;
+
+  return (
+    typeof candidate.categoryId === "number" &&
+    typeof candidate.categoryName === "string"
+  );
+}
+
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -75,14 +88,7 @@ export default function ProductsPage() {
         return;
       }
 
-      const parsed = data
-        .map((item: any) => ({
-          categoryId: item.categoryId,
-          categoryName: item.categoryName,
-        }))
-        .filter((item): item is CategoryOption =>
-          item.categoryId !== undefined && item.categoryName !== undefined
-        );
+      const parsed = data.filter(isCategoryOption);
       setCategories(parsed);
     } catch (err) {
       console.error("Failed to fetch categories", err);
