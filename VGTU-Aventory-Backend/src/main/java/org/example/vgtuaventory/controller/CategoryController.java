@@ -27,7 +27,7 @@ public class CategoryController {
         if (categoryRepository.existsByCategoryNameAndOwner_Id(request.categoryName().trim(), currentUserId)) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("categoryName already exists");
         }
-
+//
         Category c = new Category();
         User owner = new User();
         owner.setId(currentUserId);
