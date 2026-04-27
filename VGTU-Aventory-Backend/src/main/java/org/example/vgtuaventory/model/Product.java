@@ -30,5 +30,5 @@ public class Product {
     protected String photoUrl;
     protected int quantity;
     protected String qrCode;
-    protected int product_category;
+    protected int categoryName;
 }
