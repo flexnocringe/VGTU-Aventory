@@ -33,7 +33,6 @@ export function ProductSnapshots({ products, loading }: ProductSnapshotsProps) {
               </div>
               <div className="pl-4 text-right">
                 <p className="text-sm font-semibold text-[#2d2418]">{product.quantity}</p>
-                <p className="text-xs text-[#8a6b45]">{product.qrCode}</p>
               </div>
             </article>
           ))
