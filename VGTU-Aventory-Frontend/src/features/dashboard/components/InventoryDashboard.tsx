@@ -45,7 +45,8 @@ export function InventoryDashboard() {
     const totalStock = products.reduce((sum, product) => sum + product.quantity, 0);
     const lowStockThreshold = 20;
     const lowStockCount = products.filter((product) => product.quantity <= lowStockThreshold).length;
-    const categories = 0;
+    const uniqueCategories = new Set(products.map((p) => p.categoryId).filter(Boolean));
+    const categories = uniqueCategories.size;
 
     return { totalProducts, totalStock, lowStockCount, categories };
   }, [products]);

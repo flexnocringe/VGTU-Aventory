@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { QRCodeCanvas } from "qrcode.react";
 import { apiUrl } from "@/lib/api/url";
 import { fetchWithSession } from "@/features/auth/services/fetchWithSession";
@@ -428,19 +429,22 @@ export default function ProductsPage() {
                         aria-label="Select all products"
                       />
                     </th>
-                    <th className="w-[24%] bg-[#fff4e2] px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
+                    <th className="w-[22%] bg-[#fff4e2] px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
                       Name
                     </th>
-                    <th className="w-[15%] bg-[#fff4e2] px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
+                    <th className="w-[12%] bg-[#fff4e2] px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
                       Quantity
                     </th>
-                    <th className="w-[15%] bg-[#fff4e2] px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
+                    <th className="w-[12%] bg-[#fff4e2] px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
                       Price
                     </th>
-                    <th className="w-[20%] bg-[#fff4e2] px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
+                    <th className="w-[12%] bg-[#fff4e2] px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
+                      Preview
+                    </th>
+                    <th className="w-[12%] bg-[#fff4e2] px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
                       QR Code
                     </th>
-                    <th className="w-[20%] bg-[#fff4e2] px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
+                    <th className="w-[24%] bg-[#fff4e2] px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
                       Actions
                     </th>
                   </tr>
@@ -471,12 +475,24 @@ export default function ProductsPage() {
                       <td className="whitespace-nowrap px-6 py-4 text-sm text-[#6a5841]">
                         ${product.price.toFixed(2)}
                       </td>
-                      <td className="whitespace-nowrap px-6 py-4 text-sm text-[#6a5841]">
-                        <div className="flex items-center gap-3">
+                      <td className="whitespace-nowrap px-6 py-4 text-center align-middle">
+                        {product.photoUrl ? (
+                          <Image
+                            src={product.photoUrl}
+                            alt={product.name}
+                            width={64}
+                            height={64}
+                            className="mx-auto rounded-md border border-[#f0dfc5] object-cover"
+                          />
+                        ) : (
+                          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-md border border-[#f0dfc5] bg-[#f9f5f0] text-xs text-[#8a6b45]">
+                            No photo
+                          </div>
+                        )}
+                      </td>
+                      <td className="whitespace-nowrap px-6 py-4 text-center align-middle">
+                        <div className="flex justify-center">
                           <QRCodeCanvas value={product.qrCode} size={72} includeMargin />
-                          <span className="max-w-[12rem] break-all text-xs text-[#8a6b45]">
-                            {product.qrCode}
-                          </span>
                         </div>
                       </td>
                       <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
