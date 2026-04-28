@@ -421,7 +421,7 @@ export default function ProductsPage() {
               <table className="min-w-full table-fixed border-collapse text-left text-sm">
                 <thead className="border-b border-[#f0dfc5] bg-[#fff4e2]">
                   <tr>
-                    <th className="w-[6%] bg-[#fff4e2] px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
+                    <th className="w-[6%] bg-[#fff4e2] px-[10px] py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
                       <input
                         type="checkbox"
                         checked={allSelected}
@@ -429,25 +429,25 @@ export default function ProductsPage() {
                         aria-label="Select all products"
                       />
                     </th>
-                    <th className="w-[18%] bg-[#fff4e2] px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
+                    <th className="w-[18%] bg-[#fff4e2] px-[10px] py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
                       Name
                     </th>
-                    <th className="w-[16%] bg-[#fff4e2] px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
+                    <th className="w-[16%] bg-[#fff4e2] px-[10px] py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
                       Category
                     </th>
-                    <th className="w-[12%] bg-[#fff4e2] px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
+                    <th className="w-[12%] bg-[#fff4e2] px-[10px] py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
                       Quantity
                     </th>
-                    <th className="w-[12%] bg-[#fff4e2] px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
+                    <th className="w-[12%] bg-[#fff4e2] px-[10px] py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
                       Price
                     </th>
-                    <th className="w-[12%] bg-[#fff4e2] px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
+                    <th className="w-[12%] bg-[#fff4e2] px-[10px] py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
                       Preview
                     </th>
-                    <th className="w-[12%] bg-[#fff4e2] px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
+                    <th className="w-[12%] bg-[#fff4e2] px-[10px] py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
                       QR Code
                     </th>
-                    <th className="w-[24%] bg-[#fff4e2] px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
+                    <th className="w-[24%] bg-[#fff4e2] px-[10px] py-3 text-right text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
                       Actions
                     </th>
                   </tr>
@@ -459,7 +459,7 @@ export default function ProductsPage() {
                       className="cursor-pointer hover:bg-[#fffaf3]"
                       onClick={() => setViewingProduct(product)}
                     >
-                      <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-[#2d2418]">
+                      <td className="whitespace-nowrap px-[10px] py-4 text-sm font-medium text-[#2d2418]">
                         <input
                           type="checkbox"
                           checked={selectedIds.includes(product.id)}
@@ -469,19 +469,19 @@ export default function ProductsPage() {
                           disabled={isDeleting}
                         />
                       </td>
-                      <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-[#2d2418]">
+                      <td className="whitespace-nowrap px-[10px] py-4 text-sm font-medium text-[#2d2418]">
                         {product.name}
                       </td>
-                      <td className="whitespace-nowrap px-6 py-4 text-sm text-[#6a5841]">
+                      <td className="whitespace-nowrap px-[10px] py-4 text-sm text-[#6a5841]">
                         {product.categoryName || "Uncategorized"}
                       </td>
-                      <td className="whitespace-nowrap px-6 py-4 text-sm text-[#6a5841]">
+                      <td className="whitespace-nowrap px-[10px] py-4 text-sm text-[#6a5841]">
                         {product.quantity}
                       </td>
-                      <td className="whitespace-nowrap px-6 py-4 text-sm text-[#6a5841]">
+                      <td className="whitespace-nowrap px-[10px] py-4 text-sm text-[#6a5841]">
                         ${product.price.toFixed(2)}
                       </td>
-                      <td className="whitespace-nowrap px-6 py-4 text-center align-middle">
+                      <td className="whitespace-nowrap px-[10px] py-4 text-center align-middle">
                         {product.photoUrl ? (
                           <Image
                             src={product.photoUrl}
@@ -496,12 +496,12 @@ export default function ProductsPage() {
                           </div>
                         )}
                       </td>
-                      <td className="whitespace-nowrap px-6 py-4 text-center align-middle">
+                      <td className="whitespace-nowrap px-[10px] py-4 text-center align-middle">
                         <div className="flex justify-center">
                           <QRCodeCanvas value={product.qrCode} size={72} includeMargin />
                         </div>
                       </td>
-                      <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
+                      <td className="whitespace-nowrap px-[10px] py-4 text-right text-sm font-medium">
                         <div className="flex justify-end gap-2">
                           <button
                             onClick={(event) => {

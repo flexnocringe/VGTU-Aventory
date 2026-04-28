@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { registerUser } from "@/features/auth/services/registerUser";
@@ -121,6 +122,16 @@ export default function RegisterPage() {
           >
             {loading ? "Creating..." : "Create account"}
           </button>
+
+          <div className="pt-2 text-center text-sm text-[color-mix(in_oklab,var(--foreground)_70%,white)]">
+            Already have an account?{" "}
+            <Link
+              href="/login"
+              className="font-semibold text-[var(--primary)] underline-offset-2 transition hover:text-[var(--primary-hover)] hover:underline"
+            >
+              Sign in
+            </Link>
+          </div>
         </form>
       </div>
     </main>
