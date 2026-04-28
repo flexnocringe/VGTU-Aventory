@@ -1,6 +1,5 @@
 package org.example.vgtuaventory.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,12 +27,23 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
+    protected User owner;
+    @OneToMany(mappedBy ="product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Sale> sales;
     private Double price;
     private String productDescription;
     private String photoUrl;
     private int quantity;
     private String qrCode;
+    protected Double price;
+    protected String productDescription;
+    protected String photoUrl;
+    protected int quantity;
+    protected String qrCode; //veliau zaisim
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+}
 
     @ManyToOne
     @JoinColumn(name = "category_id")

@@ -26,28 +26,28 @@ repositories {
 }
 
 dependencies {
-
-    // Source: https://mvnrepository.com/artifact/com.google.code.gson/gson
-    implementation("com.google.code.gson:gson:2.13.2")
-
-    // Source: https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
-    implementation("org.seleniumhq.selenium:selenium-java:4.41.0")
-
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-data-rest'
     implementation 'org.springframework.boot:spring-boot-starter-hateoas'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-restclient'
-    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
     implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
     implementation 'org.springframework.boot:spring-boot-starter-webservices'
     compileOnly 'org.projectlombok:lombok'
+    // developmentOnly 'org.springframework.boot:spring-boot-docker-compose' // disabled: not running in Docker
     runtimeOnly 'com.mysql:mysql-connector-j'
     annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'com.h2database:h2'
+    testImplementation 'org.springframework.boot:spring-boot-starter-data-jdbc-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-data-rest-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-hateoas-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-jdbc-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-restclient-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-security-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webservices-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
