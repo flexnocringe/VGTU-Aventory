@@ -1,12 +1,16 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { registerUser } from "@/features/auth/services/registerUser";
+import { loginUser } from "@/features/auth/services/loginUser";
+import { setAuthSession } from "@/features/auth/session";
 
 const emailRegex = /^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
 
 export default function RegisterPage() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -46,14 +50,19 @@ export default function RegisterPage() {
 
     try {
       setLoading(true);
-      const result = await registerUser({
+      await registerUser({
         email: email.trim(),
         password,
       });
 
-      setSuccessMessage(`Account created for ${result.email}`);
-      setEmail("");
-      setPassword("");
+      const loginResult = await loginUser({
+        email: email.trim(),
+        password,
+      });
+
+      setAuthSession(loginResult.token, loginResult.email);
+      router.push("/");
+      router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Registration failed");
     } finally {

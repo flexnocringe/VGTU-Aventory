@@ -429,8 +429,11 @@ export default function ProductsPage() {
                         aria-label="Select all products"
                       />
                     </th>
-                    <th className="w-[22%] bg-[#fff4e2] px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
+                    <th className="w-[18%] bg-[#fff4e2] px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
                       Name
+                    </th>
+                    <th className="w-[16%] bg-[#fff4e2] px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
+                      Category
                     </th>
                     <th className="w-[12%] bg-[#fff4e2] px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[#8a6b45]">
                       Quantity
@@ -468,6 +471,9 @@ export default function ProductsPage() {
                       </td>
                       <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-[#2d2418]">
                         {product.name}
+                      </td>
+                      <td className="whitespace-nowrap px-6 py-4 text-sm text-[#6a5841]">
+                        {product.categoryName || "Uncategorized"}
                       </td>
                       <td className="whitespace-nowrap px-6 py-4 text-sm text-[#6a5841]">
                         {product.quantity}

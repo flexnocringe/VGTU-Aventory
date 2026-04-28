@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getAuthUserEmail } from "@/features/auth/session";
 import { clearAuthToken } from "@/features/auth/session";
@@ -15,7 +15,13 @@ type TopbarProps = {
 export function Topbar({ onOpenMobileMenu, onToggleSidebar, sidebarCollapsed }: TopbarProps) {
     const router = useRouter();
     const [isLoggingOut, setIsLoggingOut] = useState(false);
-    const userEmail = getAuthUserEmail()?.trim() || "User";
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+    const userEmail = mounted
+    ? getAuthUserEmail()?.trim() || "User"
+    : "User";
 
     async function handleLogout() {
         if (isLoggingOut) {
