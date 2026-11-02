@@ -43,20 +43,18 @@ public class AuthService {
     }
 
     private User authenticateUser(String email, String password) {
-        if(email == null || password == null || email.isBlank() || password.isBlank()) {
-            throw new IllegalArgumentException("Email and password must not be empty");
-        }
+        requireCredentials(email, password);
 
         String normalizedEmail = email.trim();
         String loginKey = normalizedEmail.toLowerCase(Locale.ROOT);
         Instant now = Instant.now();
 
         Instant blockedUntil = lockedUntil.get(loginKey);
-        if (blockedUntil != null && blockedUntil.isAfter(now)) {
-            throw new IllegalStateException("Account is temporarily blocked. Try again later.");
-        }
+        if (blockedUntil != null) {
+            if (blockedUntil.isAfter(now)) {
+                throw new IllegalStateException("Account is temporarily blocked. Try again later.");
+            }
 
-        if (blockedUntil != null && !blockedUntil.isAfter(now)) {
             lockedUntil.remove(loginKey);
             failedLoginAttempts.remove(loginKey);
         }
@@ -89,9 +87,7 @@ public class AuthService {
     }
 
     public User register(String email, String password) {
-        if (email == null || password == null || email.isBlank() || password.isBlank()) {
-            throw new IllegalArgumentException("Email and password must not be empty");
-        }
+        requireCredentials(email, password);
 
         String normalizedEmail = email.trim();
 
@@ -113,5 +109,11 @@ public class AuthService {
         user.setRole(UserRole.SELLER);
 
         return userRepository.save(user);
+    }
+
+    private static void requireCredentials(String email, String password) {
+        if (email == null || password == null || email.isBlank() || password.isBlank()) {
+            throw new IllegalArgumentException("Email and password must not be empty");
+        }
     }
 }
