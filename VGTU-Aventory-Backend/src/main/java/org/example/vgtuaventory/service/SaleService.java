@@ -17,7 +17,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class SaleService {
@@ -87,34 +86,8 @@ public class SaleService {
             LocalDate startDate,
             LocalDate endDate
     ) {
-        LocalDate today = LocalDate.now();
-        if (endDate.isAfter(today)) {
-            throw new RuntimeException("End date cannot be in the future");
-        }
-
-        if (startDate.isAfter(endDate)) {
-            throw new RuntimeException("Start date cannot be later than end date");
-        }
-
-        Optional<Sale> firstSaleOptional = saleRepository.findFirstByOrderBySaleDateAsc();
-        if (firstSaleOptional.isEmpty()) {
-            throw new RuntimeException("No sales found in the system");
-        }
-
-        LocalDate firstSaleDate = firstSaleOptional.get().getSaleDate().toLocalDate();
-        if (startDate.isBefore(firstSaleDate)) {
-            throw new RuntimeException("Start date cannot be earlier than first recorded sale date");
-        }
-
-        LocalDateTime startDateTime = startDate.atStartOfDay();
-        LocalDateTime endDateTime = endDate.plusDays(1).atStartOfDay().minusNanos(1);
-
-        List<Sale> sales = saleRepository.findAllByOwner_IdAndSaleTypeAndSaleDateBetween(
-                currentUserId,
-                SaleType.SALE,
-                startDateTime,
-                endDateTime
-        );
+        validateDateRange(startDate, endDate);
+        List<Sale> sales = findSalesInRange(currentUserId, startDate, endDate);
 
         Map<Integer, TopSellingProductResponse> grouped = new HashMap<>();
         for (Sale sale : sales) {
@@ -159,14 +132,7 @@ public class SaleService {
             LocalDate endDate,
             List<Integer> productIds
     ) {
-        LocalDate today = LocalDate.now();
-        if (endDate.isAfter(today)) {
-            throw new RuntimeException("End date cannot be in the future");
-        }
-
-        if (startDate.isAfter(endDate)) {
-            throw new RuntimeException("Start date cannot be later than end date");
-        }
+        validateDateRange(startDate, endDate);
 
         if (productIds == null || productIds.isEmpty()) {
             throw new RuntimeException("At least one product must be selected");
@@ -176,25 +142,7 @@ public class SaleService {
             throw new RuntimeException("Maximum 5 products can be compared");
         }
 
-        Optional<Sale> firstSaleOptional = saleRepository.findFirstByOrderBySaleDateAsc();
-        if (firstSaleOptional.isEmpty()) {
-            throw new RuntimeException("No sales found in the system");
-        }
-
-        LocalDate firstSaleDate = firstSaleOptional.get().getSaleDate().toLocalDate();
-        if (startDate.isBefore(firstSaleDate)) {
-            throw new RuntimeException("Start date cannot be earlier than first recorded sale date");
-        }
-
-        LocalDateTime startDateTime = startDate.atStartOfDay();
-        LocalDateTime endDateTime = endDate.plusDays(1).atStartOfDay().minusNanos(1);
-
-        List<Sale> sales = saleRepository.findAllByOwner_IdAndSaleTypeAndSaleDateBetween(
-                currentUserId,
-                SaleType.SALE,
-                startDateTime,
-                endDateTime
-        );
+        List<Sale> sales = findSalesInRange(currentUserId, startDate, endDate);
 
         Map<Integer, ProductSalesComparisonResponse> productMap = new HashMap<>();
         for (Integer productId : productIds) {
@@ -229,6 +177,36 @@ public class SaleService {
         }
 
         return result;
+    }
+
+    private void validateDateRange(LocalDate startDate, LocalDate endDate) {
+        if (endDate.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("End date cannot be in the future");
+        }
+
+        if (startDate.isAfter(endDate)) {
+            throw new IllegalArgumentException("Start date cannot be later than end date");
+        }
+    }
+
+    private List<Sale> findSalesInRange(int currentUserId, LocalDate startDate, LocalDate endDate) {
+        LocalDate firstSaleDate = saleRepository.findFirstByOrderBySaleDateAsc()
+                .orElseThrow(() -> new IllegalArgumentException("No sales found in the system"))
+                .getSaleDate()
+                .toLocalDate();
+        if (startDate.isBefore(firstSaleDate)) {
+            throw new IllegalArgumentException("Start date cannot be earlier than first recorded sale date");
+        }
+
+        LocalDateTime startDateTime = startDate.atStartOfDay();
+        LocalDateTime endDateTime = endDate.plusDays(1).atStartOfDay().minusNanos(1);
+
+        return saleRepository.findAllByOwner_IdAndSaleTypeAndSaleDateBetween(
+                currentUserId,
+                SaleType.SALE,
+                startDateTime,
+                endDateTime
+        );
     }
 
     public static class SaleRequest {
