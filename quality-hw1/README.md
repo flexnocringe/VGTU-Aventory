@@ -1,6 +1,6 @@
 # HW1 – kodo kokybės matavimai
 
-Matuojama tik žymos `hw1-baseline` versija, apimtis – **backend** (`VGTU-Aventory-Backend`, Java 21, Spring Boot 4).
+Matuojama tik žymos `hw1-baseline` versija (`develop` commit `0df9540`), apimtis – **backend** (`VGTU-Aventory-Backend`, Java 21, Spring Boot 4).
 Pataisymai daromi atskirose šakose (`hw1-fix/...`).
 
 ## Aplankų struktūra
@@ -34,8 +34,12 @@ Konfigūracijos sprendimai:
 
 ### Paleidimas
 
+Įrankių konfigūracija pridėta virš `hw1-baseline`, todėl analizė leidžiama iš šakos `quality/c-static-setup` (arba `develop` po sujungimo).
+Backend'o išeitinis kodas joje sutampa su `hw1-baseline` – tai patikrina `git diff`, kurio išvestis turi būti tuščia:
+
 ```bash
-git checkout hw1-baseline
+git checkout quality/c-static-setup
+git diff --stat hw1-baseline -- VGTU-Aventory-Backend/src
 cd VGTU-Aventory-Backend
 ./gradlew clean staticAnalysis
 ```
