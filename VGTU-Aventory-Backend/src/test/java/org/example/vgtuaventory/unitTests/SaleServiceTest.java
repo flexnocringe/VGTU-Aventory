@@ -14,6 +14,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -161,5 +163,123 @@ class SaleServiceTest {
 
         assertTrue(ex.getMessage().contains("own account"));
         verify(saleRepository, never()).save(any());
+    }
+
+    @Test
+    void registerSale_returnShouldIncreaseStockWithoutStockCheck() {
+        Product product = new Product();
+        product.setProductId(1);
+        product.setPrice(2.5);
+        product.setQuantity(1);
+
+        User owner = new User();
+        owner.setId(1);
+
+        when(productRepository.findByProductIdAndOwner_Id(1, 1)).thenReturn(Optional.of(product));
+        when(userRepository.findById(1)).thenReturn(Optional.of(owner));
+        when(productRepository.save(any())).thenAnswer(i -> i.getArgument(0));
+        when(saleRepository.save(any())).thenAnswer(i -> i.getArgument(0));
+
+        Sale result = saleService.registerSale(req(1, 1, 5, SaleType.RETURN), 1);
+
+        assertEquals(6, product.getQuantity());
+        assertEquals(SaleType.RETURN, result.getSaleType());
+        assertEquals(12.5, result.getTotalPrice());
+    }
+
+    @Test
+    void registerSale_shouldAllowSellingWholeStock() {
+        Product product = new Product();
+        product.setProductId(1);
+        product.setPrice(1.0);
+        product.setQuantity(5);
+
+        User owner = new User();
+        owner.setId(1);
+
+        when(productRepository.findByProductIdAndOwner_Id(1, 1)).thenReturn(Optional.of(product));
+        when(userRepository.findById(1)).thenReturn(Optional.of(owner));
+        when(productRepository.save(any())).thenAnswer(i -> i.getArgument(0));
+        when(saleRepository.save(any())).thenAnswer(i -> i.getArgument(0));
+
+        saleService.registerSale(req(1, 1, 5, SaleType.SALE), 1);
+
+        assertEquals(0, product.getQuantity());
+    }
+
+    @Test
+    void registerSale_shouldFillSaleFromRequestAndProduct() {
+        Product product = new Product();
+        product.setProductId(1);
+        product.setPrice(4.0);
+        product.setQuantity(10);
+
+        User owner = new User();
+        owner.setId(1);
+
+        when(productRepository.findByProductIdAndOwner_Id(1, 1)).thenReturn(Optional.of(product));
+        when(userRepository.findById(1)).thenReturn(Optional.of(owner));
+        when(productRepository.save(any())).thenAnswer(i -> i.getArgument(0));
+        when(saleRepository.save(any())).thenAnswer(i -> i.getArgument(0));
+
+        LocalDateTime before = LocalDateTime.now();
+        Sale result = saleService.registerSale(req(1, 0, 2, SaleType.SALE), 1);
+
+        assertSame(product, result.getProduct());
+        assertSame(owner, result.getOwner());
+        assertEquals(2, result.getQuantity());
+        assertEquals("Test", result.getSaleLocation());
+        assertEquals("Note", result.getSaleNote());
+        assertEquals(SaleType.SALE, result.getSaleType());
+        assertEquals(4.0, result.getSaleProductPrice());
+        assertEquals(8.0, result.getTotalPrice());
+        assertFalse(result.getSaleDate().isBefore(before));
+    }
+
+    @Test
+    void registerSale_shouldThrowWhenProductNotFound() {
+        when(productRepository.findByProductIdAndOwner_Id(1, 1)).thenReturn(Optional.empty());
+
+        RuntimeException ex = assertThrows(RuntimeException.class,
+                () -> saleService.registerSale(req(1, 1, 2, SaleType.SALE), 1));
+
+        assertEquals("Product not found with ID: 1", ex.getMessage());
+        verifyNoInteractions(userRepository);
+        verify(productRepository, never()).save(any());
+        verify(saleRepository, never()).save(any());
+    }
+
+    @Test
+    void registerSale_shouldThrowWhenUserNotFound() {
+        Product product = new Product();
+        product.setProductId(1);
+        product.setPrice(1.0);
+        product.setQuantity(10);
+
+        when(productRepository.findByProductIdAndOwner_Id(1, 1)).thenReturn(Optional.of(product));
+        when(userRepository.findById(1)).thenReturn(Optional.empty());
+
+        RuntimeException ex = assertThrows(RuntimeException.class,
+                () -> saleService.registerSale(req(1, 1, 2, SaleType.SALE), 1));
+
+        assertEquals("User not found with ID: 1", ex.getMessage());
+        verify(productRepository, never()).save(any());
+        verify(saleRepository, never()).save(any());
+    }
+
+    @Test
+    void getSalesByUser_shouldReturnRepositoryResult() {
+        List<Sale> sales = List.of(new Sale());
+        when(saleRepository.findByOwnerId(1)).thenReturn(sales);
+
+        assertSame(sales, saleService.getSalesByUser(1));
+    }
+
+    @Test
+    void getAllSales_shouldReturnRepositoryResult() {
+        List<Sale> sales = List.of(new Sale(), new Sale());
+        when(saleRepository.findAll()).thenReturn(sales);
+
+        assertSame(sales, saleService.getAllSales());
     }
 }
