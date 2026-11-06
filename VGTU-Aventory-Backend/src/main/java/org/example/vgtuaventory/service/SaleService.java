@@ -138,13 +138,7 @@ public class SaleService {
             }
         }
 
-        List<TopSellingProductResponse> result = new ArrayList<>();
-        for (TopSellingProductResponse item : grouped.values()) {
-            if (item.salesCount > 0) {
-                result.add(item);
-            }
-        }
-
+        List<TopSellingProductResponse> result = new ArrayList<>(grouped.values());
         result.sort(
                 Comparator.comparingInt(TopSellingProductResponse::getSalesCount).reversed()
                         .thenComparing(TopSellingProductResponse::getProductName, String.CASE_INSENSITIVE_ORDER)
@@ -222,10 +216,7 @@ public class SaleService {
 
         List<ProductSalesComparisonResponse> result = new ArrayList<>();
         for (Integer productId : productIds) {
-            ProductSalesComparisonResponse response = productMap.get(productId);
-            if (response != null && response.totalSalesCount >= 0) {
-                result.add(response);
-            }
+            result.add(productMap.get(productId));
         }
 
         return result;
