@@ -5,7 +5,7 @@ Apimtis – pardavimų kodas backend'e: `SaleService`, iš jo iškelta `SalesAna
 | Būsena | Versija | Ką reiškia |
 |---|---|---|
 | **Prieš** | `30459a0` (`hw2/metrics-tooling`) | `src` sutampa su `0df9540` (`hw1-baseline`); pridėti tik B matavimo įrankiai (`git diff --stat 0df9540 30459a0 -- VGTU-Aventory-Backend/src` – tuščias) |
-| **Po** | `hw2/sale` | po visų `refactor(sale)` commit'ų ir 3 pertvarkymo atneštų radinių pataisymo (`fix(sale)`) |
+| **Po** | `b7c66e6` (`hw2/sale`) | po visų `refactor(sale)` commit'ų ir 3 pertvarkymo atneštų radinių pataisymo (`fix(sale)`) |
 
 Abi būsenos matuotos tais pačiais įrankiais ir konfigūracija (`build.gradle` iš `hw2/metrics-tooling`):
 
