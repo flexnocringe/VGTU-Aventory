@@ -5,6 +5,8 @@ plugins {
     id 'com.netflix.dgs.codegen' version '8.3.0'
     id 'pmd'
     id 'com.github.spotbugs' version '6.5.13'
+    id 'jacoco'
+    id 'org.sonarqube' version '7.5.0.8588'
 }
 
 group = 'org.example'
@@ -142,4 +144,42 @@ tasks.register('staticAnalysis', Copy) {
         include 'pmd/**', 'cpd/**', 'spotbugs/**'
     }
     into '../quality-hw1/analysis/static'
+}
+
+// HW2: testų padengimas
+jacoco {
+    toolVersion = '0.8.14'
+}
+
+tasks.named('test') {
+    finalizedBy 'jacocoTestReport'
+}
+
+tasks.named('jacocoTestReport') {
+    dependsOn 'test'
+    reports {
+        xml.required = true
+        html.required = true
+    }
+}
+
+// HW2: PMD CC, CogC ir NCSS kiekvienam metodui (A dalies metrika)
+tasks.register('complexityMain', JavaExec) {
+    group = 'verification'
+    description = 'PMD CC, CogC ir NCSS kiekvienam metodui (CSV).'
+    def report = layout.buildDirectory.file('reports/complexity/pmd-complexity.csv')
+    inputs.dir 'src/main/java'
+    outputs.file report
+    classpath = configurations.cpd
+    mainClass = 'net.sourceforge.pmd.cli.PmdCli'
+    args 'check',
+            '-d', 'src/main/java',
+            '-R', "${staticAnalysisConfig}/complexity-ruleset.xml",
+            '-f', 'csv',
+            '-r', report.get().asFile.path,
+            '--no-cache',
+            '--no-fail-on-violation'
+    doFirst {
+        report.get().asFile.parentFile.mkdirs()
+    }
 }
