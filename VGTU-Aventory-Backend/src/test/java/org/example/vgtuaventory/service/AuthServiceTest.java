@@ -41,7 +41,7 @@ class AuthServiceTest {
     @BeforeEach
     void setUp() {
         clock = new MutableClock(Instant.parse("2026-11-07T10:00:00Z"));
-        authService = new AuthService(userRepository, passwordService, tokenService, clock);
+        authService = new AuthService(userRepository, passwordService, tokenService, new LoginAttemptService(clock));
     }
 
     /** Test clock that can be moved forward, so time-dependent rules run without waiting. */

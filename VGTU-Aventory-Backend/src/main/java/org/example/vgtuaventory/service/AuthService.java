@@ -10,18 +10,12 @@ import org.example.vgtuaventory.repository.UserRepository;
 import org.example.vgtuaventory.security.PasswordService;
 import org.springframework.stereotype.Service;
 
-import java.time.Clock;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.Locale;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
 public class AuthService {
-    private static final int MAX_FAILED_LOGIN_ATTEMPTS = 5;
-    private static final Duration LOCK_DURATION = Duration.ofMinutes(5);
     private static final Pattern EMAIL_PATTERN =
         Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
     private static final Pattern PASSWORD_PATTERN =
@@ -30,9 +24,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordService passwordService;
     private final TokenService tokenService;
-    private final Clock clock;
-    private final ConcurrentHashMap<String, Integer> failedLoginAttempts = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<String, Instant> lockedUntil = new ConcurrentHashMap<>();
+    private final LoginAttemptService loginAttempts;
 
     public record LoginResult(String token, User user) {
     }
@@ -53,49 +45,21 @@ public class AuthService {
 
         String normalizedEmail = email.trim();
         String loginKey = normalizedEmail.toLowerCase(Locale.ROOT);
-        Instant now = clock.instant();
 
-        Instant blockedUntil = lockedUntil.get(loginKey);
-        if (blockedUntil != null && blockedUntil.isAfter(now)) {
-            throw new AccountLockedException();
-        }
-
-        if (blockedUntil != null && !blockedUntil.isAfter(now)) {
-            lockedUntil.remove(loginKey);
-            failedLoginAttempts.remove(loginKey);
-        }
+        loginAttempts.assertNotLocked(loginKey);
 
         User user = userRepository.findByEmailIgnoreCase(normalizedEmail).orElse(null);
 
         if (user == null || !passwordService.verifyPassword(password, user.getPassword())) {
-            if (recordFailedLogin(loginKey)) {
+            if (loginAttempts.recordFailure(loginKey)) {
                 throw new AccountLockedException();
             }
             throw new InvalidCredentialsException();
         }
 
-        failedLoginAttempts.remove(loginKey);
-        lockedUntil.remove(loginKey);
+        loginAttempts.reset(loginKey);
 
         return user;
-    }
-
-    /**
-     * Counts a failed login and locks the account when the limit is reached.
-     * Only records state; the caller decides which exception to throw.
-     *
-     * @return true when this failure locked the account
-     */
-    private boolean recordFailedLogin(String loginKey) {
-        int attempts = failedLoginAttempts.merge(loginKey, 1, Integer::sum);
-
-        if (attempts < MAX_FAILED_LOGIN_ATTEMPTS) {
-            return false;
-        }
-
-        lockedUntil.put(loginKey, clock.instant().plus(LOCK_DURATION));
-        failedLoginAttempts.remove(loginKey);
-        return true;
     }
 
     public User register(String email, String password) {
