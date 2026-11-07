@@ -177,4 +177,123 @@ class AuthServiceTest {
 
         assertEquals("Password must be at least 8 characters and contain at least one letter and one number", ex.getMessage());
     }
+
+    // HW2: characterization tests that pin the current behaviour before refactoring
+
+    private static final String LOCKED_MESSAGE = "Account is temporarily blocked. Try again later.";
+
+    private static User user(String email, String passwordHash) {
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(passwordHash);
+        return user;
+    }
+
+    @Test
+    void register_shouldRejectMissingOrBlankCredentials_withoutTouchingRepository() {
+        String[][] inputs = {{null, "password123"}, {"test@test.com", null}, {" ", "password123"}, {"test@test.com", " "}};
+
+        for (String[] input : inputs) {
+            IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                    () -> authService.register(input[0], input[1]));
+            assertEquals("Email and password must not be empty", ex.getMessage());
+        }
+
+        verifyNoInteractions(userRepository);
+    }
+
+    @Test
+    void login_shouldRejectMissingPassword_withoutTouchingRepository() {
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> authService.login("test@test.com", null));
+
+        assertEquals("Email and password must not be empty", ex.getMessage());
+        verifyNoInteractions(userRepository);
+    }
+
+    @Test
+    void register_shouldTrimEmail_hashPassword_andAssignSellerRole() {
+        when(userRepository.existsByEmailIgnoreCase("test@test.com")).thenReturn(false);
+        when(passwordService.hashPassword("password123")).thenReturn("hashed");
+        when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        User result = authService.register("  test@test.com  ", "password123");
+
+        assertEquals("test@test.com", result.getEmail());
+        assertEquals("hashed", result.getPassword());
+        assertEquals(UserRole.SELLER, result.getRole());
+    }
+
+    @Test
+    void login_shouldLockAfterFiveWrongPasswords_andRejectCorrectPasswordWhileLocked() {
+        User user = user("test@test.com", "hash");
+        when(userRepository.findByEmailIgnoreCase("test@test.com")).thenReturn(Optional.of(user));
+        when(passwordService.verifyPassword("wrong-pass1", "hash")).thenReturn(false);
+
+        for (int attempt = 0; attempt < 4; attempt++) {
+            RuntimeException ex = assertThrows(RuntimeException.class,
+                    () -> authService.login("test@test.com", "wrong-pass1"));
+            assertEquals("Invalid credentials", ex.getMessage());
+        }
+
+        IllegalStateException locked = assertThrows(IllegalStateException.class,
+                () -> authService.login("test@test.com", "wrong-pass1"));
+        assertEquals(LOCKED_MESSAGE, locked.getMessage());
+
+        IllegalStateException stillLocked = assertThrows(IllegalStateException.class,
+                () -> authService.login("test@test.com", "password123"));
+        assertEquals(LOCKED_MESSAGE, stillLocked.getMessage());
+
+        verify(userRepository, times(5)).findByEmailIgnoreCase("test@test.com");
+        verify(passwordService, never()).verifyPassword("password123", "hash");
+    }
+
+    @Test
+    void login_shouldCountFailuresPerNormalizedEmail() {
+        when(userRepository.findByEmailIgnoreCase(anyString())).thenReturn(Optional.empty());
+        String[] spellings = {"  Test@Test.com ", "test@test.com", "TEST@TEST.COM", "test@test.com"};
+
+        for (String email : spellings) {
+            RuntimeException ex = assertThrows(RuntimeException.class, () -> authService.login(email, "password123"));
+            assertEquals("Invalid credentials", ex.getMessage());
+        }
+
+        IllegalStateException locked = assertThrows(IllegalStateException.class,
+                () -> authService.login("Test@test.COM", "password123"));
+        assertEquals(LOCKED_MESSAGE, locked.getMessage());
+    }
+
+    @Test
+    void login_shouldResetFailedAttempts_afterSuccessfulLogin() {
+        User user = user("test@test.com", "hash");
+        when(userRepository.findByEmailIgnoreCase("test@test.com")).thenReturn(Optional.of(user));
+        when(passwordService.verifyPassword("wrong-pass1", "hash")).thenReturn(false);
+        when(passwordService.verifyPassword("password123", "hash")).thenReturn(true);
+        when(tokenService.generateToken(user)).thenReturn("token");
+
+        for (int attempt = 0; attempt < 4; attempt++) {
+            assertThrows(RuntimeException.class, () -> authService.login("test@test.com", "wrong-pass1"));
+        }
+        assertEquals("token", authService.login("test@test.com", "password123").token());
+
+        for (int attempt = 0; attempt < 4; attempt++) {
+            RuntimeException ex = assertThrows(RuntimeException.class,
+                    () -> authService.login("test@test.com", "wrong-pass1"));
+            assertEquals("Invalid credentials", ex.getMessage());
+        }
+    }
+
+    @Test
+    void login_shouldLockOnlyTheAccountWithFailedAttempts() {
+        when(userRepository.findByEmailIgnoreCase(anyString())).thenReturn(Optional.empty());
+
+        for (int attempt = 0; attempt < 4; attempt++) {
+            assertThrows(RuntimeException.class, () -> authService.login("first@test.com", "password123"));
+        }
+        assertThrows(IllegalStateException.class, () -> authService.login("first@test.com", "password123"));
+
+        RuntimeException other = assertThrows(RuntimeException.class,
+                () -> authService.login("second@test.com", "password123"));
+        assertEquals("Invalid credentials", other.getMessage());
+    }
 }
