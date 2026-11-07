@@ -1,5 +1,7 @@
 package org.example.vgtuaventory.controller;
 
+import org.example.vgtuaventory.exception.AccountLockedException;
+import org.example.vgtuaventory.exception.InvalidCredentialsException;
 import org.example.vgtuaventory.model.User;
 import org.example.vgtuaventory.model.UserRole;
 import org.example.vgtuaventory.service.AuthService;
@@ -54,12 +56,23 @@ class AuthControllerTest {
     @Test
     void login_shouldReturnLocked_whenAccountIsBlocked() {
         when(authService.login("test@test.com", "password123"))
-                .thenThrow(new IllegalStateException("Account is temporarily blocked. Try again later."));
+                .thenThrow(new AccountLockedException());
 
         ResponseEntity<?> response = authController.login(new AuthController.LoginRequest("test@test.com", "password123"));
 
         assertEquals(HttpStatus.LOCKED, response.getStatusCode());
         assertEquals("Account is temporarily blocked. Try again later.", response.getBody());
+    }
+
+    @Test
+    void login_shouldReturnUnauthorized_whenCredentialsAreInvalid() {
+        when(authService.login("test@test.com", "wrong-pass1"))
+                .thenThrow(new InvalidCredentialsException());
+
+        ResponseEntity<?> response = authController.login(new AuthController.LoginRequest("test@test.com", "wrong-pass1"));
+
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        assertEquals("Invalid credentials", response.getBody());
     }
 
     @Test

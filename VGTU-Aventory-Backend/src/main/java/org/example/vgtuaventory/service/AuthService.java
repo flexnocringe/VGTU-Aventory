@@ -2,6 +2,8 @@ package org.example.vgtuaventory.service;
 
 
 import lombok.RequiredArgsConstructor;
+import org.example.vgtuaventory.exception.AccountLockedException;
+import org.example.vgtuaventory.exception.InvalidCredentialsException;
 import org.example.vgtuaventory.model.User;
 import org.example.vgtuaventory.model.UserRole;
 import org.example.vgtuaventory.repository.UserRepository;
@@ -55,7 +57,7 @@ public class AuthService {
 
         Instant blockedUntil = lockedUntil.get(loginKey);
         if (blockedUntil != null && blockedUntil.isAfter(now)) {
-            throw new IllegalStateException("Account is temporarily blocked. Try again later.");
+            throw new AccountLockedException();
         }
 
         if (blockedUntil != null && !blockedUntil.isAfter(now)) {
@@ -63,13 +65,13 @@ public class AuthService {
             failedLoginAttempts.remove(loginKey);
         }
 
-        User user = userRepository.findByEmailIgnoreCase(normalizedEmail)
-                .orElseThrow(() -> handleFailedLogin(loginKey));
+        User user = userRepository.findByEmailIgnoreCase(normalizedEmail).orElse(null);
 
-        boolean valid = passwordService.verifyPassword(password, user.getPassword());
-
-        if (!valid) {
-            throw handleFailedLogin(loginKey);
+        if (user == null || !passwordService.verifyPassword(password, user.getPassword())) {
+            if (recordFailedLogin(loginKey)) {
+                throw new AccountLockedException();
+            }
+            throw new InvalidCredentialsException();
         }
 
         failedLoginAttempts.remove(loginKey);
@@ -78,16 +80,22 @@ public class AuthService {
         return user;
     }
 
-    private RuntimeException handleFailedLogin(String loginKey) {
+    /**
+     * Counts a failed login and locks the account when the limit is reached.
+     * Only records state; the caller decides which exception to throw.
+     *
+     * @return true when this failure locked the account
+     */
+    private boolean recordFailedLogin(String loginKey) {
         int attempts = failedLoginAttempts.merge(loginKey, 1, Integer::sum);
 
-        if (attempts >= MAX_FAILED_LOGIN_ATTEMPTS) {
-            lockedUntil.put(loginKey, clock.instant().plus(LOCK_DURATION));
-            failedLoginAttempts.remove(loginKey);
-            throw new IllegalStateException("Account is temporarily blocked. Try again later.");
+        if (attempts < MAX_FAILED_LOGIN_ATTEMPTS) {
+            return false;
         }
 
-        return new RuntimeException("Invalid credentials");
+        lockedUntil.put(loginKey, clock.instant().plus(LOCK_DURATION));
+        failedLoginAttempts.remove(loginKey);
+        return true;
     }
 
     public User register(String email, String password) {

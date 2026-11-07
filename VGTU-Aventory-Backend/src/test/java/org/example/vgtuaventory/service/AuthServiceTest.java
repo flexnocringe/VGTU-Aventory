@@ -1,5 +1,6 @@
 package org.example.vgtuaventory.service;
 
+import org.example.vgtuaventory.exception.AccountLockedException;
 import org.example.vgtuaventory.model.User;
 import org.example.vgtuaventory.model.UserRole;
 import org.example.vgtuaventory.repository.UserRepository;
@@ -167,7 +168,7 @@ class AuthServiceTest {
                         assertEquals("Invalid credentials", ex.getMessage());
                 }
 
-                IllegalStateException locked = assertThrows(IllegalStateException.class,
+                AccountLockedException locked = assertThrows(AccountLockedException.class,
                                 () -> authService.login("test@test.com", "password123"));
 
                 assertEquals("Account is temporarily blocked. Try again later.", locked.getMessage());
@@ -276,11 +277,11 @@ class AuthServiceTest {
             assertEquals("Invalid credentials", ex.getMessage());
         }
 
-        IllegalStateException locked = assertThrows(IllegalStateException.class,
+        AccountLockedException locked = assertThrows(AccountLockedException.class,
                 () -> authService.login("test@test.com", "wrong-pass1"));
         assertEquals(LOCKED_MESSAGE, locked.getMessage());
 
-        IllegalStateException stillLocked = assertThrows(IllegalStateException.class,
+        AccountLockedException stillLocked = assertThrows(AccountLockedException.class,
                 () -> authService.login("test@test.com", "password123"));
         assertEquals(LOCKED_MESSAGE, stillLocked.getMessage());
 
@@ -298,7 +299,7 @@ class AuthServiceTest {
             assertEquals("Invalid credentials", ex.getMessage());
         }
 
-        IllegalStateException locked = assertThrows(IllegalStateException.class,
+        AccountLockedException locked = assertThrows(AccountLockedException.class,
                 () -> authService.login("Test@test.COM", "password123"));
         assertEquals(LOCKED_MESSAGE, locked.getMessage());
     }
@@ -336,7 +337,7 @@ class AuthServiceTest {
 
         clock.advance(Duration.ofMinutes(5).minusSeconds(1));
 
-        IllegalStateException locked = assertThrows(IllegalStateException.class,
+        AccountLockedException locked = assertThrows(AccountLockedException.class,
                 () -> authService.login("test@test.com", "password123"));
         assertEquals(LOCKED_MESSAGE, locked.getMessage());
     }
@@ -367,7 +368,7 @@ class AuthServiceTest {
         for (int attempt = 0; attempt < 4; attempt++) {
             assertThrows(RuntimeException.class, () -> authService.login("first@test.com", "password123"));
         }
-        assertThrows(IllegalStateException.class, () -> authService.login("first@test.com", "password123"));
+        assertThrows(AccountLockedException.class, () -> authService.login("first@test.com", "password123"));
 
         RuntimeException other = assertThrows(RuntimeException.class,
                 () -> authService.login("second@test.com", "password123"));

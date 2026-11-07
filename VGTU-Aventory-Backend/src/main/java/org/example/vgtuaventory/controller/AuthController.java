@@ -1,6 +1,8 @@
 package org.example.vgtuaventory.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.vgtuaventory.exception.AccountLockedException;
+import org.example.vgtuaventory.exception.InvalidCredentialsException;
 import org.example.vgtuaventory.model.User;
 import org.example.vgtuaventory.service.AuthService;
 import org.example.vgtuaventory.service.TokenService;
@@ -31,8 +33,10 @@ public class AuthController {
             ));
         } catch (IllegalArgumentException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
-        } catch (IllegalStateException ex) {
+        } catch (AccountLockedException ex) {
             return ResponseEntity.status(HttpStatus.LOCKED).body(ex.getMessage());
+        } catch (InvalidCredentialsException ex) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
         } catch (RuntimeException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
         }
