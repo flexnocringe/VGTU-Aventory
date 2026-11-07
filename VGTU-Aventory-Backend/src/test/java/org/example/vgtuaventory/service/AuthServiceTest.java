@@ -323,6 +323,43 @@ class AuthServiceTest {
         }
     }
 
+    private void lockAccount(String email) {
+        for (int attempt = 0; attempt < 5; attempt++) {
+            assertThrows(RuntimeException.class, () -> authService.login(email, "wrong-pass1"));
+        }
+    }
+
+    @Test
+    void login_shouldStayLocked_untilFiveMinutesHavePassed() {
+        when(userRepository.findByEmailIgnoreCase("test@test.com")).thenReturn(Optional.empty());
+        lockAccount("test@test.com");
+
+        clock.advance(Duration.ofMinutes(5).minusSeconds(1));
+
+        IllegalStateException locked = assertThrows(IllegalStateException.class,
+                () -> authService.login("test@test.com", "password123"));
+        assertEquals(LOCKED_MESSAGE, locked.getMessage());
+    }
+
+    @Test
+    void login_shouldUnlockAfterFiveMinutes_andStartCountingFromZero() {
+        User user = user("test@test.com", "hash");
+        when(userRepository.findByEmailIgnoreCase("test@test.com")).thenReturn(Optional.of(user));
+        when(passwordService.verifyPassword("wrong-pass1", "hash")).thenReturn(false);
+        when(passwordService.verifyPassword("password123", "hash")).thenReturn(true);
+        when(tokenService.generateToken(user)).thenReturn("token");
+        lockAccount("test@test.com");
+
+        clock.advance(Duration.ofMinutes(5));
+
+        for (int attempt = 0; attempt < 4; attempt++) {
+            RuntimeException ex = assertThrows(RuntimeException.class,
+                    () -> authService.login("test@test.com", "wrong-pass1"));
+            assertEquals("Invalid credentials", ex.getMessage());
+        }
+        assertEquals("token", authService.login("test@test.com", "password123").token());
+    }
+
     @Test
     void login_shouldLockOnlyTheAccountWithFailedAttempts() {
         when(userRepository.findByEmailIgnoreCase(anyString())).thenReturn(Optional.empty());
