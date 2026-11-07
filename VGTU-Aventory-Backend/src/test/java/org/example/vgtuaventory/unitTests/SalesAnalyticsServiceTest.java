@@ -8,14 +8,17 @@ import org.example.vgtuaventory.model.SaleType;
 import org.example.vgtuaventory.repository.ProductRepository;
 import org.example.vgtuaventory.repository.SaleRepository;
 import org.example.vgtuaventory.service.SalesAnalyticsService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +36,8 @@ class SalesAnalyticsServiceTest {
     private static final int USER_ID = 1;
     private static final LocalDate START = LocalDate.of(2026, 1, 10);
     private static final LocalDate END = LocalDate.of(2026, 1, 20);
+    private static final Clock CLOCK = Clock.fixed(Instant.parse("2026-01-25T10:00:00Z"), ZoneOffset.UTC);
+    private static final LocalDate TODAY = LocalDate.now(CLOCK);
     private static final LocalDateTime FIRST_SALE = LocalDateTime.of(2026, 1, 1, 10, 0);
 
     @Mock
@@ -41,8 +46,12 @@ class SalesAnalyticsServiceTest {
     @Mock
     private ProductRepository productRepository;
 
-    @InjectMocks
     private SalesAnalyticsService analyticsService;
+
+    @BeforeEach
+    void setUp() {
+        analyticsService = new SalesAnalyticsService(saleRepository, productRepository, CLOCK);
+    }
 
     // ---- helpers ----
 
@@ -115,7 +124,7 @@ class SalesAnalyticsServiceTest {
 
     @Test
     void comparison_shouldRejectEndDateInFuture() {
-        LocalDate tomorrow = LocalDate.now().plusDays(1);
+        LocalDate tomorrow = TODAY.plusDays(1);
 
         RuntimeException ex = assertThrows(RuntimeException.class,
                 () -> analyticsService.getProductSalesComparison(USER_ID, START, tomorrow, List.of(1)));
@@ -291,7 +300,7 @@ class SalesAnalyticsServiceTest {
 
     @Test
     void comparison_shouldAcceptEndDateToday() {
-        LocalDate today = LocalDate.now();
+        LocalDate today = TODAY;
         Product apple = product(1, "Apple");
         givenFirstSaleAt(today.atStartOfDay());
         givenSalesInRange(List.of(sale(apple, 1)));
@@ -309,7 +318,7 @@ class SalesAnalyticsServiceTest {
 
     @Test
     void topSelling_shouldRejectEndDateInFuture() {
-        LocalDate tomorrow = LocalDate.now().plusDays(1);
+        LocalDate tomorrow = TODAY.plusDays(1);
 
         RuntimeException ex = assertThrows(RuntimeException.class,
                 () -> analyticsService.getTopSellingProductsByDateRange(USER_ID, START, tomorrow));

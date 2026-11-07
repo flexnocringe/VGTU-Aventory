@@ -10,13 +10,16 @@ import org.example.vgtuaventory.repository.SaleRepository;
 import org.example.vgtuaventory.repository.ProductRepository;
 import org.example.vgtuaventory.repository.UserRepository;
 import org.example.vgtuaventory.service.SaleService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,8 +38,14 @@ class SaleServiceTest {
     @Mock
     private UserRepository userRepository;
 
-    @InjectMocks
+    private static final Clock CLOCK = Clock.fixed(Instant.parse("2026-01-25T10:00:00Z"), ZoneOffset.UTC);
+
     private SaleService saleService;
+
+    @BeforeEach
+    void setUp() {
+        saleService = new SaleService(saleRepository, productRepository, userRepository, CLOCK);
+    }
 
     private SaleRequest req(int productId, int ownerId, int qty, SaleType type) {
         SaleRequest r = new SaleRequest();
@@ -221,7 +230,6 @@ class SaleServiceTest {
         when(productRepository.save(any())).thenAnswer(i -> i.getArgument(0));
         when(saleRepository.save(any())).thenAnswer(i -> i.getArgument(0));
 
-        LocalDateTime before = LocalDateTime.now();
         Sale result = saleService.registerSale(req(1, 0, 2, SaleType.SALE), 1);
 
         assertSame(product, result.getProduct());
@@ -232,7 +240,7 @@ class SaleServiceTest {
         assertEquals(SaleType.SALE, result.getSaleType());
         assertEquals(4.0, result.getSaleProductPrice());
         assertEquals(8.0, result.getTotalPrice());
-        assertFalse(result.getSaleDate().isBefore(before));
+        assertEquals(LocalDateTime.of(2026, 1, 25, 10, 0), result.getSaleDate());
     }
 
     @Test

@@ -12,6 +12,7 @@ import org.example.vgtuaventory.repository.ProductRepository;
 import org.example.vgtuaventory.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,14 +22,18 @@ public class SaleService {
     private final SaleRepository saleRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
+    private final Clock clock;
 
     public SaleService(SaleRepository saleRepository,
                        ProductRepository productRepository,
-                       UserRepository userRepository) {
+                       UserRepository userRepository,
+                       Clock clock) {
         this.saleRepository = saleRepository;
         this.productRepository = productRepository;
         this.userRepository = userRepository;
+        this.clock = clock;
     }
+
     @Transactional
     public Sale registerSale(SaleRequest request, int currentUserId) {
         if (request.getOwnerId() != 0 && request.getOwnerId() != currentUserId) {
@@ -52,7 +57,7 @@ public class SaleService {
         sale.setSaleLocation(request.getSaleLocation());
         sale.setSaleType(request.getSaleType());
         sale.setSaleNote(request.getSaleNote());
-        sale.setSaleDate(LocalDateTime.now());
+        sale.setSaleDate(LocalDateTime.now(clock));
 
         sale.setSaleProductPrice(product.getPrice());
         sale.setTotalPrice(product.getPrice() * request.getQuantity());

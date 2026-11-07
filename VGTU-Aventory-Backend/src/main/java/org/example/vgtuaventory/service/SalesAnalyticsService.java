@@ -9,6 +9,7 @@ import org.example.vgtuaventory.repository.ProductRepository;
 import org.example.vgtuaventory.repository.SaleRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -26,10 +27,12 @@ public class SalesAnalyticsService {
 
     private final SaleRepository saleRepository;
     private final ProductRepository productRepository;
+    private final Clock clock;
 
-    public SalesAnalyticsService(SaleRepository saleRepository, ProductRepository productRepository) {
+    public SalesAnalyticsService(SaleRepository saleRepository, ProductRepository productRepository, Clock clock) {
         this.saleRepository = saleRepository;
         this.productRepository = productRepository;
+        this.clock = clock;
     }
 
     public List<TopSellingProductResponse> getTopSellingProductsByDateRange(
@@ -112,7 +115,7 @@ public class SalesAnalyticsService {
     }
 
     private void validateDateRange(LocalDate startDate, LocalDate endDate) {
-        if (endDate.isAfter(LocalDate.now())) {
+        if (endDate.isAfter(LocalDate.now(clock))) {
             throw new RuntimeException("End date cannot be in the future");
         }
 
