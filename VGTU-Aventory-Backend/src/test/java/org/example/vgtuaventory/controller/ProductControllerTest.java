@@ -1,5 +1,6 @@
 package org.example.vgtuaventory.controller;
 
+import org.example.vgtuaventory.exception.GlobalExceptionHandler;
 import org.example.vgtuaventory.model.Category;
 import org.example.vgtuaventory.model.Product;
 import org.example.vgtuaventory.model.User;
@@ -60,6 +61,7 @@ class ProductControllerTest {
         ProductService productService = new ProductService(productRepository);
         ProductController controller = new ProductController(productRepository, productService, categoryRepository);
                 mockMvc = MockMvcBuilders.standaloneSetup(controller)
+                .setControllerAdvice(new GlobalExceptionHandler())
                 .build();
     }
 
