@@ -2,6 +2,7 @@ package org.example.vgtuaventory.service;
 
 import jakarta.transaction.Transactional;
 import org.example.vgtuaventory.dto.SaleRequest;
+import org.example.vgtuaventory.exception.InsufficientStockException;
 import org.example.vgtuaventory.model.Product;
 import org.example.vgtuaventory.model.Sale;
 import org.example.vgtuaventory.model.SaleType;
@@ -58,7 +59,7 @@ public class SaleService {
 
         if (request.getSaleType() == SaleType.SALE) {
             if (request.getQuantity() > product.getQuantity()) {
-                throw new RuntimeException("Not enough stock");
+                throw new InsufficientStockException();
             }
             product.setQuantity(product.getQuantity() - request.getQuantity());
         } else {

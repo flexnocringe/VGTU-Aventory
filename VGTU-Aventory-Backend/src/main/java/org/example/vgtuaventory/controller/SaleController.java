@@ -4,6 +4,7 @@ import org.example.vgtuaventory.dto.ProductSalesComparisonRequest;
 import org.example.vgtuaventory.dto.ProductSalesComparisonResponse;
 import org.example.vgtuaventory.dto.SaleRequest;
 import org.example.vgtuaventory.dto.TopSellingProductResponse;
+import org.example.vgtuaventory.exception.InsufficientStockException;
 import org.example.vgtuaventory.model.Sale;
 import org.example.vgtuaventory.service.SaleService;
 import org.example.vgtuaventory.service.SalesAnalyticsService;
@@ -37,6 +38,8 @@ public class SaleController {
             return ResponseEntity.ok(savedSale);
         } catch (IllegalStateException ex) {
             return ResponseEntity.status(403).body(ex.getMessage());
+        } catch (InsufficientStockException ex) {
+            return ResponseEntity.status(409).body(ex.getMessage());
         } catch (RuntimeException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }

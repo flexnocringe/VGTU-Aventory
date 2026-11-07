@@ -3,6 +3,7 @@ package org.example.vgtuaventory.controller;
 import org.example.vgtuaventory.dto.ProductSalesComparisonResponse;
 import org.example.vgtuaventory.dto.SaleRequest;
 import org.example.vgtuaventory.dto.TopSellingProductResponse;
+import org.example.vgtuaventory.exception.InsufficientStockException;
 import org.example.vgtuaventory.model.Sale;
 import org.example.vgtuaventory.model.SaleType;
 import org.example.vgtuaventory.service.SaleService;
@@ -113,13 +114,25 @@ class SaleControllerTest {
 
     @Test
     void createSale_shouldReturnPlainTextBadRequestOnRuntimeException() throws Exception {
-        when(saleService.registerSale(any(), anyInt())).thenThrow(new RuntimeException("Not enough stock"));
+        when(saleService.registerSale(any(), anyInt())).thenThrow(new RuntimeException("Product not found with ID: 7"));
+
+        mockMvc.perform(post("/sales")
+                        .requestAttr(AuthSessionAttributes.CURRENT_USER_ID, USER_ID)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"productId\":7,\"quantity\":2,\"saleType\":\"SALE\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Product not found with ID: 7"));
+    }
+
+    @Test
+    void createSale_shouldReturnPlainTextConflictWhenStockIsInsufficient() throws Exception {
+        when(saleService.registerSale(any(), anyInt())).thenThrow(new InsufficientStockException());
 
         mockMvc.perform(post("/sales")
                         .requestAttr(AuthSessionAttributes.CURRENT_USER_ID, USER_ID)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"productId\":7,\"quantity\":99,\"saleType\":\"SALE\"}"))
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isConflict())
                 .andExpect(content().string("Not enough stock"));
     }
 

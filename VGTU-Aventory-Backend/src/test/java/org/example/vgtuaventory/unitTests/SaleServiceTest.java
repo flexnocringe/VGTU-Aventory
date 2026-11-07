@@ -1,6 +1,7 @@
 package org.example.vgtuaventory.unitTests;
 
 import org.example.vgtuaventory.dto.SaleRequest;
+import org.example.vgtuaventory.exception.InsufficientStockException;
 import org.example.vgtuaventory.model.Product;
 import org.example.vgtuaventory.model.Sale;
 import org.example.vgtuaventory.model.SaleType;
@@ -87,11 +88,11 @@ class SaleServiceTest {
         when(productRepository.findByProductIdAndOwner_Id(1, 1)).thenReturn(Optional.of(product));
         when(userRepository.findById(1)).thenReturn(Optional.of(owner));
 
-        RuntimeException ex = assertThrows(RuntimeException.class,
+        InsufficientStockException ex = assertThrows(InsufficientStockException.class,
             () -> saleService.registerSale(req(1, 1, 5, SaleType.SALE),1)
         );
 
-        assertTrue(ex.getMessage().contains("Not enough stock"));
+        assertEquals("Not enough stock", ex.getMessage());
 
         verify(productRepository, never()).save(any());
         verify(saleRepository, never()).save(any());
