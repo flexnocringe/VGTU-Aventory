@@ -6,6 +6,7 @@ import org.example.vgtuaventory.dto.TopSellingProductResponse;
 import org.example.vgtuaventory.model.Sale;
 import org.example.vgtuaventory.model.SaleType;
 import org.example.vgtuaventory.service.SaleService;
+import org.example.vgtuaventory.service.SalesAnalyticsService;
 import org.example.vgtuaventory.utils.AuthSessionAttributes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -48,6 +49,9 @@ class SaleControllerTest {
 
     @Mock
     private SaleService saleService;
+
+    @Mock
+    private SalesAnalyticsService analyticsService;
 
     @InjectMocks
     private SaleController saleController;
@@ -134,7 +138,7 @@ class SaleControllerTest {
 
     @Test
     void topSelling_shouldSerializeExactFieldsAndEmptyStringForNullName() throws Exception {
-        when(saleService.getTopSellingProductsByDateRange(USER_ID, START, END)).thenReturn(List.of(
+        when(analyticsService.getTopSellingProductsByDateRange(USER_ID, START, END)).thenReturn(List.of(
                 new TopSellingProductResponse(3, "Milk", 5),
                 new TopSellingProductResponse(4, null, 2)));
 
@@ -149,7 +153,7 @@ class SaleControllerTest {
 
     @Test
     void topSelling_shouldReturnPlainTextBadRequestOnRuntimeException() throws Exception {
-        when(saleService.getTopSellingProductsByDateRange(USER_ID, START, END))
+        when(analyticsService.getTopSellingProductsByDateRange(USER_ID, START, END))
                 .thenThrow(new RuntimeException("No sales found in the system"));
 
         mockMvc.perform(get("/sales/top-selling/2026-01-10/2026-01-20")
@@ -160,7 +164,7 @@ class SaleControllerTest {
 
     @Test
     void comparison_shouldBindProductIdsAndSerializeExactFields() throws Exception {
-        when(saleService.getProductSalesComparison(USER_ID, START, END, List.of(3, 4))).thenReturn(List.of(
+        when(analyticsService.getProductSalesComparison(USER_ID, START, END, List.of(3, 4))).thenReturn(List.of(
                 new ProductSalesComparisonResponse(3, "Milk", 5),
                 new ProductSalesComparisonResponse(4, null, 0)));
 
@@ -177,7 +181,7 @@ class SaleControllerTest {
 
     @Test
     void comparison_shouldReturnPlainTextBadRequestOnRuntimeException() throws Exception {
-        when(saleService.getProductSalesComparison(eq(USER_ID), eq(START), eq(END), any()))
+        when(analyticsService.getProductSalesComparison(eq(USER_ID), eq(START), eq(END), any()))
                 .thenThrow(new RuntimeException("Maximum 5 products can be compared"));
 
         mockMvc.perform(post("/sales/sales-comparison/2026-01-10/2026-01-20")

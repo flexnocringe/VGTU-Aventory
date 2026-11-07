@@ -6,6 +6,7 @@ import org.example.vgtuaventory.dto.SaleRequest;
 import org.example.vgtuaventory.dto.TopSellingProductResponse;
 import org.example.vgtuaventory.model.Sale;
 import org.example.vgtuaventory.service.SaleService;
+import org.example.vgtuaventory.service.SalesAnalyticsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,9 +21,11 @@ import java.util.List;
 public class SaleController {
 
     private final SaleService saleService;
+    private final SalesAnalyticsService salesAnalyticsService;
 
-    public SaleController(SaleService saleService) {
+    public SaleController(SaleService saleService, SalesAnalyticsService salesAnalyticsService) {
         this.saleService = saleService;
+        this.salesAnalyticsService = salesAnalyticsService;
     }
 
     @PostMapping
@@ -54,7 +57,7 @@ public class SaleController {
     ) {
         try {
             List<TopSellingProductResponse> topSellingProducts =
-                    saleService.getTopSellingProductsByDateRange(currentUserId, startDate, endDate);
+                    salesAnalyticsService.getTopSellingProductsByDateRange(currentUserId, startDate, endDate);
             return ResponseEntity.ok(topSellingProducts);
         } catch (RuntimeException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
@@ -70,7 +73,7 @@ public class SaleController {
     ) {
         try {
             List<ProductSalesComparisonResponse> comparison =
-                    saleService.getProductSalesComparison(currentUserId, startDate, endDate, request.productIds());
+                    salesAnalyticsService.getProductSalesComparison(currentUserId, startDate, endDate, request.productIds());
             return ResponseEntity.ok(comparison);
         } catch (RuntimeException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());

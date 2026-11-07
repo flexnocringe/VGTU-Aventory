@@ -7,8 +7,7 @@ import org.example.vgtuaventory.model.Sale;
 import org.example.vgtuaventory.model.SaleType;
 import org.example.vgtuaventory.repository.ProductRepository;
 import org.example.vgtuaventory.repository.SaleRepository;
-import org.example.vgtuaventory.repository.UserRepository;
-import org.example.vgtuaventory.service.SaleService;
+import org.example.vgtuaventory.service.SalesAnalyticsService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,12 +24,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Characterization tests for the analytics methods of SaleService.
- * They pin down the current behaviour (messages, check order, grouping, sorting)
- * before the class is refactored, so the refactoring can be checked against them.
+ * Characterization tests for the sales analytics (originally written against SaleService,
+ * moved here with the methods). They pin down messages, check order, grouping and sorting.
  */
 @ExtendWith(MockitoExtension.class)
-class SaleServiceAnalyticsTest {
+class SalesAnalyticsServiceTest {
 
     private static final int USER_ID = 1;
     private static final LocalDate START = LocalDate.of(2026, 1, 10);
@@ -43,11 +41,8 @@ class SaleServiceAnalyticsTest {
     @Mock
     private ProductRepository productRepository;
 
-    @Mock
-    private UserRepository userRepository;
-
     @InjectMocks
-    private SaleService saleService;
+    private SalesAnalyticsService analyticsService;
 
     // ---- helpers ----
 
@@ -123,7 +118,7 @@ class SaleServiceAnalyticsTest {
         LocalDate tomorrow = LocalDate.now().plusDays(1);
 
         RuntimeException ex = assertThrows(RuntimeException.class,
-                () -> saleService.getProductSalesComparison(USER_ID, START, tomorrow, List.of(1)));
+                () -> analyticsService.getProductSalesComparison(USER_ID, START, tomorrow, List.of(1)));
 
         assertEquals("End date cannot be in the future", ex.getMessage());
         verifyNoInteractions(saleRepository, productRepository);
@@ -132,7 +127,7 @@ class SaleServiceAnalyticsTest {
     @Test
     void comparison_shouldRejectStartDateLaterThanEndDate() {
         RuntimeException ex = assertThrows(RuntimeException.class,
-                () -> saleService.getProductSalesComparison(USER_ID, END, START, List.of(1)));
+                () -> analyticsService.getProductSalesComparison(USER_ID, END, START, List.of(1)));
 
         assertEquals("Start date cannot be later than end date", ex.getMessage());
         verifyNoInteractions(saleRepository, productRepository);
@@ -141,7 +136,7 @@ class SaleServiceAnalyticsTest {
     @Test
     void comparison_shouldRejectNullProductIds() {
         RuntimeException ex = assertThrows(RuntimeException.class,
-                () -> saleService.getProductSalesComparison(USER_ID, START, END, null));
+                () -> analyticsService.getProductSalesComparison(USER_ID, START, END, null));
 
         assertEquals("At least one product must be selected", ex.getMessage());
         verifyNoInteractions(saleRepository, productRepository);
@@ -150,7 +145,7 @@ class SaleServiceAnalyticsTest {
     @Test
     void comparison_shouldRejectEmptyProductIds() {
         RuntimeException ex = assertThrows(RuntimeException.class,
-                () -> saleService.getProductSalesComparison(USER_ID, START, END, List.of()));
+                () -> analyticsService.getProductSalesComparison(USER_ID, START, END, List.of()));
 
         assertEquals("At least one product must be selected", ex.getMessage());
         verifyNoInteractions(saleRepository, productRepository);
@@ -159,7 +154,7 @@ class SaleServiceAnalyticsTest {
     @Test
     void comparison_shouldRejectMoreThanFiveProducts() {
         RuntimeException ex = assertThrows(RuntimeException.class,
-                () -> saleService.getProductSalesComparison(USER_ID, START, END, List.of(1, 2, 3, 4, 5, 6)));
+                () -> analyticsService.getProductSalesComparison(USER_ID, START, END, List.of(1, 2, 3, 4, 5, 6)));
 
         assertEquals("Maximum 5 products can be compared", ex.getMessage());
         verifyNoInteractions(saleRepository, productRepository);
@@ -168,7 +163,7 @@ class SaleServiceAnalyticsTest {
     @Test
     void comparison_shouldCheckDatesBeforeProductSelection() {
         RuntimeException ex = assertThrows(RuntimeException.class,
-                () -> saleService.getProductSalesComparison(USER_ID, END, START, null));
+                () -> analyticsService.getProductSalesComparison(USER_ID, END, START, null));
 
         assertEquals("Start date cannot be later than end date", ex.getMessage());
     }
@@ -178,7 +173,7 @@ class SaleServiceAnalyticsTest {
         when(saleRepository.findFirstByOrderBySaleDateAsc()).thenReturn(Optional.empty());
 
         RuntimeException ex = assertThrows(RuntimeException.class,
-                () -> saleService.getProductSalesComparison(USER_ID, START, END, List.of(1)));
+                () -> analyticsService.getProductSalesComparison(USER_ID, START, END, List.of(1)));
 
         assertEquals("No sales found in the system", ex.getMessage());
         verifyNoInteractions(productRepository);
@@ -189,7 +184,7 @@ class SaleServiceAnalyticsTest {
         givenFirstSaleAt(START.plusDays(1).atTime(9, 0));
 
         RuntimeException ex = assertThrows(RuntimeException.class,
-                () -> saleService.getProductSalesComparison(USER_ID, START, END, List.of(1)));
+                () -> analyticsService.getProductSalesComparison(USER_ID, START, END, List.of(1)));
 
         assertEquals("Start date cannot be earlier than first recorded sale date", ex.getMessage());
         verify(saleRepository, never())
@@ -204,7 +199,7 @@ class SaleServiceAnalyticsTest {
         when(productRepository.findByProductIdAndOwner_Id(7, USER_ID)).thenReturn(Optional.empty());
 
         RuntimeException ex = assertThrows(RuntimeException.class,
-                () -> saleService.getProductSalesComparison(USER_ID, START, END, List.of(7)));
+                () -> analyticsService.getProductSalesComparison(USER_ID, START, END, List.of(7)));
 
         assertEquals("Product not found with ID: 7", ex.getMessage());
     }
@@ -217,7 +212,7 @@ class SaleServiceAnalyticsTest {
         givenOwnedProducts(products);
 
         List<ProductSalesComparisonResponse> result =
-                saleService.getProductSalesComparison(USER_ID, START, END, List.of(1, 2, 3, 4, 5));
+                analyticsService.getProductSalesComparison(USER_ID, START, END, List.of(1, 2, 3, 4, 5));
 
         assertEquals(5, result.size());
     }
@@ -229,7 +224,7 @@ class SaleServiceAnalyticsTest {
         givenSalesInRange(List.of());
         givenOwnedProducts(apple);
 
-        saleService.getProductSalesComparison(USER_ID, START, END, List.of(1));
+        analyticsService.getProductSalesComparison(USER_ID, START, END, List.of(1));
 
         verify(saleRepository).findAllByOwner_IdAndSaleTypeAndSaleDateBetween(
                 USER_ID,
@@ -254,7 +249,7 @@ class SaleServiceAnalyticsTest {
         givenOwnedProducts(apple, pear);
 
         List<ProductSalesComparisonResponse> result =
-                saleService.getProductSalesComparison(USER_ID, START, END, List.of(1, 2));
+                analyticsService.getProductSalesComparison(USER_ID, START, END, List.of(1, 2));
 
         assertEquals(2, result.size());
         assertEquals(1, id(result.get(0)));
@@ -273,9 +268,9 @@ class SaleServiceAnalyticsTest {
         givenOwnedProducts(apple, pear);
 
         List<ProductSalesComparisonResponse> result =
-                saleService.getProductSalesComparison(USER_ID, START, END, List.of(2, 1));
+                analyticsService.getProductSalesComparison(USER_ID, START, END, List.of(2, 1));
 
-        assertEquals(List.of(2, 1), result.stream().map(SaleServiceAnalyticsTest::id).toList());
+        assertEquals(List.of(2, 1), result.stream().map(SalesAnalyticsServiceTest::id).toList());
         assertEquals(0, count(result.get(0)));
         assertEquals(10, count(result.get(1)));
     }
@@ -288,7 +283,7 @@ class SaleServiceAnalyticsTest {
         givenOwnedProducts(unnamed);
 
         List<ProductSalesComparisonResponse> result =
-                saleService.getProductSalesComparison(USER_ID, START, END, List.of(1));
+                analyticsService.getProductSalesComparison(USER_ID, START, END, List.of(1));
 
         assertEquals("", name(result.get(0)));
         assertEquals(2, count(result.get(0)));
@@ -303,7 +298,7 @@ class SaleServiceAnalyticsTest {
         givenOwnedProducts(apple);
 
         List<ProductSalesComparisonResponse> result =
-                saleService.getProductSalesComparison(USER_ID, today, today, List.of(1));
+                analyticsService.getProductSalesComparison(USER_ID, today, today, List.of(1));
 
         assertEquals(1, count(result.get(0)));
     }
@@ -317,7 +312,7 @@ class SaleServiceAnalyticsTest {
         LocalDate tomorrow = LocalDate.now().plusDays(1);
 
         RuntimeException ex = assertThrows(RuntimeException.class,
-                () -> saleService.getTopSellingProductsByDateRange(USER_ID, START, tomorrow));
+                () -> analyticsService.getTopSellingProductsByDateRange(USER_ID, START, tomorrow));
 
         assertEquals("End date cannot be in the future", ex.getMessage());
         verifyNoInteractions(saleRepository);
@@ -326,7 +321,7 @@ class SaleServiceAnalyticsTest {
     @Test
     void topSelling_shouldRejectStartDateLaterThanEndDate() {
         RuntimeException ex = assertThrows(RuntimeException.class,
-                () -> saleService.getTopSellingProductsByDateRange(USER_ID, END, START));
+                () -> analyticsService.getTopSellingProductsByDateRange(USER_ID, END, START));
 
         assertEquals("Start date cannot be later than end date", ex.getMessage());
         verifyNoInteractions(saleRepository);
@@ -337,7 +332,7 @@ class SaleServiceAnalyticsTest {
         when(saleRepository.findFirstByOrderBySaleDateAsc()).thenReturn(Optional.empty());
 
         RuntimeException ex = assertThrows(RuntimeException.class,
-                () -> saleService.getTopSellingProductsByDateRange(USER_ID, START, END));
+                () -> analyticsService.getTopSellingProductsByDateRange(USER_ID, START, END));
 
         assertEquals("No sales found in the system", ex.getMessage());
     }
@@ -347,7 +342,7 @@ class SaleServiceAnalyticsTest {
         givenFirstSaleAt(START.plusDays(1).atStartOfDay());
 
         RuntimeException ex = assertThrows(RuntimeException.class,
-                () -> saleService.getTopSellingProductsByDateRange(USER_ID, START, END));
+                () -> analyticsService.getTopSellingProductsByDateRange(USER_ID, START, END));
 
         assertEquals("Start date cannot be earlier than first recorded sale date", ex.getMessage());
         verify(saleRepository, never())
@@ -359,7 +354,7 @@ class SaleServiceAnalyticsTest {
         givenFirstSaleAt(FIRST_SALE);
         givenSalesInRange(List.of());
 
-        saleService.getTopSellingProductsByDateRange(USER_ID, START, END);
+        analyticsService.getTopSellingProductsByDateRange(USER_ID, START, END);
 
         verify(saleRepository).findAllByOwner_IdAndSaleTypeAndSaleDateBetween(
                 USER_ID,
@@ -373,7 +368,7 @@ class SaleServiceAnalyticsTest {
         givenFirstSaleAt(FIRST_SALE);
         givenSalesInRange(new ArrayList<>());
 
-        assertTrue(saleService.getTopSellingProductsByDateRange(USER_ID, START, END).isEmpty());
+        assertTrue(analyticsService.getTopSellingProductsByDateRange(USER_ID, START, END).isEmpty());
     }
 
     @Test
@@ -389,7 +384,7 @@ class SaleServiceAnalyticsTest {
                 sale(null, 50)));
 
         List<TopSellingProductResponse> result =
-                saleService.getTopSellingProductsByDateRange(USER_ID, START, END);
+                analyticsService.getTopSellingProductsByDateRange(USER_ID, START, END);
 
         assertEquals(2, result.size());
         assertEquals(1, id(result.get(0)));
@@ -411,10 +406,10 @@ class SaleServiceAnalyticsTest {
                 sale(apple, 3)));
 
         List<TopSellingProductResponse> result =
-                saleService.getTopSellingProductsByDateRange(USER_ID, START, END);
+                analyticsService.getTopSellingProductsByDateRange(USER_ID, START, END);
 
         assertEquals(List.of("Cherry", "Apple", "banana"),
-                result.stream().map(SaleServiceAnalyticsTest::name).toList());
+                result.stream().map(SalesAnalyticsServiceTest::name).toList());
     }
 
     @Test
@@ -427,7 +422,7 @@ class SaleServiceAnalyticsTest {
                 sale(unnamed, 2)));
 
         List<TopSellingProductResponse> result =
-                saleService.getTopSellingProductsByDateRange(USER_ID, START, END);
+                analyticsService.getTopSellingProductsByDateRange(USER_ID, START, END);
 
         assertEquals("", name(result.get(0)));
         assertEquals("Zed", name(result.get(1)));
