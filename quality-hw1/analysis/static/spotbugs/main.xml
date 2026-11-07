@@ -1,0 +1,1314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<BugCollection version="4.10.5" sequence="0" timestamp="1793629262015" analysisTimestamp="1793629262015" release="">
+  <Project projectName="VGTU-Aventory (spotbugsMain)">
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\codegen\DgsConstants.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\controller\AuthController$LoginRequest.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\controller\AuthController$LoginResponse.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\controller\AuthController$RegisterRequest.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\controller\AuthController$RegisterResponse.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\controller\AuthController.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\controller\CategoryController$CategoryRequest.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\controller\CategoryController.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\controller\EventController.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\controller\ProductController$ProductRequest.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\controller\ProductController$ProductScanResponse.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\controller\ProductController.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\controller\SaleController$ProductSalesComparisonRequest.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\controller\SaleController.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\controller\TotalSalesController$DateInterval.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\controller\TotalSalesController.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\dto\EventDTO.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\model\Category.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\model\Event.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\model\Giveaway.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\model\GiveawayParticipant.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\model\GiveawayProduct.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\model\GiveawayStatus.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\model\Product.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\model\Sale.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\model\SaleType.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\model\User.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\model\UserRole.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\repository\CategoryRepository.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\repository\EventRepository.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\repository\ProductRepository.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\repository\SaleRepository.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\repository\UserRepository.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\security\PasswordService.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\service\AuthService$LoginResult.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\service\AuthService.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\service\EventService.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\service\impl\EventServiceImpl.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\service\ProductService.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\service\SaleService$ProductSalesComparisonResponse.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\service\SaleService$SaleRequest.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\service\SaleService$TopSellingProductResponse.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\service\SaleService.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\service\TokenService.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\utils\AuthSessionAttributes.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\utils\LocalDateAdapter.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\utils\LocalDateTimeAdapter.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\utils\SecurityConfig$AuthTokenFilter.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\utils\SecurityConfig.class</Jar>
+    <Jar>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\classes\java\main\org\example\vgtuaventory\VgtuAventoryApplication.class</Jar>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.projectlombok\lombok\1.18.42\8365263844ebb62398e0dc33057ba10ba472d3b8\lombok-1.18.42.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.13.2\48b8230771e573b54ce6e867a9001e75977fe78e\gson-2.13.2.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.seleniumhq.selenium\selenium-java\4.41.0\2cc38c8dbef9d6e8774f05c2d2e8088180858ed4\selenium-java-4.41.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter-validation\4.0.3\224be37247aec394f998f55f7868b7fd9a77200e\spring-boot-starter-validation-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter-data-jdbc\4.0.3\34e9bac60d52f9b161eb0075624923449e4f904d\spring-boot-starter-data-jdbc-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter-data-jpa\4.0.3\3c979e063184e0bf2cde9a7d5c7a66401fee0615\spring-boot-starter-data-jpa-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter-data-rest\4.0.3\ae4d87ef0506c996c0715564d6f251d9ee169c5e\spring-boot-starter-data-rest-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter-hateoas\4.0.3\803300eff97b265233473e8b7f4caac8366f6e33\spring-boot-starter-hateoas-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter-jdbc\4.0.3\c6ed739bbc5ce99dfcb81272f9fcfd259b8e325f\spring-boot-starter-jdbc-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter-restclient\4.0.3\e81d6a61e48c0a8d24913ed15524b0d8d6161f2\spring-boot-starter-restclient-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter-webservices\4.0.3\dd8f916ce07d9d4b13282dfcb7af8db5054cfc22\spring-boot-starter-webservices-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter-webmvc\4.0.3\b5e7b864a336375c785df7f5db22061adf99fdcc\spring-boot-starter-webmvc-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter-security\4.0.3\3199e897b2c9ba8462f5f58e693b72a62874e674\spring-boot-starter-security-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\com.netflix.graphql.dgs.codegen\graphql-dgs-codegen-shared-core\8.3.0\2f2de8d0c450e686d21c82ff27998d25bdf08eac\graphql-dgs-codegen-shared-core-8.3.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.seleniumhq.selenium\selenium-devtools-v143\4.41.0\848259e553bd9e239d06e23c9a9e92d03c021ff0\selenium-devtools-v143-4.41.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.seleniumhq.selenium\selenium-devtools-v144\4.41.0\7a50eb6ba721a76dac19497dbd3b39fa58598c2d\selenium-devtools-v144-4.41.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.seleniumhq.selenium\selenium-devtools-v145\4.41.0\7a89e4fb26c80f1454a634bd19540d6a6d1df14a\selenium-devtools-v145-4.41.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.seleniumhq.selenium\selenium-support\4.37.0\fe5336118bbc34c91c06c9f2f2bc7f5199b3c207\selenium-support-4.37.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.seleniumhq.selenium\selenium-chrome-driver\4.37.0\47d3827d984ff3b8c995dba34abf0ac9c72fa07d\selenium-chrome-driver-4.37.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.seleniumhq.selenium\selenium-edge-driver\4.37.0\322f97cdc53dd57e657f24e9051e101a6366af5\selenium-edge-driver-4.37.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.seleniumhq.selenium\selenium-chromium-driver\4.37.0\8b7fd718ba9c2a74dfe9ed6a4a1008e65e4fc6f6\selenium-chromium-driver-4.37.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.seleniumhq.selenium\selenium-remote-driver\4.37.0\c46a129c58b053a059523ab33b83dbaba23b74b5\selenium-remote-driver-4.37.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\com.google.guava\guava\33.5.0-jre\8699de25f2f979108d6c1b804a7ba38cda1116bc\guava-33.5.0-jre.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter-jackson\4.0.3\1e02c5c501f5a8559a18d608ca847ae6f240dde\spring-boot-starter-jackson-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter-tomcat\4.0.3\458c27ddeb83ee9cb7a022ac8abbc3563167161e\spring-boot-starter-tomcat-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter\4.0.3\4e6cfad940a6f23ca7d1e1cc18c19e8d573830ef\spring-boot-starter-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter-logging\4.0.3\a53f6e8b383c6b5bac002a6ff6cd142f480944c6\spring-boot-starter-logging-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.apache.logging.log4j\log4j-to-slf4j\2.25.3\30adfb40cca243ec88cf7ec1fddb411ab55faa4f\log4j-to-slf4j-2.25.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.apache.logging.log4j\log4j-api\2.25.3\fb385330d89c2d61058ef649403f214633569205\log4j-api-2.25.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\com.google.errorprone\error_prone_annotations\2.41.0\4381275efdef6ddfae38f002c31e84cd001c97f0\error_prone_annotations-2.41.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.seleniumhq.selenium\selenium-api\4.37.0\3e0051f309e4eea04498cd92b67cbd4564db98a0\selenium-api-4.37.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.seleniumhq.selenium\selenium-firefox-driver\4.37.0\3b248d1985fa887dc2b0a2e137b0e3aa7b1ee92c\selenium-firefox-driver-4.37.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.seleniumhq.selenium\selenium-ie-driver\4.37.0\accbacb03c2da4d46dc15ff101e734fd55c28868\selenium-ie-driver-4.37.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.seleniumhq.selenium\selenium-safari-driver\4.37.0\69bc0c15fc8f6c9968e60dbedd5f23f6a0f9af63\selenium-safari-driver-4.37.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-validation\4.0.3\9e62d4105ac151c893fdb9c81863eb4ad570070d\spring-boot-validation-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-data-jdbc\4.0.3\2380a3d1f683e9b1c91a75fadfbd57a5695995c9\spring-boot-data-jdbc-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-data-jpa\4.0.3\ed3bec355933bfb43f5c26e85999fb26714805b0\spring-boot-data-jpa-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-hibernate\4.0.3\edd51fa97e27adfe033493dd367c34f853559221\spring-boot-hibernate-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-jpa\4.0.3\efae2341e25e140f4ccd2bf70337752193c10b8c\spring-boot-jpa-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-jdbc\4.0.3\a4868d5751c42cc1da95ee6c60a9e3046131741d\spring-boot-jdbc-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-data-rest\4.0.3\84dd8d3978d850a7fbd44634ddbd3b1bee6beda9\spring-boot-data-rest-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-hateoas\4.0.3\5329b687ef4fdb2f21de039d35e20b0288ea70c7\spring-boot-hateoas-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\com.zaxxer\HikariCP\7.0.2\c2b43c946b86a14a96342379e22b004c56c6166d\HikariCP-7.0.2.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-restclient\4.0.3\16c14f7a2c140cece05733af9f5c382f9143f5cb\spring-boot-restclient-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-http-converter\4.0.3\72a29a59c5b1b55a151e851c3c823f01bfca106\spring-boot-http-converter-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-webmvc\4.0.3\8100d8a8c357271d8d78ecdee0d8441b00243786\spring-boot-webmvc-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-security\4.0.3\c99da174188373d362fd25d33b397e0f4c58c226\spring-boot-security-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.data\spring-data-jpa\4.0.3\1e2f573cfeef6894fa077c7de0f7ee7502556ee3\spring-data-jpa-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.data\spring-data-rest-webmvc\5.0.3\44215256643ee2d5e2bde02fd972471d3c6cb04e\spring-data-rest-webmvc-5.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.data\spring-data-rest-core\5.0.3\e9a8b0a1ede63915e9dd3fcb081f458585b685c5\spring-data-rest-core-5.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.hateoas\spring-hateoas\3.0.2\91505b97aa859fad76a0d56fb2d225df825c1a33\spring-hateoas-3.0.2.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-webservices\4.0.3\a938600ddbba6d50644efdef4375780c29fb341b\spring-boot-webservices-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.ws\spring-ws-core\5.0.0\7fc9db23e465ec2d403f9d5e6ac6d1b5b94592ac\spring-ws-core-5.0.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework\spring-webmvc\7.0.5\77b2de8c45182565be884a7158845cb3d6f23788\spring-webmvc-7.0.5.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.security\spring-security-config\7.0.3\2001d140b97c0daa8b9895d7a765d94c60733642\spring-security-config-7.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.security\spring-security-web\7.0.3\97b58f6f1725417764e3ed03e73ad80a08a2d12\spring-security-web-7.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-autoconfigure\4.0.3\22e2d188c24d65ed1ffe97363c61e8246d2ed430\spring-boot-autoconfigure-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-data-commons\4.0.3\f8aae3b50818226648f19b1040cb720ee422c16\spring-boot-data-commons-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-sql\4.0.3\afe39a694d946d9fc185922fd755e7d3fe197571\spring-boot-sql-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-transaction\4.0.3\e62e8857548d32ffc5666f0b947073930b12fe8b\spring-boot-transaction-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-jackson\4.0.3\ad6f3dff63a566bc57e100335dc5646b5b62f592\spring-boot-jackson-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-http-client\4.0.3\cf032939b133591d6fd7f0b56dbda83a80f7a4e7\spring-boot-http-client-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-servlet\4.0.3\7d435c96323d8fa917be8d70b2c2a001a8794ff4\spring-boot-servlet-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-persistence\4.0.3\58ed08c6834a22536086d650a34a733baf37313d\spring-boot-persistence-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter-tomcat-runtime\4.0.3\f6e949420af2eda6aa89192ffca5eb9f0e7dea6b\spring-boot-starter-tomcat-runtime-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-tomcat\4.0.3\28975c97048bac17c944b7b402715428dddf9c65\spring-boot-tomcat-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-web-server\4.0.3\ed321647244629861a510d7df598d28689b2aa36\spring-boot-web-server-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot\4.0.3\3cdf46caf2392aa752dfb956ee010b1d70fb9acd\spring-boot-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.data\spring-data-jdbc\4.0.3\b97277a37d49e513611c93d9e2fde3b78d22f249\spring-data-jdbc-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.data\spring-data-relational\4.0.3\b53e64c734d044f95cca5884766ed08a3c3d9e29\spring-data-relational-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.plugin\spring-plugin-core\4.0.0\a461fa99b406277f8a6ed3290536768d5c14bc90\spring-plugin-core-4.0.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.security\spring-security-core\7.0.3\e33b3954cc47da3b99c289882d4671bed4434fbe\spring-security-core-7.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.ws\spring-xml\5.0.0\4cfb543806ac98dbf30a6daab11ee7962bd41a33\spring-xml-5.0.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework\spring-context\7.0.5\f0bed37a25f4880f3e93a9556425394087bdc1e9\spring-context-7.0.5.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework\spring-aop\7.0.5\647607a091a862fdf1562764a8f41ef962b6c3cc\spring-aop-7.0.5.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\com.sun.xml.messaging.saaj\saaj-impl\3.0.4\20e94bac120c14b7a0aa32c0821bab62515fd7dd\saaj-impl-3.0.4.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\jakarta.xml.ws\jakarta.xml.ws-api\4.0.2\331ecab874ee75b48db661a331319958cb04edec\jakarta.xml.ws-api-4.0.2.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\com.graphql-java\graphql-java\25.0\2b16ff06fa0ae9c272631e917fb2c146b6a592ec\graphql-java-25.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.jetbrains.kotlin\kotlin-stdlib\2.2.21\fa374a986e128314c3db00a20aae55f72a258511\kotlin-stdlib-2.2.21.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.seleniumhq.selenium\selenium-json\4.37.0\afa77140c5b8ca0f56593d5b2eef831a9c00b999\selenium-json-4.37.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\com.google.auto.service\auto-service-annotations\1.1.1\da12a15cd058ba90a0ff55357fb521161af4736d\auto-service-annotations-1.1.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\io.opentelemetry\opentelemetry-exporter-logging\1.55.0\e15ff02ddc81aa8e07438b40c8aa9eb8297275eb\opentelemetry-exporter-logging-1.55.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\io.opentelemetry\opentelemetry-sdk-extension-autoconfigure\1.55.0\c513f20e376a495dc24fd28793632736660a705c\opentelemetry-sdk-extension-autoconfigure-1.55.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\io.opentelemetry\opentelemetry-sdk-extension-autoconfigure-spi\1.55.0\f20fc03f7ea80cd062520f6cda3b1a61a107860f\opentelemetry-sdk-extension-autoconfigure-spi-1.55.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\io.opentelemetry\opentelemetry-sdk\1.55.0\457309ce1ed276bd9b1f4029c97c22721f58f346\opentelemetry-sdk-1.55.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\io.opentelemetry\opentelemetry-sdk-trace\1.55.0\b0334b4edb3d14e181f9f4fdc40a0dd5a6bcbffd\opentelemetry-sdk-trace-1.55.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\io.opentelemetry\opentelemetry-sdk-metrics\1.55.0\2db32c617c5d37c9ee69d58009edcc9a12ba6a24\opentelemetry-sdk-metrics-1.55.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\io.opentelemetry\opentelemetry-sdk-logs\1.55.0\b4c62673fb2f2385b691d6600a194f98fbc8625\opentelemetry-sdk-logs-1.55.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\io.opentelemetry\opentelemetry-sdk-common\1.55.0\c43e69b259fe060b67520e4f011fa776a2dcca58\opentelemetry-sdk-common-1.55.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\io.opentelemetry\opentelemetry-api\1.55.0\a71c43562e4d55c75997ccaa0c0513e5f881b703\opentelemetry-api-1.55.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\io.opentelemetry\opentelemetry-context\1.55.0\a3e7c14152b6b6c62e0c64f991791fa0c5cbf02d\opentelemetry-context-1.55.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\net.bytebuddy\byte-buddy\1.17.8\af5735f63d00ca47a9375fae5c7471a36331c6ed\byte-buddy-1.17.8.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework\spring-orm\7.0.5\bd9d32356ea016214154fe86cc49ec8d8eed854\spring-orm-7.0.5.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework\spring-jdbc\7.0.5\10cc68ecb63975683ceb923c2d07f09565ba5e82\spring-jdbc-7.0.5.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework\spring-web\7.0.5\b2edb5890bb10edcf1ac539b0a4ef1c105fe8db3\spring-web-7.0.5.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework\spring-oxm\7.0.5\6b94497f50a8bbec0f1a0d7c3e5d759a88df28a7\spring-oxm-7.0.5.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.data\spring-data-commons\4.0.3\da67d50cde92cade5e3e184266bc70a99cbf20af\spring-data-commons-4.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework\spring-tx\7.0.5\d305e839f8d6a11ba4e12f3abbfda23e8ff7f946\spring-tx-7.0.5.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework\spring-beans\7.0.5\e20d1006aca78c2c58f5eb85d58bc60672a3527c\spring-beans-7.0.5.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework\spring-expression\7.0.5\601ded105fb8580fe6c26cb87b1b005033c66350\spring-expression-7.0.5.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework\spring-core\7.0.5\186a59c9647b6a87e9c5ca8a862b8ac478e9ea14\spring-core-7.0.5.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\com.graphql-java\java-dataloader\6.0.0\83ed8dd0b71d369543ae5c4c78bbdba23e410bd6\java-dataloader-6.0.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\io.micrometer\micrometer-observation\1.16.3\2846fee03dd959802e7cebf0f26c9ae2a59176a4\micrometer-observation-1.16.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\io.micrometer\micrometer-commons\1.16.3\2ee3cbdd1c32d8cc6defd6ed8b21695dfcb1e763\micrometer-commons-1.16.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.jspecify\jspecify\1.0.0\7425a601c1c7ec76645a78d22b8c6a627edee507\jspecify-1.0.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.seleniumhq.selenium\selenium-http\4.37.0\37a9bd22c8c92633e4dd2f1402f6e73fdd555b7e\selenium-http-4.37.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.seleniumhq.selenium\selenium-manager\4.37.0\cf42d76296d818c71cb58d8f925b5b7b08c4ee8d\selenium-manager-4.37.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.seleniumhq.selenium\selenium-os\4.37.0\50ca14dd91a917fdcd508974ed4fc85b7440b07c\selenium-os-4.37.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\jakarta.annotation\jakarta.annotation-api\3.0.0\54f928fadec906a99d558536756d171917b9d936\jakarta.annotation-api-3.0.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.yaml\snakeyaml\2.5\2d53ddec134280cb384c1e35d094e5f71c1f2316\snakeyaml-2.5.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.apache.tomcat.embed\tomcat-embed-el\11.0.18\44a04ab91a1e046f436c1746d5a93d1fff57982f\tomcat-embed-el-11.0.18.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.hibernate.validator\hibernate-validator\9.0.1.Final\28c0e41ecc84d1f0b8b6d81d16e0784e63364e68\hibernate-validator-9.0.1.Final.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework\spring-aspects\7.0.5\69189ba1f8996e79ae0317d45c6b969893b93e7a\spring-aspects-7.0.5.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\ch.qos.logback\logback-classic\1.5.32\2b1042c50f508f2eb402bd4d22ccbdf94cc37d2e\logback-classic-1.5.32.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.slf4j\jul-to-slf4j\2.0.17\524cb6ccc2b68a57604750e1ab8b13b5a786a6aa\jul-to-slf4j-2.0.17.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.slf4j\slf4j-api\2.0.17\d9e58ac9c7779ba3bf8142aff6c830617a7fe60f\slf4j-api-2.0.17.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\jakarta.xml.soap\jakarta.xml.soap-api\3.0.2\445830286faf84fe40a3f47ccd7537d69cd58c4\jakarta.xml.soap-api-3.0.2.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.jvnet.staxex\stax-ex\2.1.0\33160568d70c01da407f8ba982bacf283d00ad4a\stax-ex-2.1.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\jakarta.xml.bind\jakarta.xml.bind-api\4.0.4\d6d2327f3817d9a33a3b6b8f2e15a96bc2e7afdc\jakarta.xml.bind-api-4.0.4.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\jakarta.activation\jakarta.activation-api\2.1.4\9e5c2a0d75dde71a0bedc4dbdbe47b78a5dc50f8\jakarta.activation-api-2.1.4.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.reactivestreams\reactive-streams\1.0.4\3864a1320d97d7b045f729a326e1e077661f31b7\reactive-streams-1.0.4.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.jetbrains\annotations\13.0\919f0dfe192fb4e063e7dacadee7f8bb9a2672a9\annotations-13.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\com.google.guava\failureaccess\1.0.3\aeaffd00d57023a2c947393ed251f0354f0985fc\failureaccess-1.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\com.google.guava\listenablefuture\9999.0-empty-to-avoid-conflict-with-guava\b421526c5f297295adef1c886e5246c39d4ac629\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\com.google.j2objc\j2objc-annotations\3.1\a892ca9507839bbdb900d64310ac98256cab992f\j2objc-annotations-3.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\io.opentelemetry\opentelemetry-common\1.55.0\a979f45396c5332f43b9198ebf3eb52f5451e83f\opentelemetry-common-1.55.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\jakarta.validation\jakarta.validation-api\3.1.1\ec8622148afc5564235d17af80ea80288d0e7f92\jakarta.validation-api-3.1.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.jboss.logging\jboss-logging\3.6.2.Final\3e0a139d7a74cc13b5e01daa8aaa7f71dccd577e\jboss-logging-3.6.2.Final.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\com.fasterxml\classmate\1.7.3\f61c7e7b81e9249b0f6a05914eff9d54fb09f4a0\classmate-1.7.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.hibernate.orm\hibernate-core\7.2.4.Final\b23aac4c9681a7f6a539e94fd18a985e517c7dcb\hibernate-core-7.2.4.Final.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.antlr\antlr4-runtime\4.13.2\fc3db6d844df652a3d5db31c87fa12757f13691d\antlr4-runtime-4.13.2.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.aspectj\aspectjweaver\1.9.25.1\a713c790da4d794c7dfb542b550d4e44898d5e23\aspectjweaver-1.9.25.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\tools.jackson.core\jackson-core\3.0.4\c5be0f5814e161030c29fc48b92c27331729ab7f\jackson-core-3.0.4.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\tools.jackson.core\jackson-databind\3.0.4\b5f818b0b9c79d344aede4b87064cc0e323f9ef2\jackson-databind-3.0.4.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.core\jackson-annotations\2.20\6a5e7291ea3f2b590a7ce400adb7b3aea4d7e12c\jackson-annotations-2.20.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\com.jayway.jsonpath\json-path\2.10.0\e1a0b2e6db75401181c9c1c64c6d155ca5c6d608\json-path-2.10.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.apache.tomcat.embed\tomcat-embed-websocket\11.0.18\7b0009018394a033e922e8e956d4947dce1ffd07\tomcat-embed-websocket-11.0.18.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.apache.tomcat.embed\tomcat-embed-core\11.0.18\a96bb1b8a21ee7e93ce01cce7fd63f8e7561ec92\tomcat-embed-core-11.0.18.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\commons-logging\commons-logging\1.3.5\a3fcc5d3c29b2b03433aa2d2f2d2c1b1638924a1\commons-logging-1.3.5.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\ch.qos.logback\logback-core\1.5.32\fdfb3ff9a842303d4a95207294a6c6bc64e2605d\logback-core-1.5.32.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\biz.aQute.bnd\biz.aQute.bnd.annotation\7.1.0\2f2be18c936d08cf46ea6cfa0043f34afdf38705\biz.aQute.bnd.annotation-7.1.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.osgi\org.osgi.annotation.bundle\2.0.0\f5c2cd6e670c3c5d440d3003efd5ef2ead5c68eb\org.osgi.annotation.bundle-2.0.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.osgi\org.osgi.annotation.versioning\1.1.2\dc3cd4ec96c0b3c5459fe00694bd73a816ecf93e\org.osgi.annotation.versioning-1.1.2.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\jakarta.persistence\jakarta.persistence-api\3.2.0\bb75a113f3fa191c2c7ee7b206d8e674251b3129\jakarta.persistence-api-3.2.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\jakarta.transaction\jakarta.transaction-api\2.0.1\51a520e3fae406abb84e2e1148e6746ce3f80a1a\jakarta.transaction-api-2.0.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.atteo\evo-inflector\1.3\4cf8b5f363c60e63f8b7688ac053590460f2768e\evo-inflector-1.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.springframework.security\spring-security-crypto\7.0.3\8d23e5e4bad2bc9a7a028e010b96ac7d6b93f6e1\spring-security-crypto-7.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.osgi\org.osgi.resource\1.0.0\343c88949132984b3f2d4175a72c40b77dc65619\org.osgi.resource-1.0.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\HP\.gradle\caches\modules-2\files-2.1\org.osgi\org.osgi.service.serviceloader\1.0.0\3728ff37909c6a3c1870b3e851342d9f2bd3cc63\org.osgi.service.serviceloader-1.0.0.jar</AuxClasspathEntry>
+    <SrcDir>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\resources</SrcDir>
+    <SrcDir>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java</SrcDir>
+    <SrcDir>C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\build\generated\sources\dgs-codegen</SrcDir>
+    <Plugin id="com.h3xstream.findsecbugs" enabled="true"/>
+  </Project>
+  <BugInstance type="SPRING_ENDPOINT" priority="3" rank="15" abbrev="SECSC" category="SECURITY" instanceHash="c26f0c9614e21067a17c58ef93666da7" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Found Spring endpoint</ShortMessage>
+    <LongMessage>org.example.vgtuaventory.controller.AuthController is a Spring endpoint (Controller)</LongMessage>
+    <Class classname="org.example.vgtuaventory.controller.AuthController" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.CrossOrigin,org.springframework.web.bind.annotation.RestController,org.springframework.web.bind.annotation.RequestMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.AuthController" start="15" end="64" sourcefile="AuthController.java" sourcepath="org/example/vgtuaventory/controller/AuthController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\AuthController.java">
+        <Message>At AuthController.java:[lines 15-64]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.controller.AuthController</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.controller.AuthController" name="login" signature="(Lorg/example/vgtuaventory/controller/AuthController$LoginRequest;)Lorg/springframework/http/ResponseEntity;" isStatic="false" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.PostMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.AuthController" start="24" end="37" startBytecode="0" endBytecode="296" sourcefile="AuthController.java" sourcepath="org/example/vgtuaventory/controller/AuthController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\AuthController.java" synthetic="true"/>
+      <Message>In method org.example.vgtuaventory.controller.AuthController.login(AuthController$LoginRequest)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.controller.AuthController" start="24" end="37" startBytecode="0" endBytecode="296" sourcefile="AuthController.java" sourcepath="org/example/vgtuaventory/controller/AuthController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\AuthController.java" synthetic="true">
+      <Message>At AuthController.java:[lines 24-37]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="SPRING_ENDPOINT" priority="3" rank="15" abbrev="SECSC" category="SECURITY" instanceHash="7522ce14fa057129eeada5bfede8c095" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Found Spring endpoint</ShortMessage>
+    <LongMessage>org.example.vgtuaventory.controller.AuthController is a Spring endpoint (Controller)</LongMessage>
+    <Class classname="org.example.vgtuaventory.controller.AuthController" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.CrossOrigin,org.springframework.web.bind.annotation.RestController,org.springframework.web.bind.annotation.RequestMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.AuthController" start="15" end="64" sourcefile="AuthController.java" sourcepath="org/example/vgtuaventory/controller/AuthController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\AuthController.java">
+        <Message>At AuthController.java:[lines 15-64]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.controller.AuthController</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.controller.AuthController" name="logout" signature="(Ljava/lang/String;)Lorg/springframework/http/ResponseEntity;" isStatic="false" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.PostMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.AuthController" start="54" end="64" startBytecode="0" endBytecode="179" sourcefile="AuthController.java" sourcepath="org/example/vgtuaventory/controller/AuthController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\AuthController.java" synthetic="true"/>
+      <Message>In method org.example.vgtuaventory.controller.AuthController.logout(String)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.controller.AuthController" start="54" end="64" startBytecode="0" endBytecode="179" sourcefile="AuthController.java" sourcepath="org/example/vgtuaventory/controller/AuthController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\AuthController.java" synthetic="true">
+      <Message>At AuthController.java:[lines 54-64]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="SPRING_ENDPOINT" priority="3" rank="15" abbrev="SECSC" category="SECURITY" instanceHash="aac6022aa68d48f3c1b26a422adc4f7e" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Found Spring endpoint</ShortMessage>
+    <LongMessage>org.example.vgtuaventory.controller.AuthController is a Spring endpoint (Controller)</LongMessage>
+    <Class classname="org.example.vgtuaventory.controller.AuthController" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.CrossOrigin,org.springframework.web.bind.annotation.RestController,org.springframework.web.bind.annotation.RequestMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.AuthController" start="15" end="64" sourcefile="AuthController.java" sourcepath="org/example/vgtuaventory/controller/AuthController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\AuthController.java">
+        <Message>At AuthController.java:[lines 15-64]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.controller.AuthController</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.controller.AuthController" name="register" signature="(Lorg/example/vgtuaventory/controller/AuthController$RegisterRequest;)Lorg/springframework/http/ResponseEntity;" isStatic="false" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.PostMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.AuthController" start="44" end="48" startBytecode="0" endBytecode="175" sourcefile="AuthController.java" sourcepath="org/example/vgtuaventory/controller/AuthController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\AuthController.java" synthetic="true"/>
+      <Message>In method org.example.vgtuaventory.controller.AuthController.register(AuthController$RegisterRequest)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.controller.AuthController" start="44" end="48" startBytecode="0" endBytecode="175" sourcefile="AuthController.java" sourcepath="org/example/vgtuaventory/controller/AuthController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\AuthController.java" synthetic="true">
+      <Message>At AuthController.java:[lines 44-48]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="SPRING_ENDPOINT" priority="3" rank="15" abbrev="SECSC" category="SECURITY" instanceHash="82f8acf1abc6430fe027c19c46995008" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Found Spring endpoint</ShortMessage>
+    <LongMessage>org.example.vgtuaventory.controller.CategoryController is a Spring endpoint (Controller)</LongMessage>
+    <Class classname="org.example.vgtuaventory.controller.CategoryController" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.CrossOrigin,org.springframework.web.bind.annotation.RestController,org.springframework.web.bind.annotation.RequestMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.CategoryController" start="15" end="47" sourcefile="CategoryController.java" sourcepath="org/example/vgtuaventory/controller/CategoryController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\CategoryController.java">
+        <Message>At CategoryController.java:[lines 15-47]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.controller.CategoryController</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.controller.CategoryController" name="create" signature="(Lorg/example/vgtuaventory/controller/CategoryController$CategoryRequest;I)Lorg/springframework/http/ResponseEntity;" isStatic="false" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.PostMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.CategoryController" start="25" end="41" startBytecode="0" endBytecode="292" sourcefile="CategoryController.java" sourcepath="org/example/vgtuaventory/controller/CategoryController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\CategoryController.java" synthetic="true"/>
+      <Message>In method org.example.vgtuaventory.controller.CategoryController.create(CategoryController$CategoryRequest, int)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.controller.CategoryController" start="25" end="41" startBytecode="0" endBytecode="292" sourcefile="CategoryController.java" sourcepath="org/example/vgtuaventory/controller/CategoryController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\CategoryController.java" synthetic="true">
+      <Message>At CategoryController.java:[lines 25-41]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="SPRING_ENDPOINT" priority="3" rank="15" abbrev="SECSC" category="SECURITY" instanceHash="7e433d6c5b035dd7bfaa4c3084969bf3" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Found Spring endpoint</ShortMessage>
+    <LongMessage>org.example.vgtuaventory.controller.CategoryController is a Spring endpoint (Controller)</LongMessage>
+    <Class classname="org.example.vgtuaventory.controller.CategoryController" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.CrossOrigin,org.springframework.web.bind.annotation.RestController,org.springframework.web.bind.annotation.RequestMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.CategoryController" start="15" end="47" sourcefile="CategoryController.java" sourcepath="org/example/vgtuaventory/controller/CategoryController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\CategoryController.java">
+        <Message>At CategoryController.java:[lines 15-47]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.controller.CategoryController</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.controller.CategoryController" name="list" signature="(I)Lorg/springframework/http/ResponseEntity;" isStatic="false" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.GetMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.CategoryController" start="47" end="47" startBytecode="0" endBytecode="65" sourcefile="CategoryController.java" sourcepath="org/example/vgtuaventory/controller/CategoryController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\CategoryController.java" synthetic="true"/>
+      <Message>In method org.example.vgtuaventory.controller.CategoryController.list(int)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.controller.CategoryController" start="47" end="47" startBytecode="0" endBytecode="65" sourcefile="CategoryController.java" sourcepath="org/example/vgtuaventory/controller/CategoryController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\CategoryController.java" synthetic="true">
+      <Message>At CategoryController.java:[line 47]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="EI_EXPOSE_REP2" priority="2" rank="18" abbrev="EI2" category="MALICIOUS_CODE" instanceHash="1232ed76a2d40db03fd1614462288fa0" instanceOccurrenceNum="0" instanceOccurrenceMax="0" cweid="374">
+    <ShortMessage>May expose internal representation by incorporating reference to mutable object</ShortMessage>
+    <LongMessage>new org.example.vgtuaventory.controller.EventController(EventService) may expose internal representation by storing an externally mutable object into EventController.eventService</LongMessage>
+    <Class classname="org.example.vgtuaventory.controller.EventController" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.CrossOrigin,org.springframework.web.bind.annotation.RestController,org.springframework.web.bind.annotation.RequestMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.EventController" start="23" end="87" sourcefile="EventController.java" sourcepath="org/example/vgtuaventory/controller/EventController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\EventController.java">
+        <Message>At EventController.java:[lines 23-87]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.controller.EventController</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.controller.EventController" name="&lt;init&gt;" signature="(Lorg/example/vgtuaventory/service/EventService;)V" isStatic="false" primary="true" classAnnotationNames="org.springframework.beans.factory.annotation.Autowired">
+      <SourceLine classname="org.example.vgtuaventory.controller.EventController" start="23" end="25" startBytecode="0" endBytecode="69" sourcefile="EventController.java" sourcepath="org/example/vgtuaventory/controller/EventController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\EventController.java"/>
+      <Message>In method new org.example.vgtuaventory.controller.EventController(EventService)</Message>
+    </Method>
+    <Field classname="org.example.vgtuaventory.controller.EventController" name="eventService" signature="Lorg/example/vgtuaventory/service/EventService;" isStatic="false" primary="true">
+      <SourceLine classname="org.example.vgtuaventory.controller.EventController" sourcefile="EventController.java" sourcepath="org/example/vgtuaventory/controller/EventController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\EventController.java">
+        <Message>In EventController.java</Message>
+      </SourceLine>
+      <Message>Field org.example.vgtuaventory.controller.EventController.eventService</Message>
+    </Field>
+    <LocalVariable name="eventService" register="1" pc="6" role="LOCAL_VARIABLE_NAMED">
+      <Message>Local variable named eventService</Message>
+    </LocalVariable>
+    <SourceLine classname="org.example.vgtuaventory.controller.EventController" primary="true" start="24" end="24" startBytecode="6" endBytecode="6" sourcefile="EventController.java" sourcepath="org/example/vgtuaventory/controller/EventController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\EventController.java">
+      <Message>At EventController.java:[line 24]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="SPRING_ENDPOINT" priority="3" rank="15" abbrev="SECSC" category="SECURITY" instanceHash="73b93df251e32ff4079232b8048d7325" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Found Spring endpoint</ShortMessage>
+    <LongMessage>org.example.vgtuaventory.controller.EventController is a Spring endpoint (Controller)</LongMessage>
+    <Class classname="org.example.vgtuaventory.controller.EventController" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.CrossOrigin,org.springframework.web.bind.annotation.RestController,org.springframework.web.bind.annotation.RequestMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.EventController" start="23" end="87" sourcefile="EventController.java" sourcepath="org/example/vgtuaventory/controller/EventController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\EventController.java">
+        <Message>At EventController.java:[lines 23-87]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.controller.EventController</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.controller.EventController" name="createEvent" signature="(Lorg/example/vgtuaventory/dto/EventDTO;I)Lorg/springframework/http/ResponseEntity;" isStatic="false" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.PostMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.EventController" start="43" end="52" startBytecode="0" endBytecode="225" sourcefile="EventController.java" sourcepath="org/example/vgtuaventory/controller/EventController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\EventController.java" synthetic="true"/>
+      <Message>In method org.example.vgtuaventory.controller.EventController.createEvent(EventDTO, int)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.controller.EventController" start="43" end="52" startBytecode="0" endBytecode="225" sourcefile="EventController.java" sourcepath="org/example/vgtuaventory/controller/EventController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\EventController.java" synthetic="true">
+      <Message>At EventController.java:[lines 43-52]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="SPRING_ENDPOINT" priority="3" rank="15" abbrev="SECSC" category="SECURITY" instanceHash="a9c76803953b039d9f689641a3c22a64" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Found Spring endpoint</ShortMessage>
+    <LongMessage>org.example.vgtuaventory.controller.EventController is a Spring endpoint (Controller)</LongMessage>
+    <Class classname="org.example.vgtuaventory.controller.EventController" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.CrossOrigin,org.springframework.web.bind.annotation.RestController,org.springframework.web.bind.annotation.RequestMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.EventController" start="23" end="87" sourcefile="EventController.java" sourcepath="org/example/vgtuaventory/controller/EventController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\EventController.java">
+        <Message>At EventController.java:[lines 23-87]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.controller.EventController</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.controller.EventController" name="deleteEvent" signature="(II)Lorg/springframework/http/ResponseEntity;" isStatic="false" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.DeleteMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.EventController" start="80" end="87" startBytecode="0" endBytecode="240" sourcefile="EventController.java" sourcepath="org/example/vgtuaventory/controller/EventController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\EventController.java" synthetic="true"/>
+      <Message>In method org.example.vgtuaventory.controller.EventController.deleteEvent(int, int)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.controller.EventController" start="80" end="87" startBytecode="0" endBytecode="240" sourcefile="EventController.java" sourcepath="org/example/vgtuaventory/controller/EventController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\EventController.java" synthetic="true">
+      <Message>At EventController.java:[lines 80-87]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="SPRING_ENDPOINT" priority="3" rank="15" abbrev="SECSC" category="SECURITY" instanceHash="cc94d7d78fb4e12720667177962561f3" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Found Spring endpoint</ShortMessage>
+    <LongMessage>org.example.vgtuaventory.controller.EventController is a Spring endpoint (Controller)</LongMessage>
+    <Class classname="org.example.vgtuaventory.controller.EventController" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.CrossOrigin,org.springframework.web.bind.annotation.RestController,org.springframework.web.bind.annotation.RequestMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.EventController" start="23" end="87" sourcefile="EventController.java" sourcepath="org/example/vgtuaventory/controller/EventController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\EventController.java">
+        <Message>At EventController.java:[lines 23-87]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.controller.EventController</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.controller.EventController" name="editEvent" signature="(ILorg/example/vgtuaventory/dto/EventDTO;I)Lorg/springframework/http/ResponseEntity;" isStatic="false" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.PutMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.EventController" start="59" end="72" startBytecode="0" endBytecode="349" sourcefile="EventController.java" sourcepath="org/example/vgtuaventory/controller/EventController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\EventController.java" synthetic="true"/>
+      <Message>In method org.example.vgtuaventory.controller.EventController.editEvent(int, EventDTO, int)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.controller.EventController" start="59" end="72" startBytecode="0" endBytecode="349" sourcefile="EventController.java" sourcepath="org/example/vgtuaventory/controller/EventController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\EventController.java" synthetic="true">
+      <Message>At EventController.java:[lines 59-72]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="SPRING_ENDPOINT" priority="3" rank="15" abbrev="SECSC" category="SECURITY" instanceHash="2b00e437c40a1afec77be6b4d4902dfb" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Found Spring endpoint</ShortMessage>
+    <LongMessage>org.example.vgtuaventory.controller.EventController is a Spring endpoint (Controller)</LongMessage>
+    <Class classname="org.example.vgtuaventory.controller.EventController" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.CrossOrigin,org.springframework.web.bind.annotation.RestController,org.springframework.web.bind.annotation.RequestMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.EventController" start="23" end="87" sourcefile="EventController.java" sourcepath="org/example/vgtuaventory/controller/EventController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\EventController.java">
+        <Message>At EventController.java:[lines 23-87]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.controller.EventController</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.controller.EventController" name="getMyEvents" signature="(I)Lorg/springframework/http/ResponseEntity;" isStatic="false" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.GetMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.EventController" start="29" end="37" startBytecode="0" endBytecode="182" sourcefile="EventController.java" sourcepath="org/example/vgtuaventory/controller/EventController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\EventController.java" synthetic="true"/>
+      <Message>In method org.example.vgtuaventory.controller.EventController.getMyEvents(int)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.controller.EventController" start="29" end="37" startBytecode="0" endBytecode="182" sourcefile="EventController.java" sourcepath="org/example/vgtuaventory/controller/EventController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\EventController.java" synthetic="true">
+      <Message>At EventController.java:[lines 29-37]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="ENTITY_LEAK" priority="2" rank="12" abbrev="SECELEAK" category="SECURITY" instanceHash="1f2d0ff0257adbab2e2ce3b0ff4f071b" instanceOccurrenceNum="0" instanceOccurrenceMax="0" cweid="212">
+    <ShortMessage>Unexpected property leak</ShortMessage>
+    <LongMessage>Unexpected property could be leaked because a persistence class is directly exposed to the client</LongMessage>
+    <Class classname="org.example.vgtuaventory.controller.ProductController" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.CrossOrigin,org.springframework.web.bind.annotation.RestController,org.springframework.web.bind.annotation.RequestMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.ProductController" start="21" end="181" sourcefile="ProductController.java" sourcepath="org/example/vgtuaventory/controller/ProductController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\ProductController.java">
+        <Message>At ProductController.java:[lines 21-181]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.controller.ProductController</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.controller.ProductController" name="list" signature="(I)Lorg/springframework/http/ResponseEntity;" isStatic="false" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.GetMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.ProductController" start="32" end="32" startBytecode="0" endBytecode="65" sourcefile="ProductController.java" sourcepath="org/example/vgtuaventory/controller/ProductController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\ProductController.java" synthetic="true"/>
+      <Message>In method org.example.vgtuaventory.controller.ProductController.list(int)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.controller.ProductController" start="32" end="32" startBytecode="0" endBytecode="65" sourcefile="ProductController.java" sourcepath="org/example/vgtuaventory/controller/ProductController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\ProductController.java" synthetic="true">
+      <Message>At ProductController.java:[line 32]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="SPRING_ENDPOINT" priority="3" rank="15" abbrev="SECSC" category="SECURITY" instanceHash="5e67ed5b1e1f31bcf0783acfd527a886" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Found Spring endpoint</ShortMessage>
+    <LongMessage>org.example.vgtuaventory.controller.ProductController is a Spring endpoint (Controller)</LongMessage>
+    <Class classname="org.example.vgtuaventory.controller.ProductController" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.CrossOrigin,org.springframework.web.bind.annotation.RestController,org.springframework.web.bind.annotation.RequestMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.ProductController" start="21" end="181" sourcefile="ProductController.java" sourcepath="org/example/vgtuaventory/controller/ProductController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\ProductController.java">
+        <Message>At ProductController.java:[lines 21-181]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.controller.ProductController</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.controller.ProductController" name="create" signature="(Lorg/example/vgtuaventory/controller/ProductController$ProductRequest;I)Lorg/springframework/http/ResponseEntity;" isStatic="false" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.PostMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.ProductController" start="80" end="115" startBytecode="0" endBytecode="519" sourcefile="ProductController.java" sourcepath="org/example/vgtuaventory/controller/ProductController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\ProductController.java" synthetic="true"/>
+      <Message>In method org.example.vgtuaventory.controller.ProductController.create(ProductController$ProductRequest, int)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.controller.ProductController" start="80" end="115" startBytecode="0" endBytecode="519" sourcefile="ProductController.java" sourcepath="org/example/vgtuaventory/controller/ProductController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\ProductController.java" synthetic="true">
+      <Message>At ProductController.java:[lines 80-115]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="SPRING_ENDPOINT" priority="3" rank="15" abbrev="SECSC" category="SECURITY" instanceHash="1e8e66eea9016ff160bb50172d6e6b9d" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Found Spring endpoint</ShortMessage>
+    <LongMessage>org.example.vgtuaventory.controller.ProductController is a Spring endpoint (Controller)</LongMessage>
+    <Class classname="org.example.vgtuaventory.controller.ProductController" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.CrossOrigin,org.springframework.web.bind.annotation.RestController,org.springframework.web.bind.annotation.RequestMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.ProductController" start="21" end="181" sourcefile="ProductController.java" sourcepath="org/example/vgtuaventory/controller/ProductController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\ProductController.java">
+        <Message>At ProductController.java:[lines 21-181]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.controller.ProductController</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.controller.ProductController" name="delete" signature="(II)Lorg/springframework/http/ResponseEntity;" isStatic="false" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.DeleteMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.ProductController" start="173" end="181" startBytecode="0" endBytecode="204" sourcefile="ProductController.java" sourcepath="org/example/vgtuaventory/controller/ProductController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\ProductController.java" synthetic="true"/>
+      <Message>In method org.example.vgtuaventory.controller.ProductController.delete(int, int)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.controller.ProductController" start="173" end="181" startBytecode="0" endBytecode="204" sourcefile="ProductController.java" sourcepath="org/example/vgtuaventory/controller/ProductController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\ProductController.java" synthetic="true">
+      <Message>At ProductController.java:[lines 173-181]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="SPRING_ENDPOINT" priority="3" rank="15" abbrev="SECSC" category="SECURITY" instanceHash="21f0d6904694e12c4b2573426a471ce9" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Found Spring endpoint</ShortMessage>
+    <LongMessage>org.example.vgtuaventory.controller.ProductController is a Spring endpoint (Controller)</LongMessage>
+    <Class classname="org.example.vgtuaventory.controller.ProductController" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.CrossOrigin,org.springframework.web.bind.annotation.RestController,org.springframework.web.bind.annotation.RequestMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.ProductController" start="21" end="181" sourcefile="ProductController.java" sourcepath="org/example/vgtuaventory/controller/ProductController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\ProductController.java">
+        <Message>At ProductController.java:[lines 21-181]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.controller.ProductController</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.controller.ProductController" name="getById" signature="(II)Lorg/springframework/http/ResponseEntity;" isStatic="false" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.GetMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.ProductController" start="40" end="40" startBytecode="0" endBytecode="107" sourcefile="ProductController.java" sourcepath="org/example/vgtuaventory/controller/ProductController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\ProductController.java" synthetic="true"/>
+      <Message>In method org.example.vgtuaventory.controller.ProductController.getById(int, int)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.controller.ProductController" start="40" end="40" startBytecode="0" endBytecode="107" sourcefile="ProductController.java" sourcepath="org/example/vgtuaventory/controller/ProductController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\ProductController.java" synthetic="true">
+      <Message>At ProductController.java:[line 40]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="SPRING_ENDPOINT" priority="3" rank="15" abbrev="SECSC" category="SECURITY" instanceHash="b221df2aa63471325515ac9f609d7772" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Found Spring endpoint</ShortMessage>
+    <LongMessage>org.example.vgtuaventory.controller.ProductController is a Spring endpoint (Controller)</LongMessage>
+    <Class classname="org.example.vgtuaventory.controller.ProductController" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.CrossOrigin,org.springframework.web.bind.annotation.RestController,org.springframework.web.bind.annotation.RequestMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.ProductController" start="21" end="181" sourcefile="ProductController.java" sourcepath="org/example/vgtuaventory/controller/ProductController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\ProductController.java">
+        <Message>At ProductController.java:[lines 21-181]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.controller.ProductController</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.controller.ProductController" name="getByQrCode" signature="(Ljava/lang/String;I)Lorg/springframework/http/ResponseEntity;" isStatic="false" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.GetMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.ProductController" start="56" end="71" startBytecode="0" endBytecode="271" sourcefile="ProductController.java" sourcepath="org/example/vgtuaventory/controller/ProductController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\ProductController.java" synthetic="true"/>
+      <Message>In method org.example.vgtuaventory.controller.ProductController.getByQrCode(String, int)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.controller.ProductController" start="56" end="71" startBytecode="0" endBytecode="271" sourcefile="ProductController.java" sourcepath="org/example/vgtuaventory/controller/ProductController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\ProductController.java" synthetic="true">
+      <Message>At ProductController.java:[lines 56-71]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="SPRING_ENDPOINT" priority="3" rank="15" abbrev="SECSC" category="SECURITY" instanceHash="6278bdaa2c8e8dae650d2f7fdd8d0a1e" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Found Spring endpoint</ShortMessage>
+    <LongMessage>org.example.vgtuaventory.controller.ProductController is a Spring endpoint (Controller)</LongMessage>
+    <Class classname="org.example.vgtuaventory.controller.ProductController" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.CrossOrigin,org.springframework.web.bind.annotation.RestController,org.springframework.web.bind.annotation.RequestMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.ProductController" start="21" end="181" sourcefile="ProductController.java" sourcepath="org/example/vgtuaventory/controller/ProductController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\ProductController.java">
+        <Message>At ProductController.java:[lines 21-181]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.controller.ProductController</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.controller.ProductController" name="list" signature="(I)Lorg/springframework/http/ResponseEntity;" isStatic="false" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.GetMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.ProductController" start="32" end="32" startBytecode="0" endBytecode="65" sourcefile="ProductController.java" sourcepath="org/example/vgtuaventory/controller/ProductController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\ProductController.java" synthetic="true"/>
+      <Message>In method org.example.vgtuaventory.controller.ProductController.list(int)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.controller.ProductController" start="32" end="32" startBytecode="0" endBytecode="65" sourcefile="ProductController.java" sourcepath="org/example/vgtuaventory/controller/ProductController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\ProductController.java" synthetic="true">
+      <Message>At ProductController.java:[line 32]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="SPRING_ENDPOINT" priority="3" rank="15" abbrev="SECSC" category="SECURITY" instanceHash="9f0486ebb1fd378977d28e5b4ee25f96" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Found Spring endpoint</ShortMessage>
+    <LongMessage>org.example.vgtuaventory.controller.ProductController is a Spring endpoint (Controller)</LongMessage>
+    <Class classname="org.example.vgtuaventory.controller.ProductController" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.CrossOrigin,org.springframework.web.bind.annotation.RestController,org.springframework.web.bind.annotation.RequestMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.ProductController" start="21" end="181" sourcefile="ProductController.java" sourcepath="org/example/vgtuaventory/controller/ProductController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\ProductController.java">
+        <Message>At ProductController.java:[lines 21-181]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.controller.ProductController</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.controller.ProductController" name="update" signature="(ILorg/example/vgtuaventory/controller/ProductController$ProductRequest;I)Lorg/springframework/http/ResponseEntity;" isStatic="false" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.PutMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.ProductController" start="124" end="124" startBytecode="0" endBytecode="118" sourcefile="ProductController.java" sourcepath="org/example/vgtuaventory/controller/ProductController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\ProductController.java" synthetic="true"/>
+      <Message>In method org.example.vgtuaventory.controller.ProductController.update(int, ProductController$ProductRequest, int)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.controller.ProductController" start="124" end="124" startBytecode="0" endBytecode="118" sourcefile="ProductController.java" sourcepath="org/example/vgtuaventory/controller/ProductController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\ProductController.java" synthetic="true">
+      <Message>At ProductController.java:[line 124]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="ENTITY_LEAK" priority="2" rank="12" abbrev="SECELEAK" category="SECURITY" instanceHash="307d977caa3b7377aa3e6c35eb983c1a" instanceOccurrenceNum="0" instanceOccurrenceMax="0" cweid="212">
+    <ShortMessage>Unexpected property leak</ShortMessage>
+    <LongMessage>Unexpected property could be leaked because a persistence class is directly exposed to the client</LongMessage>
+    <Class classname="org.example.vgtuaventory.controller.SaleController" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.CrossOrigin,org.springframework.web.bind.annotation.RestController,org.springframework.web.bind.annotation.RequestMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.SaleController" start="20" end="72" sourcefile="SaleController.java" sourcepath="org/example/vgtuaventory/controller/SaleController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\SaleController.java">
+        <Message>At SaleController.java:[lines 20-72]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.controller.SaleController</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.controller.SaleController" name="getUserSales" signature="(I)Lorg/springframework/http/ResponseEntity;" isStatic="false" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.GetMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.SaleController" start="42" end="42" startBytecode="0" endBytecode="63" sourcefile="SaleController.java" sourcepath="org/example/vgtuaventory/controller/SaleController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\SaleController.java" synthetic="true"/>
+      <Message>In method org.example.vgtuaventory.controller.SaleController.getUserSales(int)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.controller.SaleController" start="42" end="42" startBytecode="0" endBytecode="63" sourcefile="SaleController.java" sourcepath="org/example/vgtuaventory/controller/SaleController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\SaleController.java" synthetic="true">
+      <Message>At SaleController.java:[line 42]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="SPRING_ENDPOINT" priority="3" rank="15" abbrev="SECSC" category="SECURITY" instanceHash="e4d84ca7b0feb257689706b5bd288f12" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Found Spring endpoint</ShortMessage>
+    <LongMessage>org.example.vgtuaventory.controller.SaleController is a Spring endpoint (Controller)</LongMessage>
+    <Class classname="org.example.vgtuaventory.controller.SaleController" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.CrossOrigin,org.springframework.web.bind.annotation.RestController,org.springframework.web.bind.annotation.RequestMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.SaleController" start="20" end="72" sourcefile="SaleController.java" sourcepath="org/example/vgtuaventory/controller/SaleController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\SaleController.java">
+        <Message>At SaleController.java:[lines 20-72]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.controller.SaleController</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.controller.SaleController" name="createSale" signature="(Lorg/example/vgtuaventory/service/SaleService$SaleRequest;I)Lorg/springframework/http/ResponseEntity;" isStatic="false" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.PostMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.SaleController" start="29" end="34" startBytecode="0" endBytecode="189" sourcefile="SaleController.java" sourcepath="org/example/vgtuaventory/controller/SaleController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\SaleController.java" synthetic="true"/>
+      <Message>In method org.example.vgtuaventory.controller.SaleController.createSale(SaleService$SaleRequest, int)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.controller.SaleController" start="29" end="34" startBytecode="0" endBytecode="189" sourcefile="SaleController.java" sourcepath="org/example/vgtuaventory/controller/SaleController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\SaleController.java" synthetic="true">
+      <Message>At SaleController.java:[lines 29-34]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="SPRING_ENDPOINT" priority="3" rank="15" abbrev="SECSC" category="SECURITY" instanceHash="e2575b00cb975dca99ae0b8b228b4aee" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Found Spring endpoint</ShortMessage>
+    <LongMessage>org.example.vgtuaventory.controller.SaleController is a Spring endpoint (Controller)</LongMessage>
+    <Class classname="org.example.vgtuaventory.controller.SaleController" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.CrossOrigin,org.springframework.web.bind.annotation.RestController,org.springframework.web.bind.annotation.RequestMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.SaleController" start="20" end="72" sourcefile="SaleController.java" sourcepath="org/example/vgtuaventory/controller/SaleController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\SaleController.java">
+        <Message>At SaleController.java:[lines 20-72]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.controller.SaleController</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.controller.SaleController" name="getProductSalesComparison" signature="(Ljava/time/LocalDate;Ljava/time/LocalDate;Lorg/example/vgtuaventory/controller/SaleController$ProductSalesComparisonRequest;I)Lorg/springframework/http/ResponseEntity;" isStatic="false" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.PostMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.SaleController" start="68" end="72" startBytecode="0" endBytecode="194" sourcefile="SaleController.java" sourcepath="org/example/vgtuaventory/controller/SaleController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\SaleController.java" synthetic="true"/>
+      <Message>In method org.example.vgtuaventory.controller.SaleController.getProductSalesComparison(LocalDate, LocalDate, SaleController$ProductSalesComparisonRequest, int)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.controller.SaleController" start="68" end="72" startBytecode="0" endBytecode="194" sourcefile="SaleController.java" sourcepath="org/example/vgtuaventory/controller/SaleController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\SaleController.java" synthetic="true">
+      <Message>At SaleController.java:[lines 68-72]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="SPRING_ENDPOINT" priority="3" rank="15" abbrev="SECSC" category="SECURITY" instanceHash="dfbf370df556cb7e345a1bcc93a42d59" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Found Spring endpoint</ShortMessage>
+    <LongMessage>org.example.vgtuaventory.controller.SaleController is a Spring endpoint (Controller)</LongMessage>
+    <Class classname="org.example.vgtuaventory.controller.SaleController" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.CrossOrigin,org.springframework.web.bind.annotation.RestController,org.springframework.web.bind.annotation.RequestMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.SaleController" start="20" end="72" sourcefile="SaleController.java" sourcepath="org/example/vgtuaventory/controller/SaleController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\SaleController.java">
+        <Message>At SaleController.java:[lines 20-72]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.controller.SaleController</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.controller.SaleController" name="getTopSellingProducts" signature="(Ljava/time/LocalDate;Ljava/time/LocalDate;I)Lorg/springframework/http/ResponseEntity;" isStatic="false" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.GetMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.SaleController" start="52" end="56" startBytecode="0" endBytecode="179" sourcefile="SaleController.java" sourcepath="org/example/vgtuaventory/controller/SaleController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\SaleController.java" synthetic="true"/>
+      <Message>In method org.example.vgtuaventory.controller.SaleController.getTopSellingProducts(LocalDate, LocalDate, int)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.controller.SaleController" start="52" end="56" startBytecode="0" endBytecode="179" sourcefile="SaleController.java" sourcepath="org/example/vgtuaventory/controller/SaleController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\SaleController.java" synthetic="true">
+      <Message>At SaleController.java:[lines 52-56]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="SPRING_ENDPOINT" priority="3" rank="15" abbrev="SECSC" category="SECURITY" instanceHash="bc19e72fc587f9ea78067bb7e892ed8f" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Found Spring endpoint</ShortMessage>
+    <LongMessage>org.example.vgtuaventory.controller.SaleController is a Spring endpoint (Controller)</LongMessage>
+    <Class classname="org.example.vgtuaventory.controller.SaleController" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.CrossOrigin,org.springframework.web.bind.annotation.RestController,org.springframework.web.bind.annotation.RequestMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.SaleController" start="20" end="72" sourcefile="SaleController.java" sourcepath="org/example/vgtuaventory/controller/SaleController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\SaleController.java">
+        <Message>At SaleController.java:[lines 20-72]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.controller.SaleController</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.controller.SaleController" name="getUserSales" signature="(I)Lorg/springframework/http/ResponseEntity;" isStatic="false" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.GetMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.SaleController" start="42" end="42" startBytecode="0" endBytecode="63" sourcefile="SaleController.java" sourcepath="org/example/vgtuaventory/controller/SaleController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\SaleController.java" synthetic="true"/>
+      <Message>In method org.example.vgtuaventory.controller.SaleController.getUserSales(int)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.controller.SaleController" start="42" end="42" startBytecode="0" endBytecode="63" sourcefile="SaleController.java" sourcepath="org/example/vgtuaventory/controller/SaleController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\SaleController.java" synthetic="true">
+      <Message>At SaleController.java:[line 42]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD" priority="2" rank="17" abbrev="UwF" category="STYLE" instanceHash="6a936cbd9414c88eca83846028832ecd" instanceOccurrenceNum="0" instanceOccurrenceMax="0" cweid="457">
+    <ShortMessage>Unwritten public or protected field</ShortMessage>
+    <LongMessage>Unwritten public or protected field: org.example.vgtuaventory.controller.SaleController$ProductSalesComparisonRequest.productIds</LongMessage>
+    <Class classname="org.example.vgtuaventory.controller.SaleController$ProductSalesComparisonRequest" primary="true">
+      <SourceLine classname="org.example.vgtuaventory.controller.SaleController$ProductSalesComparisonRequest" start="76" end="76" sourcefile="SaleController.java" sourcepath="org/example/vgtuaventory/controller/SaleController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\SaleController.java">
+        <Message>At SaleController.java:[line 76]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.controller.SaleController$ProductSalesComparisonRequest</Message>
+    </Class>
+    <Field classname="org.example.vgtuaventory.controller.SaleController$ProductSalesComparisonRequest" name="productIds" signature="Ljava/util/List;" isStatic="false" primary="true">
+      <SourceLine classname="org.example.vgtuaventory.controller.SaleController$ProductSalesComparisonRequest" sourcefile="SaleController.java" sourcepath="org/example/vgtuaventory/controller/SaleController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\SaleController.java">
+        <Message>In SaleController.java</Message>
+      </SourceLine>
+      <Message>Field org.example.vgtuaventory.controller.SaleController$ProductSalesComparisonRequest.productIds</Message>
+    </Field>
+    <SourceLine classname="org.example.vgtuaventory.controller.SaleController" primary="true" start="68" end="68" startBytecode="9" endBytecode="9" sourcefile="SaleController.java" sourcepath="org/example/vgtuaventory/controller/SaleController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\SaleController.java">
+      <Message>At SaleController.java:[line 68]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="SPRING_ENDPOINT" priority="3" rank="15" abbrev="SECSC" category="SECURITY" instanceHash="95746822c3115a0bc75ef3cbd8c19d2d" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Found Spring endpoint</ShortMessage>
+    <LongMessage>org.example.vgtuaventory.controller.TotalSalesController is a Spring endpoint (Controller)</LongMessage>
+    <Class classname="org.example.vgtuaventory.controller.TotalSalesController" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.RestController">
+      <SourceLine classname="org.example.vgtuaventory.controller.TotalSalesController" start="27" end="175" sourcefile="TotalSalesController.java" sourcepath="org/example/vgtuaventory/controller/TotalSalesController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\TotalSalesController.java">
+        <Message>At TotalSalesController.java:[lines 27-175]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.controller.TotalSalesController</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.controller.TotalSalesController" name="findAllBySaleDateBetween" signature="(Ljava/lang/String;I)Lorg/springframework/http/ResponseEntity;" isStatic="false" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.GetMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.TotalSalesController" start="68" end="95" startBytecode="0" endBytecode="631" sourcefile="TotalSalesController.java" sourcepath="org/example/vgtuaventory/controller/TotalSalesController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\TotalSalesController.java" synthetic="true"/>
+      <Message>In method org.example.vgtuaventory.controller.TotalSalesController.findAllBySaleDateBetween(String, int)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.controller.TotalSalesController" start="68" end="95" startBytecode="0" endBytecode="631" sourcefile="TotalSalesController.java" sourcepath="org/example/vgtuaventory/controller/TotalSalesController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\TotalSalesController.java" synthetic="true">
+      <Message>At TotalSalesController.java:[lines 68-95]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="SPRING_ENDPOINT" priority="3" rank="15" abbrev="SECSC" category="SECURITY" instanceHash="94d903a43d2b7b3e36e60a0f6afb7c15" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Found Spring endpoint</ShortMessage>
+    <LongMessage>org.example.vgtuaventory.controller.TotalSalesController is a Spring endpoint (Controller)</LongMessage>
+    <Class classname="org.example.vgtuaventory.controller.TotalSalesController" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.RestController">
+      <SourceLine classname="org.example.vgtuaventory.controller.TotalSalesController" start="27" end="175" sourcefile="TotalSalesController.java" sourcepath="org/example/vgtuaventory/controller/TotalSalesController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\TotalSalesController.java">
+        <Message>At TotalSalesController.java:[lines 27-175]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.controller.TotalSalesController</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.controller.TotalSalesController" name="getFirstSaleDate" signature="()Lorg/springframework/http/ResponseEntity;" isStatic="false" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.GetMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.TotalSalesController" start="168" end="175" startBytecode="0" endBytecode="175" sourcefile="TotalSalesController.java" sourcepath="org/example/vgtuaventory/controller/TotalSalesController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\TotalSalesController.java" synthetic="true"/>
+      <Message>In method org.example.vgtuaventory.controller.TotalSalesController.getFirstSaleDate()</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.controller.TotalSalesController" start="168" end="175" startBytecode="0" endBytecode="175" sourcefile="TotalSalesController.java" sourcepath="org/example/vgtuaventory/controller/TotalSalesController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\TotalSalesController.java" synthetic="true">
+      <Message>At TotalSalesController.java:[lines 168-175]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="SPRING_ENDPOINT" priority="3" rank="15" abbrev="SECSC" category="SECURITY" instanceHash="33119762c8aebf4b8f4df11682bfab00" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Found Spring endpoint</ShortMessage>
+    <LongMessage>org.example.vgtuaventory.controller.TotalSalesController is a Spring endpoint (Controller)</LongMessage>
+    <Class classname="org.example.vgtuaventory.controller.TotalSalesController" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.RestController">
+      <SourceLine classname="org.example.vgtuaventory.controller.TotalSalesController" start="27" end="175" sourcefile="TotalSalesController.java" sourcepath="org/example/vgtuaventory/controller/TotalSalesController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\TotalSalesController.java">
+        <Message>At TotalSalesController.java:[lines 27-175]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.controller.TotalSalesController</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.controller.TotalSalesController" name="getTotalProfitInInterval" signature="(Ljava/lang/String;Ljava/lang/String;I)Lorg/springframework/http/ResponseEntity;" isStatic="false" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.GetMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.TotalSalesController" start="103" end="125" startBytecode="0" endBytecode="546" sourcefile="TotalSalesController.java" sourcepath="org/example/vgtuaventory/controller/TotalSalesController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\TotalSalesController.java" synthetic="true"/>
+      <Message>In method org.example.vgtuaventory.controller.TotalSalesController.getTotalProfitInInterval(String, String, int)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.controller.TotalSalesController" start="103" end="125" startBytecode="0" endBytecode="546" sourcefile="TotalSalesController.java" sourcepath="org/example/vgtuaventory/controller/TotalSalesController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\TotalSalesController.java" synthetic="true">
+      <Message>At TotalSalesController.java:[lines 103-125]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="SPRING_ENDPOINT" priority="3" rank="15" abbrev="SECSC" category="SECURITY" instanceHash="9b6e3390d5789e9556e18fc80730af3b" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Found Spring endpoint</ShortMessage>
+    <LongMessage>org.example.vgtuaventory.controller.TotalSalesController is a Spring endpoint (Controller)</LongMessage>
+    <Class classname="org.example.vgtuaventory.controller.TotalSalesController" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.RestController">
+      <SourceLine classname="org.example.vgtuaventory.controller.TotalSalesController" start="27" end="175" sourcefile="TotalSalesController.java" sourcepath="org/example/vgtuaventory/controller/TotalSalesController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\TotalSalesController.java">
+        <Message>At TotalSalesController.java:[lines 27-175]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.controller.TotalSalesController</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.controller.TotalSalesController" name="getTotalSalesCountInInterval" signature="(Ljava/lang/String;Ljava/lang/String;I)Lorg/springframework/http/ResponseEntity;" isStatic="false" primary="true" classAnnotationNames="org.springframework.web.bind.annotation.GetMapping">
+      <SourceLine classname="org.example.vgtuaventory.controller.TotalSalesController" start="133" end="163" startBytecode="0" endBytecode="552" sourcefile="TotalSalesController.java" sourcepath="org/example/vgtuaventory/controller/TotalSalesController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\TotalSalesController.java" synthetic="true"/>
+      <Message>In method org.example.vgtuaventory.controller.TotalSalesController.getTotalSalesCountInInterval(String, String, int)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.controller.TotalSalesController" start="133" end="163" startBytecode="0" endBytecode="552" sourcefile="TotalSalesController.java" sourcepath="org/example/vgtuaventory/controller/TotalSalesController.java" relSourcepath="src\main\java\org\example\vgtuaventory\controller\TotalSalesController.java" synthetic="true">
+      <Message>At TotalSalesController.java:[lines 133-163]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="THROWS_METHOD_THROWS_RUNTIMEEXCEPTION" priority="3" rank="19" abbrev="THROWS" category="BAD_PRACTICE" instanceHash="bbdba2ea68ae6fc1590bc4fb365d503f" instanceOccurrenceNum="0" instanceOccurrenceMax="0" cweid="397">
+    <ShortMessage>Method intentionally throws RuntimeException.</ShortMessage>
+    <LongMessage>Method intentionally throws RuntimeException.</LongMessage>
+    <Class classname="org.example.vgtuaventory.service.AuthService" primary="true" classAnnotationNames="org.springframework.stereotype.Service">
+      <SourceLine classname="org.example.vgtuaventory.service.AuthService" start="18" end="115" sourcefile="AuthService.java" sourcepath="org/example/vgtuaventory/service/AuthService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\AuthService.java">
+        <Message>At AuthService.java:[lines 18-115]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.service.AuthService</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.service.AuthService" name="authenticateUser" signature="(Ljava/lang/String;Ljava/lang/String;)Lorg/example/vgtuaventory/model/User;" isStatic="false" primary="true">
+      <SourceLine classname="org.example.vgtuaventory.service.AuthService" start="46" end="76" startBytecode="0" endBytecode="440" sourcefile="AuthService.java" sourcepath="org/example/vgtuaventory/service/AuthService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\AuthService.java"/>
+      <Message>In method org.example.vgtuaventory.service.AuthService.authenticateUser(String, String)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.service.AuthService" primary="true" start="70" end="70" startBytecode="177" endBytecode="177" sourcefile="AuthService.java" sourcepath="org/example/vgtuaventory/service/AuthService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\AuthService.java">
+      <Message>At AuthService.java:[line 70]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="EI_EXPOSE_REP" priority="2" rank="18" abbrev="EI" category="MALICIOUS_CODE" instanceHash="ff56c06775a412cb234804ff9383133c" instanceOccurrenceNum="0" instanceOccurrenceMax="0" cweid="374">
+    <ShortMessage>May expose internal representation by returning reference to mutable object</ShortMessage>
+    <LongMessage>org.example.vgtuaventory.service.AuthService$LoginResult.user() may expose internal representation by returning AuthService$LoginResult.user</LongMessage>
+    <Class classname="org.example.vgtuaventory.service.AuthService$LoginResult" primary="true">
+      <SourceLine classname="org.example.vgtuaventory.service.AuthService$LoginResult" start="33" end="33" sourcefile="AuthService.java" sourcepath="org/example/vgtuaventory/service/AuthService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\AuthService.java">
+        <Message>At AuthService.java:[line 33]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.service.AuthService$LoginResult</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.service.AuthService$LoginResult" name="user" signature="()Lorg/example/vgtuaventory/model/User;" isStatic="false" primary="true">
+      <SourceLine classname="org.example.vgtuaventory.service.AuthService$LoginResult" start="33" end="33" startBytecode="0" endBytecode="46" sourcefile="AuthService.java" sourcepath="org/example/vgtuaventory/service/AuthService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\AuthService.java"/>
+      <Message>In method org.example.vgtuaventory.service.AuthService$LoginResult.user()</Message>
+    </Method>
+    <Field classname="org.example.vgtuaventory.service.AuthService$LoginResult" name="user" signature="Lorg/example/vgtuaventory/model/User;" isStatic="false" primary="true">
+      <SourceLine classname="org.example.vgtuaventory.service.AuthService$LoginResult" sourcefile="AuthService.java" sourcepath="org/example/vgtuaventory/service/AuthService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\AuthService.java">
+        <Message>In AuthService.java</Message>
+      </SourceLine>
+      <Message>Field org.example.vgtuaventory.service.AuthService$LoginResult.user</Message>
+    </Field>
+    <SourceLine classname="org.example.vgtuaventory.service.AuthService$LoginResult" primary="true" start="33" end="33" startBytecode="4" endBytecode="4" sourcefile="AuthService.java" sourcepath="org/example/vgtuaventory/service/AuthService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\AuthService.java">
+      <Message>At AuthService.java:[line 33]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="EI_EXPOSE_REP2" priority="2" rank="18" abbrev="EI2" category="MALICIOUS_CODE" instanceHash="fb8aaafcfd94f4f658c0f08aaa2a84db" instanceOccurrenceNum="0" instanceOccurrenceMax="0" cweid="374">
+    <ShortMessage>May expose internal representation by incorporating reference to mutable object</ShortMessage>
+    <LongMessage>new org.example.vgtuaventory.service.AuthService$LoginResult(String, User) may expose internal representation by storing an externally mutable object into AuthService$LoginResult.user</LongMessage>
+    <Class classname="org.example.vgtuaventory.service.AuthService$LoginResult" primary="true">
+      <SourceLine classname="org.example.vgtuaventory.service.AuthService$LoginResult" start="33" end="33" sourcefile="AuthService.java" sourcepath="org/example/vgtuaventory/service/AuthService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\AuthService.java">
+        <Message>At AuthService.java:[line 33]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.service.AuthService$LoginResult</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.service.AuthService$LoginResult" name="&lt;init&gt;" signature="(Ljava/lang/String;Lorg/example/vgtuaventory/model/User;)V" isStatic="false" primary="true">
+      <SourceLine classname="org.example.vgtuaventory.service.AuthService$LoginResult" start="33" end="33" startBytecode="0" endBytecode="76" sourcefile="AuthService.java" sourcepath="org/example/vgtuaventory/service/AuthService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\AuthService.java"/>
+      <Message>In method new org.example.vgtuaventory.service.AuthService$LoginResult(String, User)</Message>
+    </Method>
+    <Field classname="org.example.vgtuaventory.service.AuthService$LoginResult" name="user" signature="Lorg/example/vgtuaventory/model/User;" isStatic="false" primary="true">
+      <SourceLine classname="org.example.vgtuaventory.service.AuthService$LoginResult" sourcefile="AuthService.java" sourcepath="org/example/vgtuaventory/service/AuthService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\AuthService.java">
+        <Message>In AuthService.java</Message>
+      </SourceLine>
+      <Message>Field org.example.vgtuaventory.service.AuthService$LoginResult.user</Message>
+    </Field>
+    <LocalVariable name="user" register="2" pc="11" role="LOCAL_VARIABLE_NAMED">
+      <Message>Local variable named user</Message>
+    </LocalVariable>
+    <SourceLine classname="org.example.vgtuaventory.service.AuthService$LoginResult" primary="true" start="33" end="33" startBytecode="11" endBytecode="11" sourcefile="AuthService.java" sourcepath="org/example/vgtuaventory/service/AuthService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\AuthService.java">
+      <Message>At AuthService.java:[line 33]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="THROWS_METHOD_THROWS_RUNTIMEEXCEPTION" priority="3" rank="19" abbrev="THROWS" category="BAD_PRACTICE" instanceHash="5a1fe460ce05ec60a4bd6c23e76707e1" instanceOccurrenceNum="0" instanceOccurrenceMax="5" cweid="397">
+    <ShortMessage>Method intentionally throws RuntimeException.</ShortMessage>
+    <LongMessage>Method intentionally throws RuntimeException.</LongMessage>
+    <Class classname="org.example.vgtuaventory.service.SaleService" primary="true" classAnnotationNames="org.springframework.stereotype.Service">
+      <SourceLine classname="org.example.vgtuaventory.service.SaleService" start="31" end="231" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java">
+        <Message>At SaleService.java:[lines 31-231]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.service.SaleService</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.service.SaleService" name="getProductSalesComparison" signature="(ILjava/time/LocalDate;Ljava/time/LocalDate;Ljava/util/List;)Ljava/util/List;" isStatic="false" primary="true">
+      <SourceLine classname="org.example.vgtuaventory.service.SaleService" start="162" end="231" startBytecode="0" endBytecode="1068" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java"/>
+      <Message>In method org.example.vgtuaventory.service.SaleService.getProductSalesComparison(int, LocalDate, LocalDate, List)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.service.SaleService" primary="true" start="164" end="164" startBytecode="23" endBytecode="23" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java">
+      <Message>At SaleService.java:[line 164]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="THROWS_METHOD_THROWS_RUNTIMEEXCEPTION" priority="3" rank="19" abbrev="THROWS" category="BAD_PRACTICE" instanceHash="5a1fe460ce05ec60a4bd6c23e76707e1" instanceOccurrenceNum="1" instanceOccurrenceMax="5" cweid="397">
+    <ShortMessage>Method intentionally throws RuntimeException.</ShortMessage>
+    <LongMessage>Method intentionally throws RuntimeException.</LongMessage>
+    <Class classname="org.example.vgtuaventory.service.SaleService" primary="true" classAnnotationNames="org.springframework.stereotype.Service">
+      <SourceLine classname="org.example.vgtuaventory.service.SaleService" start="31" end="231" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java">
+        <Message>At SaleService.java:[lines 31-231]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.service.SaleService</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.service.SaleService" name="getProductSalesComparison" signature="(ILjava/time/LocalDate;Ljava/time/LocalDate;Ljava/util/List;)Ljava/util/List;" isStatic="false" primary="true">
+      <SourceLine classname="org.example.vgtuaventory.service.SaleService" start="162" end="231" startBytecode="0" endBytecode="1068" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java"/>
+      <Message>In method org.example.vgtuaventory.service.SaleService.getProductSalesComparison(int, LocalDate, LocalDate, List)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.service.SaleService" primary="true" start="168" end="168" startBytecode="41" endBytecode="41" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java">
+      <Message>At SaleService.java:[line 168]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="THROWS_METHOD_THROWS_RUNTIMEEXCEPTION" priority="3" rank="19" abbrev="THROWS" category="BAD_PRACTICE" instanceHash="5a1fe460ce05ec60a4bd6c23e76707e1" instanceOccurrenceNum="2" instanceOccurrenceMax="5" cweid="397">
+    <ShortMessage>Method intentionally throws RuntimeException.</ShortMessage>
+    <LongMessage>Method intentionally throws RuntimeException.</LongMessage>
+    <Class classname="org.example.vgtuaventory.service.SaleService" primary="true" classAnnotationNames="org.springframework.stereotype.Service">
+      <SourceLine classname="org.example.vgtuaventory.service.SaleService" start="31" end="231" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java">
+        <Message>At SaleService.java:[lines 31-231]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.service.SaleService</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.service.SaleService" name="getProductSalesComparison" signature="(ILjava/time/LocalDate;Ljava/time/LocalDate;Ljava/util/List;)Ljava/util/List;" isStatic="false" primary="true">
+      <SourceLine classname="org.example.vgtuaventory.service.SaleService" start="162" end="231" startBytecode="0" endBytecode="1068" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java"/>
+      <Message>In method org.example.vgtuaventory.service.SaleService.getProductSalesComparison(int, LocalDate, LocalDate, List)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.service.SaleService" primary="true" start="172" end="172" startBytecode="67" endBytecode="67" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java">
+      <Message>At SaleService.java:[line 172]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="THROWS_METHOD_THROWS_RUNTIMEEXCEPTION" priority="3" rank="19" abbrev="THROWS" category="BAD_PRACTICE" instanceHash="5a1fe460ce05ec60a4bd6c23e76707e1" instanceOccurrenceNum="3" instanceOccurrenceMax="5" cweid="397">
+    <ShortMessage>Method intentionally throws RuntimeException.</ShortMessage>
+    <LongMessage>Method intentionally throws RuntimeException.</LongMessage>
+    <Class classname="org.example.vgtuaventory.service.SaleService" primary="true" classAnnotationNames="org.springframework.stereotype.Service">
+      <SourceLine classname="org.example.vgtuaventory.service.SaleService" start="31" end="231" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java">
+        <Message>At SaleService.java:[lines 31-231]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.service.SaleService</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.service.SaleService" name="getProductSalesComparison" signature="(ILjava/time/LocalDate;Ljava/time/LocalDate;Ljava/util/List;)Ljava/util/List;" isStatic="false" primary="true">
+      <SourceLine classname="org.example.vgtuaventory.service.SaleService" start="162" end="231" startBytecode="0" endBytecode="1068" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java"/>
+      <Message>In method org.example.vgtuaventory.service.SaleService.getProductSalesComparison(int, LocalDate, LocalDate, List)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.service.SaleService" primary="true" start="176" end="176" startBytecode="89" endBytecode="89" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java">
+      <Message>At SaleService.java:[line 176]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="THROWS_METHOD_THROWS_RUNTIMEEXCEPTION" priority="3" rank="19" abbrev="THROWS" category="BAD_PRACTICE" instanceHash="5a1fe460ce05ec60a4bd6c23e76707e1" instanceOccurrenceNum="4" instanceOccurrenceMax="5" cweid="397">
+    <ShortMessage>Method intentionally throws RuntimeException.</ShortMessage>
+    <LongMessage>Method intentionally throws RuntimeException.</LongMessage>
+    <Class classname="org.example.vgtuaventory.service.SaleService" primary="true" classAnnotationNames="org.springframework.stereotype.Service">
+      <SourceLine classname="org.example.vgtuaventory.service.SaleService" start="31" end="231" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java">
+        <Message>At SaleService.java:[lines 31-231]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.service.SaleService</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.service.SaleService" name="getProductSalesComparison" signature="(ILjava/time/LocalDate;Ljava/time/LocalDate;Ljava/util/List;)Ljava/util/List;" isStatic="false" primary="true">
+      <SourceLine classname="org.example.vgtuaventory.service.SaleService" start="162" end="231" startBytecode="0" endBytecode="1068" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java"/>
+      <Message>In method org.example.vgtuaventory.service.SaleService.getProductSalesComparison(int, LocalDate, LocalDate, List)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.service.SaleService" primary="true" start="181" end="181" startBytecode="118" endBytecode="118" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java">
+      <Message>At SaleService.java:[line 181]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="THROWS_METHOD_THROWS_RUNTIMEEXCEPTION" priority="3" rank="19" abbrev="THROWS" category="BAD_PRACTICE" instanceHash="5a1fe460ce05ec60a4bd6c23e76707e1" instanceOccurrenceNum="5" instanceOccurrenceMax="5" cweid="397">
+    <ShortMessage>Method intentionally throws RuntimeException.</ShortMessage>
+    <LongMessage>Method intentionally throws RuntimeException.</LongMessage>
+    <Class classname="org.example.vgtuaventory.service.SaleService" primary="true" classAnnotationNames="org.springframework.stereotype.Service">
+      <SourceLine classname="org.example.vgtuaventory.service.SaleService" start="31" end="231" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java">
+        <Message>At SaleService.java:[lines 31-231]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.service.SaleService</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.service.SaleService" name="getProductSalesComparison" signature="(ILjava/time/LocalDate;Ljava/time/LocalDate;Ljava/util/List;)Ljava/util/List;" isStatic="false" primary="true">
+      <SourceLine classname="org.example.vgtuaventory.service.SaleService" start="162" end="231" startBytecode="0" endBytecode="1068" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java"/>
+      <Message>In method org.example.vgtuaventory.service.SaleService.getProductSalesComparison(int, LocalDate, LocalDate, List)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.service.SaleService" primary="true" start="186" end="186" startBytecode="153" endBytecode="153" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java">
+      <Message>At SaleService.java:[line 186]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="THROWS_METHOD_THROWS_RUNTIMEEXCEPTION" priority="3" rank="19" abbrev="THROWS" category="BAD_PRACTICE" instanceHash="bb3cd14a48370354db9aa9c4d8ed1158" instanceOccurrenceNum="0" instanceOccurrenceMax="3" cweid="397">
+    <ShortMessage>Method intentionally throws RuntimeException.</ShortMessage>
+    <LongMessage>Method intentionally throws RuntimeException.</LongMessage>
+    <Class classname="org.example.vgtuaventory.service.SaleService" primary="true" classAnnotationNames="org.springframework.stereotype.Service">
+      <SourceLine classname="org.example.vgtuaventory.service.SaleService" start="31" end="231" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java">
+        <Message>At SaleService.java:[lines 31-231]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.service.SaleService</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.service.SaleService" name="getTopSellingProductsByDateRange" signature="(ILjava/time/LocalDate;Ljava/time/LocalDate;)Ljava/util/List;" isStatic="false" primary="true">
+      <SourceLine classname="org.example.vgtuaventory.service.SaleService" start="90" end="153" startBytecode="0" endBytecode="953" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java"/>
+      <Message>In method org.example.vgtuaventory.service.SaleService.getTopSellingProductsByDateRange(int, LocalDate, LocalDate)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.service.SaleService" primary="true" start="92" end="92" startBytecode="23" endBytecode="23" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java">
+      <Message>At SaleService.java:[line 92]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="THROWS_METHOD_THROWS_RUNTIMEEXCEPTION" priority="3" rank="19" abbrev="THROWS" category="BAD_PRACTICE" instanceHash="bb3cd14a48370354db9aa9c4d8ed1158" instanceOccurrenceNum="1" instanceOccurrenceMax="3" cweid="397">
+    <ShortMessage>Method intentionally throws RuntimeException.</ShortMessage>
+    <LongMessage>Method intentionally throws RuntimeException.</LongMessage>
+    <Class classname="org.example.vgtuaventory.service.SaleService" primary="true" classAnnotationNames="org.springframework.stereotype.Service">
+      <SourceLine classname="org.example.vgtuaventory.service.SaleService" start="31" end="231" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java">
+        <Message>At SaleService.java:[lines 31-231]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.service.SaleService</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.service.SaleService" name="getTopSellingProductsByDateRange" signature="(ILjava/time/LocalDate;Ljava/time/LocalDate;)Ljava/util/List;" isStatic="false" primary="true">
+      <SourceLine classname="org.example.vgtuaventory.service.SaleService" start="90" end="153" startBytecode="0" endBytecode="953" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java"/>
+      <Message>In method org.example.vgtuaventory.service.SaleService.getTopSellingProductsByDateRange(int, LocalDate, LocalDate)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.service.SaleService" primary="true" start="96" end="96" startBytecode="41" endBytecode="41" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java">
+      <Message>At SaleService.java:[line 96]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="THROWS_METHOD_THROWS_RUNTIMEEXCEPTION" priority="3" rank="19" abbrev="THROWS" category="BAD_PRACTICE" instanceHash="bb3cd14a48370354db9aa9c4d8ed1158" instanceOccurrenceNum="2" instanceOccurrenceMax="3" cweid="397">
+    <ShortMessage>Method intentionally throws RuntimeException.</ShortMessage>
+    <LongMessage>Method intentionally throws RuntimeException.</LongMessage>
+    <Class classname="org.example.vgtuaventory.service.SaleService" primary="true" classAnnotationNames="org.springframework.stereotype.Service">
+      <SourceLine classname="org.example.vgtuaventory.service.SaleService" start="31" end="231" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java">
+        <Message>At SaleService.java:[lines 31-231]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.service.SaleService</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.service.SaleService" name="getTopSellingProductsByDateRange" signature="(ILjava/time/LocalDate;Ljava/time/LocalDate;)Ljava/util/List;" isStatic="false" primary="true">
+      <SourceLine classname="org.example.vgtuaventory.service.SaleService" start="90" end="153" startBytecode="0" endBytecode="953" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java"/>
+      <Message>In method org.example.vgtuaventory.service.SaleService.getTopSellingProductsByDateRange(int, LocalDate, LocalDate)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.service.SaleService" primary="true" start="101" end="101" startBytecode="70" endBytecode="70" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java">
+      <Message>At SaleService.java:[line 101]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="THROWS_METHOD_THROWS_RUNTIMEEXCEPTION" priority="3" rank="19" abbrev="THROWS" category="BAD_PRACTICE" instanceHash="bb3cd14a48370354db9aa9c4d8ed1158" instanceOccurrenceNum="3" instanceOccurrenceMax="3" cweid="397">
+    <ShortMessage>Method intentionally throws RuntimeException.</ShortMessage>
+    <LongMessage>Method intentionally throws RuntimeException.</LongMessage>
+    <Class classname="org.example.vgtuaventory.service.SaleService" primary="true" classAnnotationNames="org.springframework.stereotype.Service">
+      <SourceLine classname="org.example.vgtuaventory.service.SaleService" start="31" end="231" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java">
+        <Message>At SaleService.java:[lines 31-231]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.service.SaleService</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.service.SaleService" name="getTopSellingProductsByDateRange" signature="(ILjava/time/LocalDate;Ljava/time/LocalDate;)Ljava/util/List;" isStatic="false" primary="true">
+      <SourceLine classname="org.example.vgtuaventory.service.SaleService" start="90" end="153" startBytecode="0" endBytecode="953" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java"/>
+      <Message>In method org.example.vgtuaventory.service.SaleService.getTopSellingProductsByDateRange(int, LocalDate, LocalDate)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.service.SaleService" primary="true" start="106" end="106" startBytecode="105" endBytecode="105" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java">
+      <Message>At SaleService.java:[line 106]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="THROWS_METHOD_THROWS_RUNTIMEEXCEPTION" priority="3" rank="19" abbrev="THROWS" category="BAD_PRACTICE" instanceHash="bb8e0277e936ebd52638db61767cda70" instanceOccurrenceNum="0" instanceOccurrenceMax="1" cweid="397">
+    <ShortMessage>Method intentionally throws RuntimeException.</ShortMessage>
+    <LongMessage>Method intentionally throws RuntimeException.</LongMessage>
+    <Class classname="org.example.vgtuaventory.service.SaleService" primary="true" classAnnotationNames="org.springframework.stereotype.Service">
+      <SourceLine classname="org.example.vgtuaventory.service.SaleService" start="31" end="231" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java">
+        <Message>At SaleService.java:[lines 31-231]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.service.SaleService</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.service.SaleService" name="registerSale" signature="(Lorg/example/vgtuaventory/service/SaleService$SaleRequest;I)Lorg/example/vgtuaventory/model/Sale;" isStatic="false" primary="true" classAnnotationNames="jakarta.transaction.Transactional">
+      <SourceLine classname="org.example.vgtuaventory.service.SaleService" start="38" end="74" startBytecode="0" endBytecode="491" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java"/>
+      <Message>In method org.example.vgtuaventory.service.SaleService.registerSale(SaleService$SaleRequest, int)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.service.SaleService" primary="true" start="39" end="39" startBytecode="16" endBytecode="16" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java">
+      <Message>At SaleService.java:[line 39]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="THROWS_METHOD_THROWS_RUNTIMEEXCEPTION" priority="3" rank="19" abbrev="THROWS" category="BAD_PRACTICE" instanceHash="bb8e0277e936ebd52638db61767cda70" instanceOccurrenceNum="1" instanceOccurrenceMax="1" cweid="397">
+    <ShortMessage>Method intentionally throws RuntimeException.</ShortMessage>
+    <LongMessage>Method intentionally throws RuntimeException.</LongMessage>
+    <Class classname="org.example.vgtuaventory.service.SaleService" primary="true" classAnnotationNames="org.springframework.stereotype.Service">
+      <SourceLine classname="org.example.vgtuaventory.service.SaleService" start="31" end="231" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java">
+        <Message>At SaleService.java:[lines 31-231]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.service.SaleService</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.service.SaleService" name="registerSale" signature="(Lorg/example/vgtuaventory/service/SaleService$SaleRequest;I)Lorg/example/vgtuaventory/model/Sale;" isStatic="false" primary="true" classAnnotationNames="jakarta.transaction.Transactional">
+      <SourceLine classname="org.example.vgtuaventory.service.SaleService" start="38" end="74" startBytecode="0" endBytecode="491" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java"/>
+      <Message>In method org.example.vgtuaventory.service.SaleService.registerSale(SaleService$SaleRequest, int)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.service.SaleService" primary="true" start="66" end="66" startBytecode="222" endBytecode="222" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java">
+      <Message>At SaleService.java:[line 66]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD" priority="2" rank="18" abbrev="UrF" category="STYLE" instanceHash="31fa0ff2df89cbeea1e6de68991d1ee9" instanceOccurrenceNum="0" instanceOccurrenceMax="0" cweid="563">
+    <ShortMessage>Unread public/protected field</ShortMessage>
+    <LongMessage>Unread public/protected field: org.example.vgtuaventory.service.SaleService$TopSellingProductResponse.productId</LongMessage>
+    <Class classname="org.example.vgtuaventory.service.SaleService$TopSellingProductResponse" primary="true">
+      <SourceLine classname="org.example.vgtuaventory.service.SaleService$TopSellingProductResponse" start="248" end="259" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java">
+        <Message>At SaleService.java:[lines 248-259]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.service.SaleService$TopSellingProductResponse</Message>
+    </Class>
+    <Field classname="org.example.vgtuaventory.service.SaleService$TopSellingProductResponse" name="productId" signature="I" isStatic="false" primary="true">
+      <SourceLine classname="org.example.vgtuaventory.service.SaleService$TopSellingProductResponse" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java">
+        <Message>In SaleService.java</Message>
+      </SourceLine>
+      <Message>Field org.example.vgtuaventory.service.SaleService$TopSellingProductResponse.productId</Message>
+    </Field>
+    <SourceLine classname="org.example.vgtuaventory.service.SaleService$TopSellingProductResponse" primary="true" start="249" end="249" startBytecode="6" endBytecode="6" sourcefile="SaleService.java" sourcepath="org/example/vgtuaventory/service/SaleService.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\SaleService.java">
+      <Message>At SaleService.java:[line 249]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="THROWS_METHOD_THROWS_RUNTIMEEXCEPTION" priority="3" rank="19" abbrev="THROWS" category="BAD_PRACTICE" instanceHash="28a2f43f1aa2e38b2379d3e60b9c5b24" instanceOccurrenceNum="0" instanceOccurrenceMax="0" cweid="397">
+    <ShortMessage>Method intentionally throws RuntimeException.</ShortMessage>
+    <LongMessage>Method intentionally throws RuntimeException.</LongMessage>
+    <Class classname="org.example.vgtuaventory.service.impl.EventServiceImpl" primary="true" classAnnotationNames="org.springframework.stereotype.Service">
+      <SourceLine classname="org.example.vgtuaventory.service.impl.EventServiceImpl" start="22" end="90" sourcefile="EventServiceImpl.java" sourcepath="org/example/vgtuaventory/service/impl/EventServiceImpl.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\impl\EventServiceImpl.java">
+        <Message>At EventServiceImpl.java:[lines 22-90]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.service.impl.EventServiceImpl</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.service.impl.EventServiceImpl" name="createEvent" signature="(Lorg/example/vgtuaventory/dto/EventDTO;I)Lorg/example/vgtuaventory/dto/EventDTO;" isStatic="false" primary="true">
+      <SourceLine classname="org.example.vgtuaventory.service.impl.EventServiceImpl" start="41" end="55" startBytecode="0" endBytecode="260" sourcefile="EventServiceImpl.java" sourcepath="org/example/vgtuaventory/service/impl/EventServiceImpl.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\impl\EventServiceImpl.java"/>
+      <Message>In method org.example.vgtuaventory.service.impl.EventServiceImpl.createEvent(EventDTO, int)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.service.impl.EventServiceImpl" primary="true" start="42" end="42" startBytecode="23" endBytecode="23" sourcefile="EventServiceImpl.java" sourcepath="org/example/vgtuaventory/service/impl/EventServiceImpl.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\impl\EventServiceImpl.java">
+      <Message>At EventServiceImpl.java:[line 42]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="THROWS_METHOD_THROWS_RUNTIMEEXCEPTION" priority="3" rank="19" abbrev="THROWS" category="BAD_PRACTICE" instanceHash="fe766b4291b795f8e30e4ab15180a1c" instanceOccurrenceNum="0" instanceOccurrenceMax="0" cweid="397">
+    <ShortMessage>Method intentionally throws RuntimeException.</ShortMessage>
+    <LongMessage>Method intentionally throws RuntimeException.</LongMessage>
+    <Class classname="org.example.vgtuaventory.service.impl.EventServiceImpl" primary="true" classAnnotationNames="org.springframework.stereotype.Service">
+      <SourceLine classname="org.example.vgtuaventory.service.impl.EventServiceImpl" start="22" end="90" sourcefile="EventServiceImpl.java" sourcepath="org/example/vgtuaventory/service/impl/EventServiceImpl.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\impl\EventServiceImpl.java">
+        <Message>At EventServiceImpl.java:[lines 22-90]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.service.impl.EventServiceImpl</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.service.impl.EventServiceImpl" name="deleteEvent" signature="(II)V" isStatic="false" primary="true">
+      <SourceLine classname="org.example.vgtuaventory.service.impl.EventServiceImpl" start="82" end="90" startBytecode="0" endBytecode="171" sourcefile="EventServiceImpl.java" sourcepath="org/example/vgtuaventory/service/impl/EventServiceImpl.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\impl\EventServiceImpl.java"/>
+      <Message>In method org.example.vgtuaventory.service.impl.EventServiceImpl.deleteEvent(int, int)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.service.impl.EventServiceImpl" primary="true" start="86" end="86" startBytecode="53" endBytecode="53" sourcefile="EventServiceImpl.java" sourcepath="org/example/vgtuaventory/service/impl/EventServiceImpl.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\impl\EventServiceImpl.java">
+      <Message>At EventServiceImpl.java:[line 86]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="THROWS_METHOD_THROWS_RUNTIMEEXCEPTION" priority="3" rank="19" abbrev="THROWS" category="BAD_PRACTICE" instanceHash="7ddc8fb1c029af121cc010d57d0719bc" instanceOccurrenceNum="0" instanceOccurrenceMax="1" cweid="397">
+    <ShortMessage>Method intentionally throws RuntimeException.</ShortMessage>
+    <LongMessage>Method intentionally throws RuntimeException.</LongMessage>
+    <Class classname="org.example.vgtuaventory.service.impl.EventServiceImpl" primary="true" classAnnotationNames="org.springframework.stereotype.Service">
+      <SourceLine classname="org.example.vgtuaventory.service.impl.EventServiceImpl" start="22" end="90" sourcefile="EventServiceImpl.java" sourcepath="org/example/vgtuaventory/service/impl/EventServiceImpl.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\impl\EventServiceImpl.java">
+        <Message>At EventServiceImpl.java:[lines 22-90]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.service.impl.EventServiceImpl</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.service.impl.EventServiceImpl" name="updateEvent" signature="(ILorg/example/vgtuaventory/dto/EventDTO;I)Lorg/example/vgtuaventory/dto/EventDTO;" isStatic="false" primary="true">
+      <SourceLine classname="org.example.vgtuaventory.service.impl.EventServiceImpl" start="60" end="77" startBytecode="0" endBytecode="299" sourcefile="EventServiceImpl.java" sourcepath="org/example/vgtuaventory/service/impl/EventServiceImpl.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\impl\EventServiceImpl.java"/>
+      <Message>In method org.example.vgtuaventory.service.impl.EventServiceImpl.updateEvent(int, EventDTO, int)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.service.impl.EventServiceImpl" primary="true" start="61" end="61" startBytecode="23" endBytecode="23" sourcefile="EventServiceImpl.java" sourcepath="org/example/vgtuaventory/service/impl/EventServiceImpl.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\impl\EventServiceImpl.java">
+      <Message>At EventServiceImpl.java:[line 61]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="THROWS_METHOD_THROWS_RUNTIMEEXCEPTION" priority="3" rank="19" abbrev="THROWS" category="BAD_PRACTICE" instanceHash="7ddc8fb1c029af121cc010d57d0719bc" instanceOccurrenceNum="1" instanceOccurrenceMax="1" cweid="397">
+    <ShortMessage>Method intentionally throws RuntimeException.</ShortMessage>
+    <LongMessage>Method intentionally throws RuntimeException.</LongMessage>
+    <Class classname="org.example.vgtuaventory.service.impl.EventServiceImpl" primary="true" classAnnotationNames="org.springframework.stereotype.Service">
+      <SourceLine classname="org.example.vgtuaventory.service.impl.EventServiceImpl" start="22" end="90" sourcefile="EventServiceImpl.java" sourcepath="org/example/vgtuaventory/service/impl/EventServiceImpl.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\impl\EventServiceImpl.java">
+        <Message>At EventServiceImpl.java:[lines 22-90]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.service.impl.EventServiceImpl</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.service.impl.EventServiceImpl" name="updateEvent" signature="(ILorg/example/vgtuaventory/dto/EventDTO;I)Lorg/example/vgtuaventory/dto/EventDTO;" isStatic="false" primary="true">
+      <SourceLine classname="org.example.vgtuaventory.service.impl.EventServiceImpl" start="60" end="77" startBytecode="0" endBytecode="299" sourcefile="EventServiceImpl.java" sourcepath="org/example/vgtuaventory/service/impl/EventServiceImpl.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\impl\EventServiceImpl.java"/>
+      <Message>In method org.example.vgtuaventory.service.impl.EventServiceImpl.updateEvent(int, EventDTO, int)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.service.impl.EventServiceImpl" primary="true" start="68" end="68" startBytecode="80" endBytecode="80" sourcefile="EventServiceImpl.java" sourcepath="org/example/vgtuaventory/service/impl/EventServiceImpl.java" relSourcepath="src\main\java\org\example\vgtuaventory\service\impl\EventServiceImpl.java">
+      <Message>At EventServiceImpl.java:[line 68]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="THROWS_METHOD_THROWS_CLAUSE_BASIC_EXCEPTION" priority="3" rank="19" abbrev="THROWS" category="BAD_PRACTICE" instanceHash="a9b7b846c755d3aaaad5eea646226fb3" instanceOccurrenceNum="0" instanceOccurrenceMax="0" cweid="397">
+    <ShortMessage>Method lists Exception in its throws clause, but it could be more specific.</ShortMessage>
+    <LongMessage>Method lists Exception in its throws clause, but it could be more specific.</LongMessage>
+    <Class classname="org.example.vgtuaventory.utils.SecurityConfig" primary="true" classAnnotationNames="org.springframework.context.annotation.Configuration,org.springframework.security.config.annotation.web.configuration.EnableWebSecurity">
+      <SourceLine classname="org.example.vgtuaventory.utils.SecurityConfig" start="31" end="60" sourcefile="SecurityConfig.java" sourcepath="org/example/vgtuaventory/utils/SecurityConfig.java" relSourcepath="src\main\java\org\example\vgtuaventory\utils\SecurityConfig.java">
+        <Message>At SecurityConfig.java:[lines 31-60]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.utils.SecurityConfig</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.utils.SecurityConfig" name="securityFilterChain" signature="(Lorg/springframework/security/config/annotation/web/builders/HttpSecurity;Lorg/example/vgtuaventory/utils/SecurityConfig$AuthTokenFilter;)Lorg/springframework/security/web/SecurityFilterChain;" isStatic="false" primary="true" classAnnotationNames="org.springframework.context.annotation.Bean">
+      <SourceLine classname="org.example.vgtuaventory.utils.SecurityConfig" start="48" end="48" startBytecode="0" endBytecode="121" sourcefile="SecurityConfig.java" sourcepath="org/example/vgtuaventory/utils/SecurityConfig.java" relSourcepath="src\main\java\org\example\vgtuaventory\utils\SecurityConfig.java" synthetic="true"/>
+      <Message>In method org.example.vgtuaventory.utils.SecurityConfig.securityFilterChain(HttpSecurity, SecurityConfig$AuthTokenFilter)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.utils.SecurityConfig" start="48" end="48" startBytecode="0" endBytecode="121" sourcefile="SecurityConfig.java" sourcepath="org/example/vgtuaventory/utils/SecurityConfig.java" relSourcepath="src\main\java\org\example\vgtuaventory\utils\SecurityConfig.java" synthetic="true">
+      <Message>At SecurityConfig.java:[line 48]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="SERVLET_HEADER" priority="3" rank="15" abbrev="SECSH" category="SECURITY" instanceHash="9e8e4d39911ec4f11b71f3de4aa11d6" instanceOccurrenceNum="0" instanceOccurrenceMax="0" cweid="807">
+    <ShortMessage>HTTP headers untrusted</ShortMessage>
+    <LongMessage>Request header can easily be altered by the client</LongMessage>
+    <Class classname="org.example.vgtuaventory.utils.SecurityConfig$AuthTokenFilter" primary="true">
+      <SourceLine classname="org.example.vgtuaventory.utils.SecurityConfig$AuthTokenFilter" start="63" end="108" sourcefile="SecurityConfig.java" sourcepath="org/example/vgtuaventory/utils/SecurityConfig.java" relSourcepath="src\main\java\org\example\vgtuaventory\utils\SecurityConfig.java">
+        <Message>At SecurityConfig.java:[lines 63-108]</Message>
+      </SourceLine>
+      <Message>In class org.example.vgtuaventory.utils.SecurityConfig$AuthTokenFilter</Message>
+    </Class>
+    <Method classname="org.example.vgtuaventory.utils.SecurityConfig$AuthTokenFilter" name="doFilterInternal" signature="(Ljakarta/servlet/http/HttpServletRequest;Ljakarta/servlet/http/HttpServletResponse;Ljakarta/servlet/FilterChain;)V" isStatic="false" primary="true">
+      <SourceLine classname="org.example.vgtuaventory.utils.SecurityConfig$AuthTokenFilter" start="79" end="102" startBytecode="0" endBytecode="305" sourcefile="SecurityConfig.java" sourcepath="org/example/vgtuaventory/utils/SecurityConfig.java" relSourcepath="src\main\java\org\example\vgtuaventory\utils\SecurityConfig.java"/>
+      <Message>In method org.example.vgtuaventory.utils.SecurityConfig$AuthTokenFilter.doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)</Message>
+    </Method>
+    <SourceLine classname="org.example.vgtuaventory.utils.SecurityConfig$AuthTokenFilter" primary="true" start="79" end="79" startBytecode="3" endBytecode="3" sourcefile="SecurityConfig.java" sourcepath="org/example/vgtuaventory/utils/SecurityConfig.java" relSourcepath="src\main\java\org\example\vgtuaventory\utils\SecurityConfig.java">
+      <Message>At SecurityConfig.java:[line 79]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugCategory category="BAD_PRACTICE">
+    <Description>Bad practice</Description>
+  </BugCategory>
+  <BugCategory category="MALICIOUS_CODE">
+    <Description>Malicious code vulnerability</Description>
+  </BugCategory>
+  <BugCategory category="SECURITY">
+    <Description>Security</Description>
+  </BugCategory>
+  <BugCategory category="STYLE">
+    <Description>Dodgy code</Description>
+  </BugCategory>
+  <BugPattern type="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD" abbrev="UrF" category="STYLE" cweid="563">
+    <ShortDescription>Unread public/protected field</ShortDescription>
+    <Details><![CDATA[
+
+  <p> This field is never read.&nbsp;
+The field is public or protected, so perhaps
+    it is intended to be used with classes not seen as part of the analysis. If not,
+consider removing it from the class.</p>
+<p>See <a href="https://cwe.mitre.org/data/definitions/563.html">CWE-563: Assignment to Variable without Use</a>.
+</p>
+
+    ]]></Details>
+  </BugPattern>
+  <BugPattern type="EI_EXPOSE_REP2" abbrev="EI2" category="MALICIOUS_CODE" cweid="374">
+    <ShortDescription>May expose internal representation by incorporating reference to mutable object</ShortDescription>
+    <Details><![CDATA[
+
+  <p> This code stores a reference to an externally mutable object into the
+  internal representation of the object.&nbsp;
+   If instances
+   are accessed by untrusted code, and unchecked changes to
+   the mutable object would compromise security or other
+   important properties, you will need to do something different.
+  Storing a copy of the object is better approach in many situations.</p>
+  <p>See <a href="https://cwe.mitre.org/data/definitions/374.html">CWE-374: Passing Mutable Objects to an Untrusted Method</a>.
+</p>
+
+    ]]></Details>
+  </BugPattern>
+  <BugPattern type="EI_EXPOSE_REP" abbrev="EI" category="MALICIOUS_CODE" cweid="374">
+    <ShortDescription>May expose internal representation by returning reference to mutable object</ShortDescription>
+    <Details><![CDATA[
+
+  <p> Returning a reference to a mutable object value stored in one of the object's fields
+  exposes the internal representation of the object.&nbsp;
+   If instances
+   are accessed by untrusted code, and unchecked changes to
+   the mutable object would compromise security or other
+   important properties, you will need to do something different.
+  Returning a new copy of the object is better approach in many situations.</p>
+  <p>See <a href="https://cwe.mitre.org/data/definitions/374.html">CWE-374: Passing Mutable Objects to an Untrusted Method</a>.
+</p>
+
+    ]]></Details>
+  </BugPattern>
+  <BugPattern type="SPRING_ENDPOINT" abbrev="SECSC" category="SECURITY">
+    <ShortDescription>Found Spring endpoint</ShortDescription>
+    <Details><![CDATA[
+            
+<p>This class is a Spring Controller. All methods annotated with <code>RequestMapping</code> (as well as its shortcut annotations <code>GetMapping</code>, <code>PostMapping</code>, <code>PutMapping</code>, <code>DeleteMapping</code>, and <code>PatchMapping</code>) are reachable remotely.
+This class should be analyzed to make sure that remotely exposed methods are safe to expose to potential attackers.</p>
+
+        ]]></Details>
+  </BugPattern>
+  <BugPattern type="THROWS_METHOD_THROWS_CLAUSE_BASIC_EXCEPTION" abbrev="THROWS" category="BAD_PRACTICE" cweid="397">
+    <ShortDescription>Method lists Exception in its throws clause, but it could be more specific.</ShortDescription>
+    <Details><![CDATA[
+      
+        <p>
+        Method lists Exception in its throws clause.<br>
+
+
+        When declaring a method, the types of exceptions in the throws clause should be the most specific.
+        Therefore, using Exception in the throws clause would force the caller to either use it in its own throws clause, or use it in a try-catch block (when it does not necessarily
+        contain any meaningful information about the thrown exception).<br><br>
+
+        For more information, see the <a href="https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/exceptional-behavior-err/err07-j/">SEI CERT ERR07-J rule</a>.
+        </p><p>
+        See <a href="https://cwe.mitre.org/data/definitions/397.html">CWE-397: Declaration of Throws for Generic Exception</a>.
+        </p>
+    ]]></Details>
+  </BugPattern>
+  <BugPattern type="THROWS_METHOD_THROWS_RUNTIMEEXCEPTION" abbrev="THROWS" category="BAD_PRACTICE" cweid="397">
+    <ShortDescription>Method intentionally throws RuntimeException.</ShortDescription>
+    <Details><![CDATA[
+      
+        <p>
+        Method intentionally throws RuntimeException.<br>
+
+        According to the <a href="https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/exceptional-behavior-err/err07-j/">SEI CERT ERR07-J rule</a>,
+        throwing a RuntimeException may cause errors, like the caller not being able to examine the exception and therefore cannot properly recover from it.<br>
+
+        Moreover, throwing a RuntimeException would force the caller to catch RuntimeException and therefore violate the
+        <a href="https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/exceptional-behavior-err/err08-j/">SEI CERT ERR08-J rule</a>.<br>
+
+        Please note that you can derive from Exception or RuntimeException and may throw a new instance of that exception.
+        </p><p>
+        See <a href="https://cwe.mitre.org/data/definitions/397.html">CWE-397: Declaration of Throws for Generic Exception</a>.
+        </p>
+    ]]></Details>
+  </BugPattern>
+  <BugPattern type="ENTITY_LEAK" abbrev="SECELEAK" category="SECURITY" cweid="212">
+    <ShortDescription>Unexpected property leak</ShortDescription>
+    <Details><![CDATA[
+            
+<p>
+    Persistent objects should never be returned by APIs. They might lead to leaking business logic over the UI, unauthorized tampering of
+    persistent objects in database.
+</p>
+<p>
+    <b>Vulnerable Code:</b></br/>
+<pre>
+@javax.persistence.Entity
+class UserEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String username;
+
+    private String password;
+}
+
+[...]
+@Controller
+class UserController {
+
+    @GetMapping("/user/{id}")
+    public UserEntity getUser(@PathVariable("id") String id) {
+
+        return userService.findById(id).get(); //Return the user entity with ALL fields.
+    }
+
+}
+</pre>
+</p>
+<p>
+    <b>Solution/Countermeasures:</b><br/>
+    <ul>
+        <li>Data transfer objects should be used instead including only the parameters needed as input/response to/from the API.</li>
+        <li>Sensitive parameters should be removed properly before transferring to UI.</li>
+        <li>Data should be persisted in database only after proper sanitization checks.</li>
+    </ul>
+</p>
+<p>
+    <b>Spring MVC Solution:</b><br/>
+    In Spring specifically, you can apply the following solution to allow or disallow specific fields.
+
+        <pre>
+@Controller
+class UserController {
+
+   @InitBinder
+   public void initBinder(WebDataBinder binder, WebRequest request)
+   {
+      binder.setAllowedFields(["username","firstname","lastname"]);
+   }
+
+}
+    </pre>
+</p>
+
+<p>
+<b>References</b><br/>
+<a href="https://www.owasp.org/index.php/Top_10-2017_A3-Sensitive_Data_Exposure">OWASP Top 10-2017 A3: Sensitive Data Exposure</a><br/>
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/Mass_Assignment_Cheat_Sheet.html#spring-mvc">OWASP Cheat Sheet: Mass Assignment</a><br/>
+<a href="https://cwe.mitre.org/data/definitions/212.html">CWE-212: Improper Cross-boundary Removal of Sensitive Data</a><br/>
+<a href="https://cwe.mitre.org/data/definitions/213.html">CWE-213: Intentional Information Exposure</a><br/>
+
+
+</p>
+
+            
+        ]]></Details>
+  </BugPattern>
+  <BugPattern type="UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD" abbrev="UwF" category="STYLE" cweid="457">
+    <ShortDescription>Unwritten public or protected field</ShortDescription>
+    <Details><![CDATA[
+
+  <p> No writes were seen to this public/protected field.&nbsp; All reads of it will return the default
+value. Check for errors (should it have been initialized?), or remove it if it is useless.</p>
+<p>See <a href="https://cwe.mitre.org/data/definitions/457.html">CWE-457: Use of Uninitialized Variable</a>.
+</p>
+
+    ]]></Details>
+  </BugPattern>
+  <BugPattern type="SERVLET_HEADER" abbrev="SECSH" category="SECURITY" cweid="807">
+    <ShortDescription>HTTP headers untrusted</ShortDescription>
+    <Details><![CDATA[
+            
+<p>Request headers can easily be altered by the requesting user. In general, no assumption should be made that
+the request came from a regular browser without modification by an attacker. As such, it is recommended that you
+not trust this value in any security decisions you make with respect to a request.</p>
+<br/>
+<p>
+<b>Reference</b><br/>
+<a href="https://cwe.mitre.org/data/definitions/807.html">CWE-807: Untrusted Inputs in a Security Decision</a>
+</p>
+
+        ]]></Details>
+  </BugPattern>
+  <BugCode abbrev="SECSC">
+    <Description>Spring Endpoint</Description>
+  </BugCode>
+  <BugCode abbrev="SECELEAK">
+    <Description>Unexpected property leak</Description>
+  </BugCode>
+  <BugCode abbrev="EI">
+    <Description>Method may expose internal representation</Description>
+  </BugCode>
+  <BugCode abbrev="SECSH">
+    <Description>HTTP Headers Untrusted</Description>
+  </BugCode>
+  <BugCode abbrev="UwF">
+    <Description>Unwritten field</Description>
+  </BugCode>
+  <BugCode abbrev="UrF">
+    <Description>Unread field</Description>
+  </BugCode>
+  <BugCode abbrev="THROWS">
+    <Description>Exception throwing related problems</Description>
+  </BugCode>
+  <BugCode abbrev="EI2">
+    <Description>Storing reference to mutable object</Description>
+  </BugCode>
+  <Errors errors="0" missingClasses="0"></Errors>
+  <FindBugsSummary timestamp="Mon, 2 Nov 2026 16:21:02 +0200" total_classes="0" referenced_classes="0" total_bugs="49" total_size="0" num_packages="4" java_version="21.0.11" vm_version="21.0.11+10-LTS" cpu_seconds="64.38" clock_seconds="17.60" peak_mbytes="297.70" alloc_mbytes="4058.00" gc_seconds="0.11" priority_3="42" priority_2="7">
+    <FileStats path="org/example/vgtuaventory/controller/AuthController.java" bugCount="3" size="0" bugHash="310fc09eedda659606b8dd24f7c0205d"/>
+    <FileStats path="org/example/vgtuaventory/controller/CategoryController.java" bugCount="2" size="0" bugHash="c0f12a636efd9fc275aff261bdbd5706"/>
+    <FileStats path="org/example/vgtuaventory/controller/EventController.java" bugCount="5" size="0" bugHash="43911318c235abb4dee677d861092c8b"/>
+    <FileStats path="org/example/vgtuaventory/controller/ProductController.java" bugCount="7" size="0" bugHash="7eaaa7ddd608248f6472511d4507c1c3"/>
+    <FileStats path="org/example/vgtuaventory/controller/SaleController.java" bugCount="6" size="0" bugHash="3aac402e143ee8505e513078448ff54f"/>
+    <FileStats path="org/example/vgtuaventory/controller/TotalSalesController.java" bugCount="4" size="0" bugHash="4bad552fd8e1ddae100b0fbd1326257f"/>
+    <FileStats path="org/example/vgtuaventory/service/AuthService.java" bugCount="3" size="0" bugHash="758cb1dbcbd24be737c4083fc281b542"/>
+    <FileStats path="org/example/vgtuaventory/service/SaleService.java" bugCount="13" size="0" bugHash="be60a728f73929551638ecfe47245788"/>
+    <FileStats path="org/example/vgtuaventory/service/impl/EventServiceImpl.java" bugCount="4" size="0" bugHash="d90097444d5e6d65385ed56737e87e93"/>
+    <FileStats path="org/example/vgtuaventory/utils/SecurityConfig.java" bugCount="2" size="0" bugHash="7bf36221124999b3618f650f0e919178"/>
+    <FindBugsProfile></FindBugsProfile>
+  </FindBugsSummary>
+  <ClassFeatures></ClassFeatures>
+  <History></History>
+</BugCollection>
