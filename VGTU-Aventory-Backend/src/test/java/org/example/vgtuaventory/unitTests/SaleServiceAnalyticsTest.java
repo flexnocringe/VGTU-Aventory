@@ -1,5 +1,7 @@
 package org.example.vgtuaventory.unitTests;
 
+import org.example.vgtuaventory.dto.ProductSalesComparisonResponse;
+import org.example.vgtuaventory.dto.TopSellingProductResponse;
 import org.example.vgtuaventory.model.Product;
 import org.example.vgtuaventory.model.Sale;
 import org.example.vgtuaventory.model.SaleType;
@@ -88,28 +90,28 @@ class SaleServiceAnalyticsTest {
     }
 
     // Accessors are kept in one place, so a change of the DTO shape touches only these lines.
-    private static String name(SaleService.TopSellingProductResponse r) {
-        return r.getProductName();
+    private static String name(TopSellingProductResponse r) {
+        return r.productName();
     }
 
-    private static int count(SaleService.TopSellingProductResponse r) {
-        return r.getSalesCount();
+    private static int count(TopSellingProductResponse r) {
+        return r.salesCount();
     }
 
-    private static int id(SaleService.TopSellingProductResponse r) {
-        return r.productId;
+    private static int id(TopSellingProductResponse r) {
+        return r.productId();
     }
 
-    private static String name(SaleService.ProductSalesComparisonResponse r) {
-        return r.getProductName();
+    private static String name(ProductSalesComparisonResponse r) {
+        return r.productName();
     }
 
-    private static int count(SaleService.ProductSalesComparisonResponse r) {
-        return r.getTotalSalesCount();
+    private static int count(ProductSalesComparisonResponse r) {
+        return r.totalSalesCount();
     }
 
-    private static int id(SaleService.ProductSalesComparisonResponse r) {
-        return r.getProductId();
+    private static int id(ProductSalesComparisonResponse r) {
+        return r.productId();
     }
 
     // =====================================================================
@@ -214,7 +216,7 @@ class SaleServiceAnalyticsTest {
         givenSalesInRange(List.of());
         givenOwnedProducts(products);
 
-        List<SaleService.ProductSalesComparisonResponse> result =
+        List<ProductSalesComparisonResponse> result =
                 saleService.getProductSalesComparison(USER_ID, START, END, List.of(1, 2, 3, 4, 5));
 
         assertEquals(5, result.size());
@@ -251,7 +253,7 @@ class SaleServiceAnalyticsTest {
                 sale(pear, 1)));
         givenOwnedProducts(apple, pear);
 
-        List<SaleService.ProductSalesComparisonResponse> result =
+        List<ProductSalesComparisonResponse> result =
                 saleService.getProductSalesComparison(USER_ID, START, END, List.of(1, 2));
 
         assertEquals(2, result.size());
@@ -270,7 +272,7 @@ class SaleServiceAnalyticsTest {
         givenSalesInRange(List.of(sale(apple, 10)));
         givenOwnedProducts(apple, pear);
 
-        List<SaleService.ProductSalesComparisonResponse> result =
+        List<ProductSalesComparisonResponse> result =
                 saleService.getProductSalesComparison(USER_ID, START, END, List.of(2, 1));
 
         assertEquals(List.of(2, 1), result.stream().map(SaleServiceAnalyticsTest::id).toList());
@@ -285,7 +287,7 @@ class SaleServiceAnalyticsTest {
         givenSalesInRange(List.of(sale(product(1, "Name on sale"), 2)));
         givenOwnedProducts(unnamed);
 
-        List<SaleService.ProductSalesComparisonResponse> result =
+        List<ProductSalesComparisonResponse> result =
                 saleService.getProductSalesComparison(USER_ID, START, END, List.of(1));
 
         assertEquals("", name(result.get(0)));
@@ -300,7 +302,7 @@ class SaleServiceAnalyticsTest {
         givenSalesInRange(List.of(sale(apple, 1)));
         givenOwnedProducts(apple);
 
-        List<SaleService.ProductSalesComparisonResponse> result =
+        List<ProductSalesComparisonResponse> result =
                 saleService.getProductSalesComparison(USER_ID, today, today, List.of(1));
 
         assertEquals(1, count(result.get(0)));
@@ -386,7 +388,7 @@ class SaleServiceAnalyticsTest {
                 sale(apple, 0),
                 sale(null, 50)));
 
-        List<SaleService.TopSellingProductResponse> result =
+        List<TopSellingProductResponse> result =
                 saleService.getTopSellingProductsByDateRange(USER_ID, START, END);
 
         assertEquals(2, result.size());
@@ -408,7 +410,7 @@ class SaleServiceAnalyticsTest {
                 sale(cherry, 7),
                 sale(apple, 3)));
 
-        List<SaleService.TopSellingProductResponse> result =
+        List<TopSellingProductResponse> result =
                 saleService.getTopSellingProductsByDateRange(USER_ID, START, END);
 
         assertEquals(List.of("Cherry", "Apple", "banana"),
@@ -424,7 +426,7 @@ class SaleServiceAnalyticsTest {
                 sale(zed, 2),
                 sale(unnamed, 2)));
 
-        List<SaleService.TopSellingProductResponse> result =
+        List<TopSellingProductResponse> result =
                 saleService.getTopSellingProductsByDateRange(USER_ID, START, END);
 
         assertEquals("", name(result.get(0)));

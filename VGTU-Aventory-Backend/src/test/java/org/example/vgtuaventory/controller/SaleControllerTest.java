@@ -1,5 +1,8 @@
 package org.example.vgtuaventory.controller;
 
+import org.example.vgtuaventory.dto.ProductSalesComparisonResponse;
+import org.example.vgtuaventory.dto.SaleRequest;
+import org.example.vgtuaventory.dto.TopSellingProductResponse;
 import org.example.vgtuaventory.model.Sale;
 import org.example.vgtuaventory.model.SaleType;
 import org.example.vgtuaventory.service.SaleService;
@@ -55,12 +58,12 @@ class SaleControllerTest {
     }
 
     // Accessors kept in one place so a DTO shape change only touches these lines.
-    private static int productId(SaleService.SaleRequest r) { return r.productId; }
-    private static int ownerId(SaleService.SaleRequest r) { return r.ownerId; }
-    private static int quantity(SaleService.SaleRequest r) { return r.quantity; }
-    private static String location(SaleService.SaleRequest r) { return r.saleLocation; }
-    private static SaleType type(SaleService.SaleRequest r) { return r.saleType; }
-    private static String note(SaleService.SaleRequest r) { return r.saleNote; }
+    private static int productId(SaleRequest r) { return r.getProductId(); }
+    private static int ownerId(SaleRequest r) { return r.getOwnerId(); }
+    private static int quantity(SaleRequest r) { return r.getQuantity(); }
+    private static String location(SaleRequest r) { return r.getSaleLocation(); }
+    private static SaleType type(SaleRequest r) { return r.getSaleType(); }
+    private static String note(SaleRequest r) { return r.getSaleNote(); }
 
     @Test
     void createSale_shouldBindAllRequestFields() throws Exception {
@@ -75,9 +78,9 @@ class SaleControllerTest {
                                 """))
                 .andExpect(status().isOk());
 
-        ArgumentCaptor<SaleService.SaleRequest> captor = ArgumentCaptor.forClass(SaleService.SaleRequest.class);
+        ArgumentCaptor<SaleRequest> captor = ArgumentCaptor.forClass(SaleRequest.class);
         verify(saleService).registerSale(captor.capture(), eq(USER_ID));
-        SaleService.SaleRequest r = captor.getValue();
+        SaleRequest r = captor.getValue();
         assertEquals(7, productId(r));
         assertEquals(1, ownerId(r));
         assertEquals(3, quantity(r));
@@ -96,9 +99,9 @@ class SaleControllerTest {
                         .content("{\"productId\":7,\"quantity\":2,\"saleType\":\"SALE\"}"))
                 .andExpect(status().isOk());
 
-        ArgumentCaptor<SaleService.SaleRequest> captor = ArgumentCaptor.forClass(SaleService.SaleRequest.class);
+        ArgumentCaptor<SaleRequest> captor = ArgumentCaptor.forClass(SaleRequest.class);
         verify(saleService).registerSale(captor.capture(), eq(USER_ID));
-        SaleService.SaleRequest r = captor.getValue();
+        SaleRequest r = captor.getValue();
         assertEquals(0, ownerId(r));
         assertEquals(null, location(r));
         assertEquals(null, note(r));
@@ -132,8 +135,8 @@ class SaleControllerTest {
     @Test
     void topSelling_shouldSerializeExactFieldsAndEmptyStringForNullName() throws Exception {
         when(saleService.getTopSellingProductsByDateRange(USER_ID, START, END)).thenReturn(List.of(
-                new SaleService.TopSellingProductResponse(3, "Milk", 5),
-                new SaleService.TopSellingProductResponse(4, null, 2)));
+                new TopSellingProductResponse(3, "Milk", 5),
+                new TopSellingProductResponse(4, null, 2)));
 
         mockMvc.perform(get("/sales/top-selling/2026-01-10/2026-01-20")
                         .requestAttr(AuthSessionAttributes.CURRENT_USER_ID, USER_ID))
@@ -158,8 +161,8 @@ class SaleControllerTest {
     @Test
     void comparison_shouldBindProductIdsAndSerializeExactFields() throws Exception {
         when(saleService.getProductSalesComparison(USER_ID, START, END, List.of(3, 4))).thenReturn(List.of(
-                new SaleService.ProductSalesComparisonResponse(3, "Milk", 5),
-                new SaleService.ProductSalesComparisonResponse(4, null, 0)));
+                new ProductSalesComparisonResponse(3, "Milk", 5),
+                new ProductSalesComparisonResponse(4, null, 0)));
 
         mockMvc.perform(post("/sales/sales-comparison/2026-01-10/2026-01-20")
                         .requestAttr(AuthSessionAttributes.CURRENT_USER_ID, USER_ID)

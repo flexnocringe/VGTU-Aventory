@@ -1,5 +1,6 @@
 package org.example.vgtuaventory.unitTests;
 
+import org.example.vgtuaventory.dto.SaleRequest;
 import org.example.vgtuaventory.model.Product;
 import org.example.vgtuaventory.model.Sale;
 import org.example.vgtuaventory.model.SaleType;
@@ -36,14 +37,14 @@ class SaleServiceTest {
     @InjectMocks
     private SaleService saleService;
 
-    private SaleService.SaleRequest req(int productId, int ownerId, int qty, SaleType type) {
-        SaleService.SaleRequest r = new SaleService.SaleRequest();
-        r.productId = productId;
-        r.ownerId = ownerId;
-        r.quantity = qty;
-        r.saleType = type;
-        r.saleLocation = "Test";
-        r.saleNote = "Note";
+    private SaleRequest req(int productId, int ownerId, int qty, SaleType type) {
+        SaleRequest r = new SaleRequest();
+        r.setProductId(productId);
+        r.setOwnerId(ownerId);
+        r.setQuantity(qty);
+        r.setSaleType(type);
+        r.setSaleLocation("Test");
+        r.setSaleNote("Note");
         return r;
     }
 
