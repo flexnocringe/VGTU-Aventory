@@ -4,13 +4,18 @@ import org.example.vgtuaventory.model.User;
 import org.example.vgtuaventory.model.UserRole;
 import org.example.vgtuaventory.repository.UserRepository;
 import org.example.vgtuaventory.security.PasswordService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.Clock;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -28,8 +33,43 @@ class AuthServiceTest {
     @Mock
     private TokenService tokenService;
 
-    @InjectMocks
+    private MutableClock clock;
+
     private AuthService authService;
+
+    @BeforeEach
+    void setUp() {
+        clock = new MutableClock(Instant.parse("2026-11-07T10:00:00Z"));
+        authService = new AuthService(userRepository, passwordService, tokenService, clock);
+    }
+
+    /** Test clock that can be moved forward, so time-dependent rules run without waiting. */
+    static final class MutableClock extends Clock {
+        private Instant now;
+
+        MutableClock(Instant now) {
+            this.now = now;
+        }
+
+        void advance(Duration duration) {
+            now = now.plus(duration);
+        }
+
+        @Override
+        public ZoneId getZone() {
+            return ZoneOffset.UTC;
+        }
+
+        @Override
+        public Clock withZone(ZoneId zone) {
+            return this;
+        }
+
+        @Override
+        public Instant instant() {
+            return now;
+        }
+    }
 
     // TC1 good auth
     @Test

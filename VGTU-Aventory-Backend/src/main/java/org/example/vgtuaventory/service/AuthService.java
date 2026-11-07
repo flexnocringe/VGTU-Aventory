@@ -8,6 +8,7 @@ import org.example.vgtuaventory.repository.UserRepository;
 import org.example.vgtuaventory.security.PasswordService;
 import org.springframework.stereotype.Service;
 
+import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Locale;
@@ -27,6 +28,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordService passwordService;
     private final TokenService tokenService;
+    private final Clock clock;
     private final ConcurrentHashMap<String, Integer> failedLoginAttempts = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, Instant> lockedUntil = new ConcurrentHashMap<>();
 
@@ -49,7 +51,7 @@ public class AuthService {
 
         String normalizedEmail = email.trim();
         String loginKey = normalizedEmail.toLowerCase(Locale.ROOT);
-        Instant now = Instant.now();
+        Instant now = clock.instant();
 
         Instant blockedUntil = lockedUntil.get(loginKey);
         if (blockedUntil != null && blockedUntil.isAfter(now)) {
@@ -80,7 +82,7 @@ public class AuthService {
         int attempts = failedLoginAttempts.merge(loginKey, 1, Integer::sum);
 
         if (attempts >= MAX_FAILED_LOGIN_ATTEMPTS) {
-            lockedUntil.put(loginKey, Instant.now().plus(LOCK_DURATION));
+            lockedUntil.put(loginKey, clock.instant().plus(LOCK_DURATION));
             failedLoginAttempts.remove(loginKey);
             throw new IllegalStateException("Account is temporarily blocked. Try again later.");
         }
