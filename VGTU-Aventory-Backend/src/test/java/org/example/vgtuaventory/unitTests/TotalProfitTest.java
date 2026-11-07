@@ -6,14 +6,18 @@ import org.example.vgtuaventory.model.Sale;
 import org.example.vgtuaventory.model.User;
 import org.example.vgtuaventory.repository.SaleRepository;
 import org.example.vgtuaventory.controller.TotalSalesController;
+import org.example.vgtuaventory.service.SalesTotalsService;
 import org.springframework.http.ResponseEntity;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -30,8 +34,13 @@ class TotalProfitTest {
     @Mock
     private SaleRepository saleRepository;
 
-    @InjectMocks
     private TotalSalesController totalSalesController;
+
+    @BeforeEach
+    void setUp() {
+        Clock clock = Clock.fixed(Instant.parse("2026-11-07T10:00:00Z"), ZoneOffset.UTC);
+        totalSalesController = new TotalSalesController(new SalesTotalsService(saleRepository, clock));
+    }
 
     @Test
     void findAllBySaleDateBetween_returnsSaleIdToTotalPriceMap() {

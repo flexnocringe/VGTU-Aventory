@@ -3,14 +3,18 @@ package org.example.vgtuaventory.unitTests;
 import org.example.vgtuaventory.controller.TotalSalesController;
 import org.example.vgtuaventory.model.Sale;
 import org.example.vgtuaventory.repository.SaleRepository;
+import org.example.vgtuaventory.service.SalesTotalsService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
+import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -25,25 +29,28 @@ import static org.mockito.Mockito.when;
 
 /**
  * Characterization tests for the error paths of TotalSalesController, written before its
- * validation and totals move into a service. Error bodies are JSON {"error": "..."}.
+ * validation and totals moved into SalesTotalsService. Error bodies are JSON {"error": "..."}.
+ * The controller runs with the real service over a mocked repository.
  */
 @ExtendWith(MockitoExtension.class)
 class TotalSalesControllerTest {
+
+    private static final Clock CLOCK = Clock.fixed(Instant.parse("2026-11-07T10:00:00Z"), ZoneOffset.UTC);
 
     @Mock
     private SaleRepository saleRepository;
 
     // Built in one place so a constructor change only touches this method.
     private TotalSalesController controller() {
-        return new TotalSalesController(saleRepository);
+        return new TotalSalesController(new SalesTotalsService(saleRepository, CLOCK));
     }
 
     private static String today() {
-        return LocalDate.now().toString();
+        return LocalDate.now(CLOCK).toString();
     }
 
     private static String tomorrow() {
-        return LocalDate.now().plusDays(1).toString();
+        return LocalDate.now(CLOCK).plusDays(1).toString();
     }
 
     private void givenFirstSaleAt(String isoDateTime) {
