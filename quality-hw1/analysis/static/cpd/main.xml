@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?><pmd-cpd pmdVersion="7.29.0" timestamp="2026-11-02T16:20:49.4598584+02:00" version="1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://pmd-code.org/schema/cpd-report https://pmd.github.io/schema/cpd-report_1_0_0.xsd" xmlns="https://pmd-code.org/schema/cpd-report">
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\VgtuAventoryApplication.java" totalNumberOfTokens="37"/>
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\controller\AuthController.java" totalNumberOfTokens="464"/>
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\controller\CategoryController.java" totalNumberOfTokens="226"/>
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\controller\EventController.java" totalNumberOfTokens="527"/>
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\controller\ProductController.java" totalNumberOfTokens="1122"/>
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\controller\SaleController.java" totalNumberOfTokens="355"/>
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\controller\TotalSalesController.java" totalNumberOfTokens="999"/>
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\dto\EventDTO.java" totalNumberOfTokens="68"/>
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\model\Category.java" totalNumberOfTokens="52"/>
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\model\Event.java" totalNumberOfTokens="43"/>
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\model\Giveaway.java" totalNumberOfTokens="125"/>
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\model\GiveawayParticipant.java" totalNumberOfTokens="47"/>
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\model\GiveawayProduct.java" totalNumberOfTokens="59"/>
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\model\GiveawayStatus.java" totalNumberOfTokens="14"/>
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\model\Product.java" totalNumberOfTokens="98"/>
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\model\Sale.java" totalNumberOfTokens="67"/>
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\model\SaleType.java" totalNumberOfTokens="8"/>
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\model\User.java" totalNumberOfTokens="178"/>
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\model\UserRole.java" totalNumberOfTokens="8"/>
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\repository\CategoryRepository.java" totalNumberOfTokens="69"/>
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\repository\EventRepository.java" totalNumberOfTokens="23"/>
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\repository\ProductRepository.java" totalNumberOfTokens="90"/>
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\repository\SaleRepository.java" totalNumberOfTokens="88"/>
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\repository\UserRepository.java" totalNumberOfTokens="36"/>
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\security\PasswordService.java" totalNumberOfTokens="53"/>
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\service\AuthService.java" totalNumberOfTokens="570"/>
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\service\EventService.java" totalNumberOfTokens="44"/>
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\service\ProductService.java" totalNumberOfTokens="57"/>
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\service\SaleService.java" totalNumberOfTokens="1282"/>
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\service\TokenService.java" totalNumberOfTokens="139"/>
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\service\impl\EventServiceImpl.java" totalNumberOfTokens="508"/>
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\utils\AuthSessionAttributes.java" totalNumberOfTokens="19"/>
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\utils\LocalDateAdapter.java" totalNumberOfTokens="72"/>
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\utils\LocalDateTimeAdapter.java" totalNumberOfTokens="84"/>
+    <file path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\utils\SecurityConfig.java" totalNumberOfTokens="419"/>
+    <duplication lines="24" tokens="112">
+        <file begintoken="5963" column="82" endcolumn="21" endline="119" endtoken="6074" line="96" path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\service\SaleService.java"/>
+        <file begintoken="6362" column="76" endcolumn="21" endline="199" endtoken="6473" line="176" path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\service\SaleService.java"/>
+        <codefragment><![CDATA[            throw new RuntimeException("Start date cannot be later than end date");
+        }
+
+        Optional<Sale> firstSaleOptional = saleRepository.findFirstByOrderBySaleDateAsc();
+        if (firstSaleOptional.isEmpty()) {
+            throw new RuntimeException("No sales found in the system");
+        }
+
+        LocalDate firstSaleDate = firstSaleOptional.get().getSaleDate().toLocalDate();
+        if (startDate.isBefore(firstSaleDate)) {
+            throw new RuntimeException("Start date cannot be earlier than first recorded sale date");
+        }
+
+        LocalDateTime startDateTime = startDate.atStartOfDay();
+        LocalDateTime endDateTime = endDate.plusDays(1).atStartOfDay().minusNanos(1);
+
+        List<Sale> sales = saleRepository.findAllByOwner_IdAndSaleTypeAndSaleDateBetween(
+                currentUserId,
+                SaleType.SALE,
+                startDateTime,
+                endDateTime
+        );
+
+        Map<Integer, TopSellingProductResponse> grouped = new HashMap<>();
+]]></codefragment>
+    </duplication>
+    <duplication lines="14" tokens="91">
+        <file begintoken="3313" column="26" endcolumn="143" endline="118" endtoken="3403" line="105" path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\controller\TotalSalesController.java"/>
+        <file begintoken="3494" column="38" endcolumn="10" endline="150" endtoken="3584" line="133" path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\controller\TotalSalesController.java"/>
+        <codefragment><![CDATA[        Gson gson = build.setPrettyPrinting().create();
+        
+        DateInterval interval;
+        try {
+            LocalDate parsedStartDate = LocalDate.parse(startDate);
+            LocalDate parsedEndDate = LocalDate.parse(endDate);
+            interval = validateInterval(parsedStartDate, parsedEndDate);
+        } catch (DateTimeParseException exception) {
+            return badRequest("Dates must be valid ISO date strings (YYYY-MM-DD).");
+        } catch (IllegalArgumentException exception) {
+            return badRequest(exception.getMessage());
+        }
+
+        List<Sale> sales = saleRepository.findAllByOwner_IdAndSaleDateBetween(currentUserId, interval.startDateTime(), interval.endDateTime());
+]]></codefragment>
+    </duplication>
+    <duplication lines="9" tokens="62">
+        <file begintoken="3145" column="96" endcolumn="143" endline="90" endtoken="3206" line="82" path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\controller\TotalSalesController.java"/>
+        <file begintoken="3342" column="62" endcolumn="143" endline="118" endtoken="3403" line="110" path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\controller\TotalSalesController.java"/>
+        <file begintoken="3523" column="62" endcolumn="10" endline="150" endtoken="3584" line="138" path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\controller\TotalSalesController.java"/>
+        <codefragment><![CDATA[            LocalDate parsedEndDate = LocalDate.parse(dateInterval.get("endDate").getAsString());
+            interval = validateInterval(parsedStartDate, parsedEndDate);
+        } catch (DateTimeParseException exception) {
+            return badRequest("Dates must be valid ISO date strings (YYYY-MM-DD).");
+        } catch (IllegalArgumentException exception) {
+            return badRequest(exception.getMessage());
+        }
+
+        List<Sale> sales = saleRepository.findAllByOwner_IdAndSaleDateBetween(currentUserId, interval.startDateTime(), interval.endDateTime());
+]]></codefragment>
+    </duplication>
+    <duplication lines="9" tokens="55">
+        <file begintoken="1087" column="66" endcolumn="6" endline="74" endtoken="1141" line="66" path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\controller\EventController.java"/>
+        <file begintoken="1201" column="66" endcolumn="6" endline="89" endtoken="1255" line="82" path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\controller\EventController.java"/>
+        <codefragment><![CDATA[            response.put("message", "Event updated successfully.");
+            
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            Map<String, String> response = new HashMap<>();
+            response.put("message", e.getMessage());
+            return ResponseEntity.status(404).body(response);
+        }
+    }
+]]></codefragment>
+    </duplication>
+    <duplication lines="5" tokens="50">
+        <file begintoken="7291" column="9" endcolumn="40" endline="68" endtoken="7340" line="64" path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\service\impl\EventServiceImpl.java"/>
+        <file begintoken="7425" column="9" endcolumn="40" endline="86" endtoken="7474" line="82" path="C:\Users\HP\Documents\VGTU-Aventory\VGTU-Aventory-Backend\src\main\java\org\example\vgtuaventory\service\impl\EventServiceImpl.java"/>
+        <codefragment><![CDATA[        Event existingEvent = eventRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Event not found with id: " + id));
+
+        if (existingEvent.getOwner() == null || existingEvent.getOwner().getId() != userId) {
+            throw new RuntimeException("You do not have permission to update this event.");
+]]></codefragment>
+    </duplication>
+</pmd-cpd>
