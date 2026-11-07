@@ -149,22 +149,19 @@ class SaleServiceTest {
 
     @Test
     void registerSale_shouldRejectWhenRequestOwnerDoesNotMatchAuthenticatedUser() {
-        Product product = new Product();
-        product.setProductId(1);
-        product.setPrice(3.0);
-        product.setQuantity(10);
-
-        User owner = new User();
-        owner.setId(1);
-
-        when(productRepository.findByProductIdAndOwner_Id(1, 1)).thenReturn(Optional.of(product));
-        when(userRepository.findById(1)).thenReturn(Optional.of(owner));
-
         IllegalStateException ex = assertThrows(IllegalStateException.class,
                 () -> saleService.registerSale(req(1, 2, 4, SaleType.SALE),1));
 
         assertTrue(ex.getMessage().contains("own account"));
-        verify(saleRepository, never()).save(any());
+        verifyNoInteractions(productRepository, userRepository, saleRepository);
+    }
+
+    @Test
+    void registerSale_shouldCheckOwnerBeforeQuantity() {
+        IllegalStateException ex = assertThrows(IllegalStateException.class,
+                () -> saleService.registerSale(req(1, 2, 0, SaleType.SALE), 1));
+
+        assertTrue(ex.getMessage().contains("own account"));
     }
 
     @Test

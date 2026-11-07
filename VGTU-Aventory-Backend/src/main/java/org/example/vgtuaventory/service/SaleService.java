@@ -31,6 +31,10 @@ public class SaleService {
     }
     @Transactional
     public Sale registerSale(SaleRequest request, int currentUserId) {
+        if (request.getOwnerId() != 0 && request.getOwnerId() != currentUserId) {
+            throw new IllegalStateException("You can only create sales for your own account");
+        }
+
         if (request.getQuantity() <= 0) {
             throw new RuntimeException("Quantity must be greater than 0");
         }
@@ -40,10 +44,6 @@ public class SaleService {
 
         User owner = userRepository.findById(currentUserId)
             .orElseThrow(() -> new RuntimeException("User not found with ID: " + currentUserId));
-
-        if (request.getOwnerId() != 0 && request.getOwnerId() != currentUserId) {
-            throw new IllegalStateException("You can only create sales for your own account");
-        }
 
         Sale sale = new Sale();
         sale.setProduct(product);
