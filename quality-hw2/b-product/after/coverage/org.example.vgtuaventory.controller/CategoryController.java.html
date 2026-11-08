@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CategoryController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">VGTU-Aventory</a> &gt; <a href="index.source.html" class="el_package">org.example.vgtuaventory.controller</a> &gt; <span class="el_source">CategoryController.java</span></div><h1>CategoryController.java</h1><pre class="source lang-java linenums">package org.example.vgtuaventory.controller;
+
+import lombok.RequiredArgsConstructor;
+import org.example.vgtuaventory.model.Category;
+import org.example.vgtuaventory.model.User;
+import org.example.vgtuaventory.repository.CategoryRepository;
+import org.example.vgtuaventory.utils.AuthSessionAttributes;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@CrossOrigin(origins = &quot;http://localhost:3000&quot;)
+@RestController
+@RequestMapping(&quot;/api/category&quot;)
+@RequiredArgsConstructor
+public class CategoryController {
+
+    private final CategoryRepository categoryRepository;
+
+    @PostMapping
+    public ResponseEntity&lt;?&gt; create(
+            @RequestBody CategoryRequest request,
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId
+    ) {
+<span class="nc bnc" id="L25" title="All 4 branches missed.">        if (request.categoryName() == null || request.categoryName().isBlank()) {</span>
+<span class="nc" id="L26">            return ResponseEntity.badRequest().body(&quot;categoryName is required!&quot;);</span>
+        }
+
+<span class="nc" id="L29">        String name = request.categoryName().trim();</span>
+<span class="nc bnc" id="L30" title="All 2 branches missed.">        if (categoryRepository.existsByCategoryNameAndOwner_Id(name, currentUserId)) {</span>
+<span class="nc" id="L31">            return ResponseEntity.status(HttpStatus.CONFLICT).body(&quot;categoryName already exists&quot;);</span>
+        }
+
+<span class="nc" id="L34">        Category c = new Category();</span>
+<span class="nc" id="L35">        User owner = new User();</span>
+<span class="nc" id="L36">        owner.setId(currentUserId);</span>
+<span class="nc" id="L37">        c.setOwner(owner);</span>
+<span class="nc" id="L38">        c.setCategoryName(name);</span>
+
+<span class="nc" id="L40">        Category saved = categoryRepository.save(c);</span>
+<span class="nc" id="L41">        return ResponseEntity.status(HttpStatus.CREATED).body(saved);</span>
+    }
+
+    @GetMapping(&quot;/all&quot;)
+    public ResponseEntity&lt;?&gt; list(
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId) {
+<span class="nc" id="L47">        return ResponseEntity.ok(categoryRepository.findAllByOwner_Id(currentUserId));</span>
+    }
+
+<span class="nc" id="L50">    public record CategoryRequest(</span>
+            Integer categoryId,
+            String categoryName
+    ) {}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

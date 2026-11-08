@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TokenService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">VGTU-Aventory</a> &gt; <a href="index.source.html" class="el_package">org.example.vgtuaventory.service</a> &gt; <span class="el_source">TokenService.java</span></div><h1>TokenService.java</h1><pre class="source lang-java linenums">package org.example.vgtuaventory.service;
+
+import org.example.vgtuaventory.model.User;
+import org.springframework.stereotype.Service;
+
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.Optional;
+
+@Service
+<span class="fc" id="L11">public class TokenService {</span>
+<span class="fc" id="L12">    private final ConcurrentHashMap&lt;String, Integer&gt; activeTokens = new ConcurrentHashMap&lt;&gt;();</span>
+
+    public String generateToken(User user){
+<span class="fc" id="L15">        String token = UUID.randomUUID().toString();</span>
+<span class="fc" id="L16">        activeTokens.put(token, user.getId());</span>
+<span class="fc" id="L17">        return token;</span>
+    }
+
+    public boolean isTokenValid(String token) {
+<span class="nc bnc" id="L21" title="All 4 branches missed.">        return token != null &amp;&amp; activeTokens.containsKey(token);</span>
+    }
+
+    public Optional&lt;Integer&gt; getUserIdForToken(String token) {
+<span class="nc bnc" id="L25" title="All 2 branches missed.">        if (token == null) {</span>
+<span class="nc" id="L26">            return Optional.empty();</span>
+        }
+
+<span class="nc" id="L29">        return Optional.ofNullable(activeTokens.get(token));</span>
+    }
+
+    public void revokeToken(String token) {
+<span class="nc bnc" id="L33" title="All 2 branches missed.">        if (token != null) {</span>
+<span class="nc" id="L34">            activeTokens.remove(token);</span>
+        }
+<span class="nc" id="L36">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

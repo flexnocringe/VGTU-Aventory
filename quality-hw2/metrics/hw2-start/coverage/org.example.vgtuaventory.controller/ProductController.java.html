@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">VGTU-Aventory</a> &gt; <a href="index.source.html" class="el_package">org.example.vgtuaventory.controller</a> &gt; <span class="el_source">ProductController.java</span></div><h1>ProductController.java</h1><pre class="source lang-java linenums">package org.example.vgtuaventory.controller;
+
+import lombok.RequiredArgsConstructor;
+import org.example.vgtuaventory.model.Category;
+import org.example.vgtuaventory.model.Product;
+import org.example.vgtuaventory.model.User;
+import org.example.vgtuaventory.repository.CategoryRepository;
+import org.example.vgtuaventory.repository.ProductRepository;
+import org.example.vgtuaventory.service.ProductService;
+import org.example.vgtuaventory.utils.AuthSessionAttributes;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@CrossOrigin(origins = &quot;http://localhost:3000&quot;)
+@RestController
+@RequestMapping(&quot;/api/products&quot;)
+@RequiredArgsConstructor
+public class ProductController {
+
+    private final ProductRepository productRepository;
+    private final ProductService productService;
+    private final CategoryRepository categoryRepository;
+
+    @GetMapping(&quot;/all&quot;)
+    public ResponseEntity&lt;List&lt;Product&gt;&gt; list(
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId
+    ) {
+<span class="fc" id="L32">        return ResponseEntity.ok(productRepository.findAllByOwner_Id(currentUserId));</span>
+    }
+
+    @GetMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;?&gt; getById(
+            @PathVariable int id,
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId
+    ) {
+<span class="fc" id="L40">        return productRepository.findById(id)</span>
+<span class="fc" id="L41">                .&lt;ResponseEntity&lt;?&gt;&gt;map(product -&gt; {</span>
+<span class="pc bpc" id="L42" title="2 of 4 branches missed.">                    if (product.getOwner() == null || product.getOwner().getId() != currentUserId) {</span>
+<span class="nc" id="L43">                        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(&quot;You can only access your own products&quot;);</span>
+                    }
+<span class="fc" id="L45">                    return ResponseEntity.ok(product);</span>
+                })
+<span class="fc" id="L47">                .orElseGet(() -&gt; ResponseEntity.status(HttpStatus.NOT_FOUND).body(&quot;Product not found&quot;));</span>
+    }
+
+    @GetMapping(&quot;/scan&quot;)
+    public ResponseEntity&lt;?&gt; getByQrCode(
+            @RequestParam String qrCode,
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId
+    ) {
+        try {
+<span class="nc" id="L56">            Product product = productService.getProductByQrCodeForOwner(qrCode, currentUserId);</span>
+
+<span class="nc bnc" id="L58" title="All 2 branches missed.">            Integer categoryId = product.getCategory() != null ? product.getCategory().getCategoryId() : null;</span>
+
+<span class="nc" id="L60">            return ResponseEntity.ok(new ProductScanResponse(</span>
+<span class="nc" id="L61">                    product.getProductId(),</span>
+<span class="nc" id="L62">                    product.getProductName(),</span>
+<span class="nc" id="L63">                    product.getPrice(),</span>
+<span class="nc" id="L64">                    product.getProductDescription(),</span>
+<span class="nc" id="L65">                    product.getPhotoUrl(),</span>
+<span class="nc" id="L66">                    product.getQuantity(),</span>
+<span class="nc" id="L67">                    product.getQrCode(),</span>
+                    categoryId
+            ));
+<span class="nc" id="L70">        } catch (RuntimeException ex) {</span>
+<span class="nc" id="L71">            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(&quot;Product not found&quot;);</span>
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity&lt;?&gt; create(
+            @RequestBody ProductRequest request,
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId
+    ) {
+<span class="pc bpc" id="L80" title="1 of 4 branches missed.">        if (request.productName() == null || request.productName().isBlank()) {</span>
+<span class="fc" id="L81">            return ResponseEntity.badRequest().body(&quot;productName is required&quot;);</span>
+        }
+
+<span class="fc" id="L84">        String name = request.productName().trim();</span>
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">        if (productRepository.existsByProductNameAndOwner_Id(name, currentUserId)) {</span>
+<span class="fc" id="L86">            return ResponseEntity.status(HttpStatus.CONFLICT).body(&quot;productName already exists&quot;);</span>
+        }
+
+        // Validate category if provided
+<span class="nc" id="L90">        Category category = null;</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">        if (request.categoryId() != null) {</span>
+<span class="nc" id="L92">            Optional&lt;Category&gt; catOpt = categoryRepository.findByCategoryIdAndOwner_Id(request.categoryId(), currentUserId);</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">            if (catOpt.isEmpty()) {</span>
+<span class="nc" id="L94">                return ResponseEntity.badRequest().body(&quot;Invalid categoryId (not found or not yours)&quot;);</span>
+            }
+<span class="nc" id="L96">            category = catOpt.get();</span>
+        }
+
+<span class="nc" id="L99">        Product p = new Product();</span>
+<span class="nc" id="L100">        User owner = new User();</span>
+<span class="nc" id="L101">        owner.setId(currentUserId);</span>
+
+<span class="nc" id="L103">        p.setOwner(owner);</span>
+<span class="nc" id="L104">        p.setProductName(name);</span>
+<span class="nc" id="L105">        p.setPrice(request.price());</span>
+<span class="nc" id="L106">        p.setProductDescription(request.productDescription());</span>
+<span class="nc" id="L107">        p.setPhotoUrl(request.photoUrl());</span>
+
+<span class="nc bnc" id="L109" title="All 2 branches missed.">        if (request.quantity() != null) p.setQuantity(request.quantity());</span>
+<span class="nc" id="L110">        p.setQrCode(request.qrCode());</span>
+
+<span class="nc" id="L112">        p.setCategory(category);</span>
+
+<span class="nc" id="L114">        Product saved = productRepository.save(p);</span>
+<span class="nc" id="L115">        return ResponseEntity.status(HttpStatus.CREATED).body(saved);</span>
+    }
+
+    @PutMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;?&gt; update(
+            @PathVariable int id,
+            @RequestBody ProductRequest request,
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId
+    ) {
+<span class="nc" id="L124">        return productRepository.findByProductIdAndOwner_Id(id, currentUserId)</span>
+<span class="nc" id="L125">                .&lt;ResponseEntity&lt;?&gt;&gt;map(existing -&gt; {</span>
+
+<span class="nc bnc" id="L127" title="All 4 branches missed.">                    if (request.productName() != null &amp;&amp; !request.productName().isBlank()) {</span>
+<span class="nc" id="L128">                        String newName = request.productName().trim();</span>
+
+<span class="nc" id="L130">                        boolean nameTaken = productRepository.findByProductNameAndOwner_Id(newName, currentUserId)</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">                                .filter(p -&gt; p.getProductId() != id)</span>
+<span class="nc" id="L132">                                .isPresent();</span>
+
+<span class="nc bnc" id="L134" title="All 2 branches missed.">                        if (nameTaken) {</span>
+<span class="nc" id="L135">                            return ResponseEntity.status(HttpStatus.CONFLICT).body(&quot;productName already exists&quot;);</span>
+                        }
+<span class="nc" id="L137">                        existing.setProductName(newName);</span>
+                    }
+
+<span class="nc bnc" id="L140" title="All 2 branches missed.">                    if (request.price() != null) existing.setPrice(request.price());</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">                    if (request.productDescription() != null) existing.setProductDescription(request.productDescription());</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">                    if (request.photoUrl() != null) existing.setPhotoUrl(request.photoUrl());</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">                    if (request.quantity() != null) existing.setQuantity(request.quantity());</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">                    if (request.qrCode() != null) existing.setQrCode(request.qrCode());</span>
+
+                    // Update category:
+                    // - if null: do nothing (keep current)
+                    // - if provided but invalid: 400
+<span class="nc bnc" id="L149" title="All 2 branches missed.">                    if (request.categoryId() != null) {</span>
+<span class="nc" id="L150">                        Category category = categoryRepository</span>
+<span class="nc" id="L151">                                .findByCategoryIdAndOwner_Id(request.categoryId(), currentUserId)</span>
+<span class="nc" id="L152">                                .orElse(null);</span>
+
+<span class="nc bnc" id="L154" title="All 2 branches missed.">                        if (category == null) {</span>
+<span class="nc" id="L155">                            return ResponseEntity.badRequest().body(&quot;Invalid categoryId (not found or not yours)&quot;);</span>
+                        }
+<span class="nc" id="L157">                        existing.setCategory(category);</span>
+                    }
+
+<span class="nc" id="L160">                    Product saved = productRepository.save(existing);</span>
+<span class="nc" id="L161">                    return ResponseEntity.ok(saved);</span>
+                })
+<span class="nc" id="L163">                .orElseGet(() -&gt;</span>
+<span class="nc" id="L164">                        ResponseEntity.status(HttpStatus.FORBIDDEN).body(&quot;You can only modify your own products&quot;)</span>
+                );
+    }
+
+    @DeleteMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;?&gt; delete(
+            @PathVariable int id,
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId
+    ) {
+<span class="nc" id="L173">        Product product = productRepository.findById(id).orElse(null);</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">        if (product == null) {</span>
+<span class="nc" id="L175">            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(&quot;Product not found&quot;);</span>
+        }
+<span class="nc bnc" id="L177" title="All 4 branches missed.">        if (product.getOwner() == null || product.getOwner().getId() != currentUserId) {</span>
+<span class="nc" id="L178">            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(&quot;You can only delete your own products&quot;);</span>
+        }
+<span class="nc" id="L180">        productRepository.deleteById(id);</span>
+<span class="nc" id="L181">        return ResponseEntity.noContent().build();</span>
+    }
+
+<span class="fc" id="L184">    public record ProductRequest(</span>
+            String productName,
+            Double price,
+            String productDescription,
+            String photoUrl,
+            Integer quantity,
+            String qrCode,
+            Integer categoryId
+    ) {}
+
+<span class="nc" id="L194">    public record ProductScanResponse(</span>
+            int productId,
+            String productName,
+            Double price,
+            String productDescription,
+            String photoUrl,
+            int quantity,
+            String qrCode,
+            Integer categoryId
+    ) {}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>
