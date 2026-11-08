@@ -1,0 +1,18 @@
+digraph "main" {
+    // Path: build\classes\java\main
+   "org.example.vgtuaventory.controller"              -> "org.example.vgtuaventory.dto (main)";
+   "org.example.vgtuaventory.controller"              -> "org.example.vgtuaventory.model (main)";
+   "org.example.vgtuaventory.controller"              -> "org.example.vgtuaventory.repository (main)";
+   "org.example.vgtuaventory.controller"              -> "org.example.vgtuaventory.service (main)";
+   "org.example.vgtuaventory.controller"              -> "org.example.vgtuaventory.utils (main)";
+   "org.example.vgtuaventory.repository"              -> "org.example.vgtuaventory.model (main)";
+   "org.example.vgtuaventory.service"                 -> "org.example.vgtuaventory.dto (main)";
+   "org.example.vgtuaventory.service"                 -> "org.example.vgtuaventory.model (main)";
+   "org.example.vgtuaventory.service"                 -> "org.example.vgtuaventory.repository (main)";
+   "org.example.vgtuaventory.service"                 -> "org.example.vgtuaventory.security (main)";
+   "org.example.vgtuaventory.service.impl"            -> "org.example.vgtuaventory.dto (main)";
+   "org.example.vgtuaventory.service.impl"            -> "org.example.vgtuaventory.model (main)";
+   "org.example.vgtuaventory.service.impl"            -> "org.example.vgtuaventory.repository (main)";
+   "org.example.vgtuaventory.service.impl"            -> "org.example.vgtuaventory.service (main)";
+   "org.example.vgtuaventory.utils"                   -> "org.example.vgtuaventory.service (main)";
+}

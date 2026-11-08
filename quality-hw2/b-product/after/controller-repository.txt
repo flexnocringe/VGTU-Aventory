@@ -1,0 +1,2 @@
+   org.example.vgtuaventory.controller.CategoryController -> org.example.vgtuaventory.repository.CategoryRepository main
+   org.example.vgtuaventory.controller.TotalSalesController -> org.example.vgtuaventory.repository.SaleRepository main

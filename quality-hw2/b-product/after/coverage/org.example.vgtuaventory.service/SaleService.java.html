@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SaleService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">VGTU-Aventory</a> &gt; <a href="index.source.html" class="el_package">org.example.vgtuaventory.service</a> &gt; <span class="el_source">SaleService.java</span></div><h1>SaleService.java</h1><pre class="source lang-java linenums">package org.example.vgtuaventory.service;
+
+import jakarta.transaction.Transactional;
+import org.example.vgtuaventory.model.Product;
+import org.example.vgtuaventory.model.Sale;
+import org.example.vgtuaventory.model.SaleType;
+import org.example.vgtuaventory.model.User;
+import org.example.vgtuaventory.repository.SaleRepository;
+import org.example.vgtuaventory.repository.ProductRepository;
+import org.example.vgtuaventory.repository.UserRepository;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+@Service
+public class SaleService {
+
+    private final SaleRepository saleRepository;
+    private final ProductRepository productRepository;
+    private final UserRepository userRepository;
+
+    public SaleService(SaleRepository saleRepository,
+                       ProductRepository productRepository,
+<span class="fc" id="L31">                       UserRepository userRepository) {</span>
+<span class="fc" id="L32">        this.saleRepository = saleRepository;</span>
+<span class="fc" id="L33">        this.productRepository = productRepository;</span>
+<span class="fc" id="L34">        this.userRepository = userRepository;</span>
+<span class="fc" id="L35">    }</span>
+    @Transactional
+    public Sale registerSale(SaleRequest request, int currentUserId) {
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        if (request.quantity &lt;= 0) {</span>
+<span class="fc" id="L39">            throw new RuntimeException(&quot;Quantity must be greater than 0&quot;);</span>
+        }
+
+<span class="fc" id="L42">        Product product = productRepository.findByProductIdAndOwner_Id(request.productId, currentUserId)</span>
+<span class="pc" id="L43">            .orElseThrow(() -&gt; new RuntimeException(&quot;Product not found with ID: &quot; + request.productId));</span>
+
+<span class="fc" id="L45">        User owner = userRepository.findById(currentUserId)</span>
+<span class="pc" id="L46">            .orElseThrow(() -&gt; new RuntimeException(&quot;User not found with ID: &quot; + currentUserId));</span>
+
+<span class="pc bpc" id="L48" title="1 of 4 branches missed.">        if (request.ownerId != 0 &amp;&amp; request.ownerId != currentUserId) {</span>
+<span class="fc" id="L49">            throw new IllegalStateException(&quot;You can only create sales for your own account&quot;);</span>
+        }
+
+<span class="fc" id="L52">        Sale sale = new Sale();</span>
+<span class="fc" id="L53">        sale.setProduct(product);</span>
+<span class="fc" id="L54">        sale.setOwner(owner);</span>
+<span class="fc" id="L55">        sale.setQuantity(request.quantity);</span>
+<span class="fc" id="L56">        sale.setSaleLocation(request.saleLocation);</span>
+<span class="fc" id="L57">        sale.setSaleType(request.saleType);</span>
+<span class="fc" id="L58">        sale.setSaleNote(request.saleNote);</span>
+<span class="fc" id="L59">        sale.setSaleDate(java.time.LocalDateTime.now());</span>
+
+<span class="fc" id="L61">        sale.setSaleProductPrice(product.getPrice());</span>
+<span class="fc" id="L62">        sale.setTotalPrice(product.getPrice() * request.quantity);</span>
+
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">        if (request.saleType == SaleType.SALE) {</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">            if (request.quantity &gt; product.getQuantity()) {</span>
+<span class="fc" id="L66">                throw new RuntimeException(&quot;Not enough stock&quot;);</span>
+            }
+<span class="fc" id="L68">            product.setQuantity(product.getQuantity() - request.quantity);</span>
+        } else {
+<span class="nc" id="L70">            product.setQuantity(product.getQuantity() + request.quantity);</span>
+        }
+
+<span class="fc" id="L73">        productRepository.save(product);</span>
+<span class="fc" id="L74">        return saleRepository.save(sale);</span>
+    }
+
+    public List&lt;Sale&gt; getSalesByUser(int userId) {
+<span class="nc" id="L78">        return saleRepository.findByOwnerId(userId);</span>
+    }
+
+    public List&lt;Sale&gt; getAllSales() {
+<span class="nc" id="L82">        return saleRepository.findAll();</span>
+    }
+
+    public List&lt;TopSellingProductResponse&gt; getTopSellingProductsByDateRange(
+            int currentUserId,
+            LocalDate startDate,
+            LocalDate endDate
+    ) {
+<span class="nc" id="L90">        LocalDate today = LocalDate.now();</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">        if (endDate.isAfter(today)) {</span>
+<span class="nc" id="L92">            throw new RuntimeException(&quot;End date cannot be in the future&quot;);</span>
+        }
+
+<span class="nc bnc" id="L95" title="All 2 branches missed.">        if (startDate.isAfter(endDate)) {</span>
+<span class="nc" id="L96">            throw new RuntimeException(&quot;Start date cannot be later than end date&quot;);</span>
+        }
+
+<span class="nc" id="L99">        Optional&lt;Sale&gt; firstSaleOptional = saleRepository.findFirstByOrderBySaleDateAsc();</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">        if (firstSaleOptional.isEmpty()) {</span>
+<span class="nc" id="L101">            throw new RuntimeException(&quot;No sales found in the system&quot;);</span>
+        }
+
+<span class="nc" id="L104">        LocalDate firstSaleDate = firstSaleOptional.get().getSaleDate().toLocalDate();</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">        if (startDate.isBefore(firstSaleDate)) {</span>
+<span class="nc" id="L106">            throw new RuntimeException(&quot;Start date cannot be earlier than first recorded sale date&quot;);</span>
+        }
+
+<span class="nc" id="L109">        LocalDateTime startDateTime = startDate.atStartOfDay();</span>
+<span class="nc" id="L110">        LocalDateTime endDateTime = endDate.plusDays(1).atStartOfDay().minusNanos(1);</span>
+
+<span class="nc" id="L112">        List&lt;Sale&gt; sales = saleRepository.findAllByOwner_IdAndSaleTypeAndSaleDateBetween(</span>
+                currentUserId,
+                SaleType.SALE,
+                startDateTime,
+                endDateTime
+        );
+
+<span class="nc" id="L119">        Map&lt;Integer, TopSellingProductResponse&gt; grouped = new HashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">        for (Sale sale : sales) {</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">            if (sale.getQuantity() &lt;= 0) {</span>
+<span class="nc" id="L122">                continue;</span>
+            }
+
+<span class="nc" id="L125">            Product product = sale.getProduct();</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">            if (product == null) {</span>
+<span class="nc" id="L127">                continue;</span>
+            }
+
+<span class="nc" id="L130">            int productId = product.getProductId();</span>
+<span class="nc" id="L131">            String productName = product.getProductName();</span>
+
+<span class="nc" id="L133">            TopSellingProductResponse current = grouped.get(productId);</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">            if (current == null) {</span>
+<span class="nc" id="L135">                grouped.put(productId, new TopSellingProductResponse(productId, productName, sale.getQuantity()));</span>
+            } else {
+<span class="nc" id="L137">                current.salesCount += sale.getQuantity();</span>
+            }
+<span class="nc" id="L139">        }</span>
+
+<span class="nc" id="L141">        List&lt;TopSellingProductResponse&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">        for (TopSellingProductResponse item : grouped.values()) {</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">            if (item.salesCount &gt; 0) {</span>
+<span class="nc" id="L144">                result.add(item);</span>
+            }
+<span class="nc" id="L146">        }</span>
+
+<span class="nc" id="L148">        result.sort(</span>
+<span class="nc" id="L149">                Comparator.comparingInt(TopSellingProductResponse::getSalesCount).reversed()</span>
+<span class="nc" id="L150">                        .thenComparing(TopSellingProductResponse::getProductName, String.CASE_INSENSITIVE_ORDER)</span>
+        );
+
+<span class="nc" id="L153">        return result;</span>
+    }
+
+    public List&lt;ProductSalesComparisonResponse&gt; getProductSalesComparison(
+            int currentUserId,
+            LocalDate startDate,
+            LocalDate endDate,
+            List&lt;Integer&gt; productIds
+    ) {
+<span class="nc" id="L162">        LocalDate today = LocalDate.now();</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">        if (endDate.isAfter(today)) {</span>
+<span class="nc" id="L164">            throw new RuntimeException(&quot;End date cannot be in the future&quot;);</span>
+        }
+
+<span class="nc bnc" id="L167" title="All 2 branches missed.">        if (startDate.isAfter(endDate)) {</span>
+<span class="nc" id="L168">            throw new RuntimeException(&quot;Start date cannot be later than end date&quot;);</span>
+        }
+
+<span class="nc bnc" id="L171" title="All 4 branches missed.">        if (productIds == null || productIds.isEmpty()) {</span>
+<span class="nc" id="L172">            throw new RuntimeException(&quot;At least one product must be selected&quot;);</span>
+        }
+
+<span class="nc bnc" id="L175" title="All 2 branches missed.">        if (productIds.size() &gt; 5) {</span>
+<span class="nc" id="L176">            throw new RuntimeException(&quot;Maximum 5 products can be compared&quot;);</span>
+        }
+
+<span class="nc" id="L179">        Optional&lt;Sale&gt; firstSaleOptional = saleRepository.findFirstByOrderBySaleDateAsc();</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">        if (firstSaleOptional.isEmpty()) {</span>
+<span class="nc" id="L181">            throw new RuntimeException(&quot;No sales found in the system&quot;);</span>
+        }
+
+<span class="nc" id="L184">        LocalDate firstSaleDate = firstSaleOptional.get().getSaleDate().toLocalDate();</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">        if (startDate.isBefore(firstSaleDate)) {</span>
+<span class="nc" id="L186">            throw new RuntimeException(&quot;Start date cannot be earlier than first recorded sale date&quot;);</span>
+        }
+
+<span class="nc" id="L189">        LocalDateTime startDateTime = startDate.atStartOfDay();</span>
+<span class="nc" id="L190">        LocalDateTime endDateTime = endDate.plusDays(1).atStartOfDay().minusNanos(1);</span>
+
+<span class="nc" id="L192">        List&lt;Sale&gt; sales = saleRepository.findAllByOwner_IdAndSaleTypeAndSaleDateBetween(</span>
+                currentUserId,
+                SaleType.SALE,
+                startDateTime,
+                endDateTime
+        );
+
+<span class="nc" id="L199">        Map&lt;Integer, ProductSalesComparisonResponse&gt; productMap = new HashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">        for (Integer productId : productIds) {</span>
+<span class="nc" id="L201">            Product product = productRepository.findByProductIdAndOwner_Id(productId, currentUserId)</span>
+<span class="nc" id="L202">                    .orElseThrow(() -&gt; new RuntimeException(&quot;Product not found with ID: &quot; + productId));</span>
+<span class="nc" id="L203">            productMap.put(productId, new ProductSalesComparisonResponse(productId, product.getProductName(), 0));</span>
+<span class="nc" id="L204">        }</span>
+
+<span class="nc bnc" id="L206" title="All 2 branches missed.">        for (Sale sale : sales) {</span>
+<span class="nc bnc" id="L207" title="All 2 branches missed.">            if (sale.getQuantity() &lt;= 0) {</span>
+<span class="nc" id="L208">                continue;</span>
+            }
+
+<span class="nc" id="L211">            Product product = sale.getProduct();</span>
+<span class="nc bnc" id="L212" title="All 2 branches missed.">            if (product == null) {</span>
+<span class="nc" id="L213">                continue;</span>
+            }
+
+<span class="nc" id="L216">            int productId = product.getProductId();</span>
+<span class="nc bnc" id="L217" title="All 2 branches missed.">            if (productMap.containsKey(productId)) {</span>
+<span class="nc" id="L218">                ProductSalesComparisonResponse response = productMap.get(productId);</span>
+<span class="nc" id="L219">                response.totalSalesCount += sale.getQuantity();</span>
+            }
+<span class="nc" id="L221">        }</span>
+
+<span class="nc" id="L223">        List&lt;ProductSalesComparisonResponse&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L224" title="All 2 branches missed.">        for (Integer productId : productIds) {</span>
+<span class="nc" id="L225">            ProductSalesComparisonResponse response = productMap.get(productId);</span>
+<span class="nc bnc" id="L226" title="All 4 branches missed.">            if (response != null &amp;&amp; response.totalSalesCount &gt;= 0) {</span>
+<span class="nc" id="L227">                result.add(response);</span>
+            }
+<span class="nc" id="L229">        }</span>
+
+<span class="nc" id="L231">        return result;</span>
+    }
+
+<span class="fc" id="L234">    public static class SaleRequest {</span>
+        public int productId;
+        public int ownerId;
+        public int quantity;
+        public String saleLocation;
+        public SaleType saleType;
+        public String saleNote;
+    }
+
+    public static class TopSellingProductResponse {
+        public int productId;
+        public String productName;
+        public int salesCount;
+
+<span class="nc" id="L248">        public TopSellingProductResponse(int productId, String productName, int salesCount) {</span>
+<span class="nc" id="L249">            this.productId = productId;</span>
+<span class="nc" id="L250">            this.productName = productName;</span>
+<span class="nc" id="L251">            this.salesCount = salesCount;</span>
+<span class="nc" id="L252">        }</span>
+
+        public String getProductName() {
+<span class="nc bnc" id="L255" title="All 2 branches missed.">            return productName == null ? &quot;&quot; : productName;</span>
+        }
+
+        public int getSalesCount() {
+<span class="nc" id="L259">            return salesCount;</span>
+        }
+    }
+
+    public static class ProductSalesComparisonResponse {
+        public int productId;
+        public String productName;
+        public int totalSalesCount;
+
+<span class="nc" id="L268">        public ProductSalesComparisonResponse(int productId, String productName, int totalSalesCount) {</span>
+<span class="nc" id="L269">            this.productId = productId;</span>
+<span class="nc" id="L270">            this.productName = productName;</span>
+<span class="nc" id="L271">            this.totalSalesCount = totalSalesCount;</span>
+<span class="nc" id="L272">        }</span>
+
+        public int getProductId() {
+<span class="nc" id="L275">            return productId;</span>
+        }
+
+        public String getProductName() {
+<span class="nc bnc" id="L279" title="All 2 branches missed.">            return productName == null ? &quot;&quot; : productName;</span>
+        }
+
+        public int getTotalSalesCount() {
+<span class="nc" id="L283">            return totalSalesCount;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

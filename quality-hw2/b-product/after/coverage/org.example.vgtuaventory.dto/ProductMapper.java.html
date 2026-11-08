@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductMapper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">VGTU-Aventory</a> &gt; <a href="index.source.html" class="el_package">org.example.vgtuaventory.dto</a> &gt; <span class="el_source">ProductMapper.java</span></div><h1>ProductMapper.java</h1><pre class="source lang-java linenums">package org.example.vgtuaventory.dto;
+
+import org.example.vgtuaventory.model.Category;
+import org.example.vgtuaventory.model.Product;
+import org.example.vgtuaventory.model.User;
+
+/**
+ * Laukų perkėlimas tarp užklausų, atsakymų ir Product esybės vienoje vietoje.
+ */
+public final class ProductMapper {
+
+    private ProductMapper() {
+    }
+
+    /** Naujas produktas: visi laukai perkeliami, kiekis tik jei nurodytas (kitaip 0). */
+    public static Product toNewProduct(ProductRequest request, String name, Category category, int ownerId) {
+<span class="fc" id="L17">        User owner = new User();</span>
+<span class="fc" id="L18">        owner.setId(ownerId);</span>
+
+<span class="fc" id="L20">        Product product = new Product();</span>
+<span class="fc" id="L21">        product.setOwner(owner);</span>
+<span class="fc" id="L22">        product.setProductName(name);</span>
+<span class="fc" id="L23">        product.setPrice(request.price());</span>
+<span class="fc" id="L24">        product.setProductDescription(request.productDescription());</span>
+<span class="fc" id="L25">        product.setPhotoUrl(request.photoUrl());</span>
+<span class="fc bfc" id="L26" title="All 2 branches covered.">        if (request.quantity() != null) {</span>
+<span class="fc" id="L27">            product.setQuantity(request.quantity());</span>
+        }
+<span class="fc" id="L29">        product.setQrCode(request.qrCode());</span>
+<span class="fc" id="L30">        product.setCategory(category);</span>
+<span class="fc" id="L31">        return product;</span>
+    }
+
+    /** Redagavimas: keičiami tik užklausoje nurodyti (ne null) laukai. */
+    public static void applyOptionalFields(ProductRequest request, Product product) {
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        if (request.price() != null) {</span>
+<span class="fc" id="L37">            product.setPrice(request.price());</span>
+        }
+<span class="fc bfc" id="L39" title="All 2 branches covered.">        if (request.productDescription() != null) {</span>
+<span class="fc" id="L40">            product.setProductDescription(request.productDescription());</span>
+        }
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        if (request.photoUrl() != null) {</span>
+<span class="fc" id="L43">            product.setPhotoUrl(request.photoUrl());</span>
+        }
+<span class="fc bfc" id="L45" title="All 2 branches covered.">        if (request.quantity() != null) {</span>
+<span class="fc" id="L46">            product.setQuantity(request.quantity());</span>
+        }
+<span class="fc bfc" id="L48" title="All 2 branches covered.">        if (request.qrCode() != null) {</span>
+<span class="fc" id="L49">            product.setQrCode(request.qrCode());</span>
+        }
+<span class="fc" id="L51">    }</span>
+
+    public static ProductScanResponse toScanResponse(Product product) {
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        Integer categoryId = product.getCategory() != null ? product.getCategory().getCategoryId() : null;</span>
+<span class="fc" id="L55">        return new ProductScanResponse(</span>
+<span class="fc" id="L56">                product.getProductId(),</span>
+<span class="fc" id="L57">                product.getProductName(),</span>
+<span class="fc" id="L58">                product.getPrice(),</span>
+<span class="fc" id="L59">                product.getProductDescription(),</span>
+<span class="fc" id="L60">                product.getPhotoUrl(),</span>
+<span class="fc" id="L61">                product.getQuantity(),</span>
+<span class="fc" id="L62">                product.getQrCode(),</span>
+                categoryId
+        );
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

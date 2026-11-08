@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TotalSalesController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">VGTU-Aventory</a> &gt; <a href="index.source.html" class="el_package">org.example.vgtuaventory.controller</a> &gt; <span class="el_source">TotalSalesController.java</span></div><h1>TotalSalesController.java</h1><pre class="source lang-java linenums">package org.example.vgtuaventory.controller;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import org.example.vgtuaventory.model.Sale;
+import org.example.vgtuaventory.repository.SaleRepository;
+import org.example.vgtuaventory.utils.LocalDateTimeAdapter;
+import org.example.vgtuaventory.utils.AuthSessionAttributes;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+@RestController
+public class TotalSalesController {
+    private final SaleRepository saleRepository;
+
+    @Autowired
+<span class="fc" id="L27">    public TotalSalesController(SaleRepository saleRepository) {</span>
+<span class="fc" id="L28">        this.saleRepository = saleRepository;</span>
+<span class="fc" id="L29">    }</span>
+
+<span class="fc" id="L31">    private record DateInterval(LocalDate startDate, LocalDate endDate, LocalDateTime startDateTime, LocalDateTime endDateTime) {</span>
+    }
+
+    private ResponseEntity&lt;Map&lt;String, String&gt;&gt; badRequest(String message) {
+<span class="nc" id="L35">        Map&lt;String, String&gt; response = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L36">        response.put(&quot;error&quot;, message);</span>
+<span class="nc" id="L37">        return ResponseEntity.badRequest().body(response);</span>
+    }
+
+    private DateInterval validateInterval(LocalDate parsedStartDate, LocalDate parsedEndDate) {
+<span class="pc bpc" id="L41" title="1 of 2 branches missed.">        if (parsedEndDate.isAfter(LocalDate.now())) {</span>
+<span class="nc" id="L42">            throw new IllegalArgumentException(&quot;End date cannot be in the future.&quot;);</span>
+        }
+
+<span class="pc bpc" id="L45" title="1 of 2 branches missed.">        if (parsedStartDate.isAfter(parsedEndDate)) {</span>
+<span class="nc" id="L46">            throw new IllegalArgumentException(&quot;Start date cannot be later than end date.&quot;);</span>
+        }
+
+<span class="fc" id="L49">        Optional&lt;Sale&gt; firstSaleOptional = saleRepository.findFirstByOrderBySaleDateAsc();</span>
+<span class="pc bpc" id="L50" title="1 of 2 branches missed.">        if (firstSaleOptional.isEmpty()) {</span>
+<span class="nc" id="L51">            throw new IllegalArgumentException(&quot;No sales found in the system.&quot;);</span>
+        }
+
+<span class="fc" id="L54">        LocalDate firstSaleDate = firstSaleOptional.get().getSaleDate().toLocalDate();</span>
+<span class="pc bpc" id="L55" title="1 of 2 branches missed.">        if (parsedStartDate.isBefore(firstSaleDate)) {</span>
+<span class="nc" id="L56">            throw new IllegalArgumentException(&quot;Start date cannot be earlier than first recorded sale date.&quot;);</span>
+        }
+
+<span class="fc" id="L59">        LocalDateTime startDate = parsedStartDate.atStartOfDay();</span>
+<span class="fc" id="L60">        LocalDateTime endDate = parsedEndDate.plusDays(1).atStartOfDay().minusNanos(1);</span>
+<span class="fc" id="L61">        return new DateInterval(parsedStartDate, parsedEndDate, startDate, endDate);</span>
+    }
+
+    @GetMapping(value  = &quot;/allSalesInPeriod&quot;)
+    public ResponseEntity&lt;?&gt; findAllBySaleDateBetween(
+            @RequestBody String dateInfo,
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId) {
+<span class="fc" id="L68">        GsonBuilder build = new GsonBuilder();</span>
+<span class="fc" id="L69">        build.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter());</span>
+<span class="fc" id="L70">        Gson gson = build.setPrettyPrinting().create();</span>
+<span class="fc" id="L71">        JsonObject dateInterval = gson.fromJson(dateInfo, JsonObject.class);</span>
+        
+<span class="pc bpc" id="L73" title="1 of 4 branches missed.">        if (!dateInterval.has(&quot;startDate&quot;) || !dateInterval.has(&quot;endDate&quot;)) {</span>
+<span class="fc" id="L74">            Map&lt;String, String&gt; response = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L75">            response.put(&quot;error&quot;, &quot;startDate and endDate are required&quot;);</span>
+<span class="fc" id="L76">            return ResponseEntity.badRequest().body(response);</span>
+        }
+
+        DateInterval interval;
+        try {
+<span class="fc" id="L81">            LocalDate parsedStartDate = LocalDate.parse(dateInterval.get(&quot;startDate&quot;).getAsString());</span>
+<span class="fc" id="L82">            LocalDate parsedEndDate = LocalDate.parse(dateInterval.get(&quot;endDate&quot;).getAsString());</span>
+<span class="fc" id="L83">            interval = validateInterval(parsedStartDate, parsedEndDate);</span>
+<span class="nc" id="L84">        } catch (DateTimeParseException exception) {</span>
+<span class="nc" id="L85">            return badRequest(&quot;Dates must be valid ISO date strings (YYYY-MM-DD).&quot;);</span>
+<span class="nc" id="L86">        } catch (IllegalArgumentException exception) {</span>
+<span class="nc" id="L87">            return badRequest(exception.getMessage());</span>
+<span class="fc" id="L88">        }</span>
+
+<span class="fc" id="L90">        List&lt;Sale&gt; sales = saleRepository.findAllByOwner_IdAndSaleDateBetween(currentUserId, interval.startDateTime(), interval.endDateTime());</span>
+<span class="fc" id="L91">        Map&lt;Integer, Double&gt; totalProfit = new HashMap&lt;&gt;();</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">        for(Sale sale : sales) {</span>
+<span class="fc" id="L93">            totalProfit.put(sale.getId(), sale.getTotalPrice());</span>
+<span class="fc" id="L94">        }</span>
+<span class="fc" id="L95">        return ResponseEntity.ok(totalProfit);</span>
+    }
+
+    @GetMapping(value = &quot;/totalProfitInInterval/{startDate}/{endDate}&quot;)
+    public ResponseEntity&lt;?&gt; getTotalProfitInInterval(
+            @PathVariable String startDate,
+            @PathVariable String endDate,
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId) {
+<span class="fc" id="L103">        GsonBuilder build = new GsonBuilder();</span>
+<span class="fc" id="L104">        build.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter());</span>
+<span class="fc" id="L105">        Gson gson = build.setPrettyPrinting().create();</span>
+        
+        DateInterval interval;
+        try {
+<span class="fc" id="L109">            LocalDate parsedStartDate = LocalDate.parse(startDate);</span>
+<span class="fc" id="L110">            LocalDate parsedEndDate = LocalDate.parse(endDate);</span>
+<span class="fc" id="L111">            interval = validateInterval(parsedStartDate, parsedEndDate);</span>
+<span class="nc" id="L112">        } catch (DateTimeParseException exception) {</span>
+<span class="nc" id="L113">            return badRequest(&quot;Dates must be valid ISO date strings (YYYY-MM-DD).&quot;);</span>
+<span class="nc" id="L114">        } catch (IllegalArgumentException exception) {</span>
+<span class="nc" id="L115">            return badRequest(exception.getMessage());</span>
+<span class="fc" id="L116">        }</span>
+
+<span class="fc" id="L118">        List&lt;Sale&gt; sales = saleRepository.findAllByOwner_IdAndSaleDateBetween(currentUserId, interval.startDateTime(), interval.endDateTime());</span>
+<span class="fc" id="L119">        Double sum = 0.0;</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">        for(Sale sale : sales) {</span>
+<span class="fc" id="L121">            sum += sale.getTotalPrice();</span>
+<span class="fc" id="L122">        }</span>
+<span class="fc" id="L123">        JsonObject totalProfit = new JsonObject();</span>
+<span class="fc" id="L124">        totalProfit.addProperty(&quot;totalProfit&quot;, sum);</span>
+<span class="fc" id="L125">        return ResponseEntity.ok(gson.toJson(totalProfit));</span>
+    }
+
+    @GetMapping(value = &quot;/totalSalesCountInInterval/{startDate}/{endDate}&quot;)
+    public ResponseEntity&lt;?&gt; getTotalSalesCountInInterval(
+            @PathVariable String startDate,
+            @PathVariable String endDate,
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId) {
+<span class="fc" id="L133">        Gson gson = new GsonBuilder().setPrettyPrinting().create();</span>
+
+        DateInterval interval;
+        try {
+<span class="fc" id="L137">            LocalDate parsedStartDate = LocalDate.parse(startDate);</span>
+<span class="fc" id="L138">            LocalDate parsedEndDate = LocalDate.parse(endDate);</span>
+<span class="fc" id="L139">            interval = validateInterval(parsedStartDate, parsedEndDate);</span>
+<span class="nc" id="L140">        } catch (DateTimeParseException exception) {</span>
+<span class="nc" id="L141">            return badRequest(&quot;Dates must be valid ISO date strings (YYYY-MM-DD).&quot;);</span>
+<span class="nc" id="L142">        } catch (IllegalArgumentException exception) {</span>
+<span class="nc" id="L143">            return badRequest(exception.getMessage());</span>
+<span class="fc" id="L144">        }</span>
+
+<span class="fc" id="L146">        List&lt;Sale&gt; sales = saleRepository.findAllByOwner_IdAndSaleDateBetween(</span>
+                currentUserId,
+<span class="fc" id="L148">                interval.startDateTime(),</span>
+<span class="fc" id="L149">                interval.endDateTime()</span>
+        );
+
+<span class="fc" id="L152">        int totalSalesCount = 0;</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">        for (Sale sale : sales) {</span>
+<span class="fc" id="L154">            int quantity = sale.getQuantity();</span>
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">            if (quantity &lt; 0) {</span>
+<span class="nc" id="L156">                return badRequest(&quot;Sales count cannot be negative.&quot;);</span>
+            }
+<span class="fc" id="L158">            totalSalesCount += quantity;</span>
+<span class="fc" id="L159">        }</span>
+
+<span class="fc" id="L161">        JsonObject totalSalesCountJson = new JsonObject();</span>
+<span class="fc" id="L162">        totalSalesCountJson.addProperty(&quot;totalSalesCount&quot;, totalSalesCount);</span>
+<span class="fc" id="L163">        return ResponseEntity.ok(gson.toJson(totalSalesCountJson));</span>
+    }
+
+    @GetMapping(value = &quot;/firstSaleDate&quot;)
+    public ResponseEntity&lt;?&gt; getFirstSaleDate() {
+<span class="nc" id="L168">        Optional&lt;Sale&gt; firstSaleOptional = saleRepository.findFirstByOrderBySaleDateAsc();</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">        if (firstSaleOptional.isEmpty()) {</span>
+<span class="nc" id="L170">            return badRequest(&quot;No sales found in the system.&quot;);</span>
+        }
+
+<span class="nc" id="L173">        JsonObject response = new JsonObject();</span>
+<span class="nc" id="L174">        response.addProperty(&quot;firstSaleDate&quot;, firstSaleOptional.get().getSaleDate().toLocalDate().toString());</span>
+<span class="nc" id="L175">        return ResponseEntity.ok(response.toString());</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>
