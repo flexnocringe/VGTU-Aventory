@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductSalesComparisonRequest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">VGTU-Aventory</a> &gt; <a href="index.source.html" class="el_package">org.example.vgtuaventory.dto</a> &gt; <span class="el_source">ProductSalesComparisonRequest.java</span></div><h1>ProductSalesComparisonRequest.java</h1><pre class="source lang-java linenums">package org.example.vgtuaventory.dto;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+/**
+ * Body of POST /sales/sales-comparison.
+ * The list is copied and wrapped as unmodifiable, so the record cannot be changed from outside.
+ * A missing list becomes an empty one: the service rejects both with the same
+ * &quot;At least one product must be selected&quot; error, so the HTTP response does not change.
+ * {@code List.copyOf} is not used because it rejects null elements, which the endpoint accepts today.
+ */
+public record ProductSalesComparisonRequest(List&lt;Integer&gt; productIds) {
+
+<span class="fc" id="L16">    public ProductSalesComparisonRequest {</span>
+<span class="fc bfc" id="L17" title="All 2 branches covered.">        List&lt;Integer&gt; copy = productIds == null ? new ArrayList&lt;&gt;() : new ArrayList&lt;&gt;(productIds);</span>
+<span class="fc" id="L18">        productIds = Collections.unmodifiableList(copy);</span>
+<span class="fc" id="L19">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

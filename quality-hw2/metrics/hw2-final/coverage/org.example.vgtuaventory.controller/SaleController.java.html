@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SaleController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">VGTU-Aventory</a> &gt; <a href="index.source.html" class="el_package">org.example.vgtuaventory.controller</a> &gt; <span class="el_source">SaleController.java</span></div><h1>SaleController.java</h1><pre class="source lang-java linenums">package org.example.vgtuaventory.controller;
+
+import org.example.vgtuaventory.dto.ProductSalesComparisonRequest;
+import org.example.vgtuaventory.dto.ProductSalesComparisonResponse;
+import org.example.vgtuaventory.dto.SaleRequest;
+import org.example.vgtuaventory.dto.TopSellingProductResponse;
+import org.example.vgtuaventory.exception.InsufficientStockException;
+import org.example.vgtuaventory.model.Sale;
+import org.example.vgtuaventory.service.SaleService;
+import org.example.vgtuaventory.service.SalesAnalyticsService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import org.example.vgtuaventory.utils.AuthSessionAttributes;
+
+import java.time.LocalDate;
+import java.util.List;
+
+@CrossOrigin(origins = &quot;http://localhost:3000&quot;)
+@RestController
+@RequestMapping(&quot;/sales&quot;)
+public class SaleController {
+
+    private final SaleService saleService;
+    private final SalesAnalyticsService salesAnalyticsService;
+
+<span class="fc" id="L27">    public SaleController(SaleService saleService, SalesAnalyticsService salesAnalyticsService) {</span>
+<span class="fc" id="L28">        this.saleService = saleService;</span>
+<span class="fc" id="L29">        this.salesAnalyticsService = salesAnalyticsService;</span>
+<span class="fc" id="L30">    }</span>
+
+    @PostMapping
+    public ResponseEntity&lt;?&gt; createSale(
+            @RequestBody SaleRequest request,
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId){
+        try {
+<span class="fc" id="L37">            Sale savedSale = saleService.registerSale(request, currentUserId);</span>
+<span class="fc" id="L38">            return ResponseEntity.ok(savedSale);</span>
+<span class="fc" id="L39">        } catch (IllegalStateException ex) {</span>
+<span class="fc" id="L40">            return ResponseEntity.status(403).body(ex.getMessage());</span>
+<span class="fc" id="L41">        } catch (InsufficientStockException ex) {</span>
+<span class="fc" id="L42">            return ResponseEntity.status(409).body(ex.getMessage());</span>
+<span class="fc" id="L43">        } catch (RuntimeException ex) {</span>
+<span class="fc" id="L44">            return ResponseEntity.badRequest().body(ex.getMessage());</span>
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity&lt;List&lt;Sale&gt;&gt; getUserSales(
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId) {
+
+<span class="nc" id="L52">        return ResponseEntity.ok(saleService.getSalesByUser(currentUserId));</span>
+    }
+
+    @GetMapping(&quot;/top-selling/{startDate}/{endDate}&quot;)
+    public ResponseEntity&lt;?&gt; getTopSellingProducts(
+            @PathVariable LocalDate startDate,
+            @PathVariable LocalDate endDate,
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId
+    ) {
+        try {
+<span class="fc" id="L62">            List&lt;TopSellingProductResponse&gt; topSellingProducts =</span>
+<span class="fc" id="L63">                    salesAnalyticsService.getTopSellingProductsByDateRange(currentUserId, startDate, endDate);</span>
+<span class="fc" id="L64">            return ResponseEntity.ok(topSellingProducts);</span>
+<span class="fc" id="L65">        } catch (RuntimeException ex) {</span>
+<span class="fc" id="L66">            return ResponseEntity.badRequest().body(ex.getMessage());</span>
+        }
+    }
+
+    @PostMapping(&quot;/sales-comparison/{startDate}/{endDate}&quot;)
+    public ResponseEntity&lt;?&gt; getProductSalesComparison(
+            @PathVariable LocalDate startDate,
+            @PathVariable LocalDate endDate,
+            @RequestBody ProductSalesComparisonRequest request,
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId
+    ) {
+        try {
+<span class="fc" id="L78">            List&lt;ProductSalesComparisonResponse&gt; comparison =</span>
+<span class="fc" id="L79">                    salesAnalyticsService.getProductSalesComparison(currentUserId, startDate, endDate, request.productIds());</span>
+<span class="fc" id="L80">            return ResponseEntity.ok(comparison);</span>
+<span class="fc" id="L81">        } catch (RuntimeException ex) {</span>
+<span class="fc" id="L82">            return ResponseEntity.badRequest().body(ex.getMessage());</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

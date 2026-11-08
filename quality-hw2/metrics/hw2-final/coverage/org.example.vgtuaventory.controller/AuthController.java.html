@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AuthController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">VGTU-Aventory</a> &gt; <a href="index.source.html" class="el_package">org.example.vgtuaventory.controller</a> &gt; <span class="el_source">AuthController.java</span></div><h1>AuthController.java</h1><pre class="source lang-java linenums">package org.example.vgtuaventory.controller;
+
+import lombok.RequiredArgsConstructor;
+import org.example.vgtuaventory.model.User;
+import org.example.vgtuaventory.service.AuthService;
+import org.example.vgtuaventory.service.TokenService;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@CrossOrigin(origins = &quot;http://localhost:3000&quot;)
+@RestController
+@RequestMapping(&quot;/auth&quot;)
+@RequiredArgsConstructor
+public class AuthController {
+
+    private final AuthService authService;
+    private final TokenService tokenService;
+
+    @PostMapping(&quot;/login&quot;)
+    public ResponseEntity&lt;LoginResponse&gt; login(@RequestBody LoginRequest request) {
+<span class="fc" id="L23">        AuthService.LoginResult loginResult = authService.login(request.email(), request.password());</span>
+<span class="fc" id="L24">        User user = loginResult.user();</span>
+<span class="fc" id="L25">        return ResponseEntity.ok(new LoginResponse(</span>
+<span class="fc" id="L26">                loginResult.token(),</span>
+<span class="fc" id="L27">                user.getId(),</span>
+<span class="fc" id="L28">                user.getEmail(),</span>
+<span class="fc" id="L29">                user.getRole().name()</span>
+        ));
+    }
+
+    @PostMapping(&quot;/register&quot;)
+    public ResponseEntity&lt;RegisterResponse&gt; register(@RequestBody RegisterRequest request) {
+<span class="fc" id="L35">        User savedUser = authService.register(request.email(), request.password());</span>
+<span class="fc" id="L36">        return ResponseEntity.status(HttpStatus.CREATED)</span>
+<span class="fc" id="L37">                .body(new RegisterResponse(savedUser.getId(), savedUser.getEmail(), savedUser.getRole().name()));</span>
+    }
+
+    @PostMapping(&quot;/logout&quot;)
+    public ResponseEntity&lt;?&gt; logout(@RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String authorization) {
+<span class="pc bpc" id="L42" title="1 of 4 branches missed.">        if (authorization == null || !authorization.startsWith(&quot;Bearer &quot;)) {</span>
+<span class="fc" id="L43">            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(&quot;Unauthorized&quot;);</span>
+        }
+
+<span class="fc" id="L46">        String token = authorization.substring(&quot;Bearer &quot;.length()).trim();</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">        if (token.isBlank()) {</span>
+<span class="fc" id="L48">            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(&quot;Unauthorized&quot;);</span>
+        }
+
+<span class="fc" id="L51">        tokenService.revokeToken(token);</span>
+<span class="fc" id="L52">        return ResponseEntity.noContent().build();</span>
+    }
+
+<span class="fc" id="L55">    public record RegisterRequest(String email, String password) {</span>
+    }
+
+<span class="fc" id="L58">    public record RegisterResponse(int id, String email, String role) {</span>
+    }
+
+<span class="fc" id="L61">    public record LoginRequest(String email, String password) {</span>
+    }
+
+<span class="fc" id="L64">    public record LoginResponse(String token, int id, String email, String role) {</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>
