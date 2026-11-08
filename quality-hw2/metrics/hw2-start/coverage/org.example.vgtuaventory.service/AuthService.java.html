@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AuthService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">VGTU-Aventory</a> &gt; <a href="index.source.html" class="el_package">org.example.vgtuaventory.service</a> &gt; <span class="el_source">AuthService.java</span></div><h1>AuthService.java</h1><pre class="source lang-java linenums">package org.example.vgtuaventory.service;
+
+
+import lombok.RequiredArgsConstructor;
+import org.example.vgtuaventory.model.User;
+import org.example.vgtuaventory.model.UserRole;
+import org.example.vgtuaventory.repository.UserRepository;
+import org.example.vgtuaventory.security.PasswordService;
+import org.springframework.stereotype.Service;
+
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Locale;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Pattern;
+
+@Service
+@RequiredArgsConstructor
+public class AuthService {
+    private static final int MAX_FAILED_LOGIN_ATTEMPTS = 5;
+<span class="fc" id="L21">    private static final Duration LOCK_DURATION = Duration.ofMinutes(5);</span>
+<span class="fc" id="L22">    private static final Pattern EMAIL_PATTERN =</span>
+<span class="fc" id="L23">        Pattern.compile(&quot;^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$&quot;);</span>
+<span class="fc" id="L24">    private static final Pattern PASSWORD_PATTERN =</span>
+<span class="fc" id="L25">        Pattern.compile(&quot;^(?=.*[A-Za-z])(?=.*\\d).{8,}$&quot;);</span>
+
+    private final UserRepository userRepository;
+    private final PasswordService passwordService;
+    private final TokenService tokenService;
+    private final ConcurrentHashMap&lt;String, Integer&gt; failedLoginAttempts = new ConcurrentHashMap&lt;&gt;();
+    private final ConcurrentHashMap&lt;String, Instant&gt; lockedUntil = new ConcurrentHashMap&lt;&gt;();
+
+<span class="fc" id="L33">    public record LoginResult(String token, User user) {</span>
+    }
+
+    public String authenticate(String email, String password){
+<span class="fc" id="L37">        return login(email, password).token();</span>
+    }
+
+    public LoginResult login(String email, String password) {
+<span class="fc" id="L41">        User user = authenticateUser(email, password);</span>
+<span class="fc" id="L42">        return new LoginResult(tokenService.generateToken(user), user);</span>
+    }
+
+    private User authenticateUser(String email, String password) {
+<span class="pc bpc" id="L46" title="1 of 8 branches missed.">        if(email == null || password == null || email.isBlank() || password.isBlank()) {</span>
+<span class="fc" id="L47">            throw new IllegalArgumentException(&quot;Email and password must not be empty&quot;);</span>
+        }
+
+<span class="fc" id="L50">        String normalizedEmail = email.trim();</span>
+<span class="fc" id="L51">        String loginKey = normalizedEmail.toLowerCase(Locale.ROOT);</span>
+<span class="fc" id="L52">        Instant now = Instant.now();</span>
+
+<span class="fc" id="L54">        Instant blockedUntil = lockedUntil.get(loginKey);</span>
+<span class="pc bpc" id="L55" title="3 of 4 branches missed.">        if (blockedUntil != null &amp;&amp; blockedUntil.isAfter(now)) {</span>
+<span class="nc" id="L56">            throw new IllegalStateException(&quot;Account is temporarily blocked. Try again later.&quot;);</span>
+        }
+
+<span class="pc bpc" id="L59" title="3 of 4 branches missed.">        if (blockedUntil != null &amp;&amp; !blockedUntil.isAfter(now)) {</span>
+<span class="nc" id="L60">            lockedUntil.remove(loginKey);</span>
+<span class="nc" id="L61">            failedLoginAttempts.remove(loginKey);</span>
+        }
+
+<span class="fc" id="L64">        User user = userRepository.findByEmailIgnoreCase(normalizedEmail)</span>
+<span class="fc" id="L65">                .orElseThrow(() -&gt; handleFailedLogin(loginKey));</span>
+
+<span class="fc" id="L67">        boolean valid = passwordService.verifyPassword(password, user.getPassword());</span>
+
+<span class="fc bfc" id="L69" title="All 2 branches covered.">        if (!valid) {</span>
+<span class="fc" id="L70">            throw handleFailedLogin(loginKey);</span>
+        }
+
+<span class="fc" id="L73">        failedLoginAttempts.remove(loginKey);</span>
+<span class="fc" id="L74">        lockedUntil.remove(loginKey);</span>
+
+<span class="fc" id="L76">        return user;</span>
+    }
+
+    private RuntimeException handleFailedLogin(String loginKey) {
+<span class="fc" id="L80">        int attempts = failedLoginAttempts.merge(loginKey, 1, Integer::sum);</span>
+
+<span class="fc bfc" id="L82" title="All 2 branches covered.">        if (attempts &gt;= MAX_FAILED_LOGIN_ATTEMPTS) {</span>
+<span class="fc" id="L83">            lockedUntil.put(loginKey, Instant.now().plus(LOCK_DURATION));</span>
+<span class="fc" id="L84">            failedLoginAttempts.remove(loginKey);</span>
+<span class="fc" id="L85">            throw new IllegalStateException(&quot;Account is temporarily blocked. Try again later.&quot;);</span>
+        }
+
+<span class="fc" id="L88">        return new RuntimeException(&quot;Invalid credentials&quot;);</span>
+    }
+
+    public User register(String email, String password) {
+<span class="pc bpc" id="L92" title="4 of 8 branches missed.">        if (email == null || password == null || email.isBlank() || password.isBlank()) {</span>
+<span class="nc" id="L93">            throw new IllegalArgumentException(&quot;Email and password must not be empty&quot;);</span>
+        }
+
+<span class="fc" id="L96">        String normalizedEmail = email.trim();</span>
+
+<span class="fc bfc" id="L98" title="All 2 branches covered.">        if (!EMAIL_PATTERN.matcher(normalizedEmail).matches()) {</span>
+<span class="fc" id="L99">            throw new IllegalArgumentException(&quot;Email format is invalid&quot;);</span>
+        }
+
+<span class="fc bfc" id="L102" title="All 2 branches covered.">        if (!PASSWORD_PATTERN.matcher(password).matches()) {</span>
+<span class="fc" id="L103">            throw new IllegalArgumentException(&quot;Password must be at least 8 characters and contain at least one letter and one number&quot;);</span>
+        }
+
+<span class="fc bfc" id="L106" title="All 2 branches covered.">        if (userRepository.existsByEmailIgnoreCase(normalizedEmail)) {</span>
+<span class="fc" id="L107">            throw new IllegalArgumentException(&quot;Email already exists&quot;);</span>
+        }
+
+<span class="fc" id="L110">        User user = new User();</span>
+<span class="fc" id="L111">        user.setEmail(normalizedEmail);</span>
+<span class="fc" id="L112">        user.setPassword(passwordService.hashPassword(password));</span>
+<span class="fc" id="L113">        user.setRole(UserRole.SELLER);</span>
+
+<span class="fc" id="L115">        return userRepository.save(user);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

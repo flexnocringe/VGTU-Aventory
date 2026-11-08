@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">VGTU-Aventory</a> &gt; <a href="index.source.html" class="el_package">org.example.vgtuaventory.controller</a> &gt; <span class="el_source">ProductController.java</span></div><h1>ProductController.java</h1><pre class="source lang-java linenums">package org.example.vgtuaventory.controller;
+
+import lombok.RequiredArgsConstructor;
+import org.example.vgtuaventory.dto.ProductMapper;
+import org.example.vgtuaventory.dto.ProductRequest;
+import org.example.vgtuaventory.dto.ProductScanResponse;
+import org.example.vgtuaventory.model.Product;
+import org.example.vgtuaventory.service.ProductService;
+import org.example.vgtuaventory.utils.AuthSessionAttributes;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@CrossOrigin(origins = &quot;http://localhost:3000&quot;)
+@RestController
+@RequestMapping(&quot;/api/products&quot;)
+@RequiredArgsConstructor
+public class ProductController {
+
+    private final ProductService productService;
+
+    @GetMapping(&quot;/all&quot;)
+    public ResponseEntity&lt;List&lt;Product&gt;&gt; list(
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId
+    ) {
+<span class="fc" id="L38">        return ResponseEntity.ok(productService.getProductsForOwner(currentUserId));</span>
+    }
+
+    @GetMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;Product&gt; getById(
+            @PathVariable(&quot;id&quot;) int productId,
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId
+    ) {
+<span class="fc" id="L46">        return ResponseEntity.ok(productService.getProductForOwner(productId, currentUserId));</span>
+    }
+
+    @GetMapping(&quot;/scan&quot;)
+    public ResponseEntity&lt;ProductScanResponse&gt; getByQrCode(
+            @RequestParam String qrCode,
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId
+    ) {
+<span class="fc" id="L54">        Product product = productService.getProductByQrCodeForOwner(qrCode, currentUserId);</span>
+<span class="fc" id="L55">        return ResponseEntity.ok(ProductMapper.toScanResponse(product));</span>
+    }
+
+    @PostMapping
+    public ResponseEntity&lt;Product&gt; create(
+            @RequestBody ProductRequest request,
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId
+    ) {
+<span class="fc" id="L63">        Product saved = productService.createProduct(request, currentUserId);</span>
+<span class="fc" id="L64">        return ResponseEntity.status(HttpStatus.CREATED).body(saved);</span>
+    }
+
+    @PutMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;Product&gt; update(
+            @PathVariable(&quot;id&quot;) int productId,
+            @RequestBody ProductRequest request,
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId
+    ) {
+<span class="fc" id="L73">        return ResponseEntity.ok(productService.updateProduct(productId, request, currentUserId));</span>
+    }
+
+    @DeleteMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;Void&gt; delete(
+            @PathVariable(&quot;id&quot;) int productId,
+            @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId
+    ) {
+<span class="fc" id="L81">        productService.deleteProduct(productId, currentUserId);</span>
+<span class="fc" id="L82">        return ResponseEntity.noContent().build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

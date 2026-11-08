@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">VGTU-Aventory</a> &gt; <a href="index.source.html" class="el_package">org.example.vgtuaventory.service</a> &gt; <span class="el_source">ProductService.java</span></div><h1>ProductService.java</h1><pre class="source lang-java linenums">package org.example.vgtuaventory.service;
+
+import org.example.vgtuaventory.dto.ProductMapper;
+import org.example.vgtuaventory.dto.ProductRequest;
+import org.example.vgtuaventory.exception.BadRequestException;
+import org.example.vgtuaventory.exception.ConflictException;
+import org.example.vgtuaventory.exception.ForbiddenException;
+import org.example.vgtuaventory.exception.NotFoundException;
+import org.example.vgtuaventory.model.Category;
+import org.example.vgtuaventory.model.Product;
+import org.example.vgtuaventory.repository.CategoryRepository;
+import org.example.vgtuaventory.repository.ProductRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+/**
+ * Produktų verslo taisyklės ir duomenų prieiga.
+ * Kontroleris tik priima HTTP užklausą ir grąžina atsakymą.
+ */
+@Service
+public class ProductService {
+
+    private static final String PRODUCT_NOT_FOUND = &quot;Product not found&quot;;
+    private static final String NAME_ALREADY_EXISTS = &quot;productName already exists&quot;;
+    private static final String INVALID_CATEGORY = &quot;Invalid categoryId (not found or not yours)&quot;;
+
+    private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
+
+<span class="fc" id="L31">    public ProductService(ProductRepository productRepository, CategoryRepository categoryRepository) {</span>
+<span class="fc" id="L32">        this.productRepository = productRepository;</span>
+<span class="fc" id="L33">        this.categoryRepository = categoryRepository;</span>
+<span class="fc" id="L34">    }</span>
+
+    public List&lt;Product&gt; getProductsForOwner(int ownerId) {
+<span class="fc" id="L37">        return productRepository.findAllByOwner_Id(ownerId);</span>
+    }
+
+    public Product getProductForOwner(int productId, int ownerId) {
+<span class="fc" id="L41">        return getOwnedProduct(productId, ownerId, &quot;You can only access your own products&quot;);</span>
+    }
+
+    public Product getProductByQrCodeForOwner(String qrCode, int ownerId) {
+<span class="fc" id="L45">        return productRepository</span>
+<span class="fc" id="L46">                .findByQrCodeAndOwner_Id(qrCode, ownerId)</span>
+<span class="fc" id="L47">                .orElseThrow(() -&gt; new NotFoundException(PRODUCT_NOT_FOUND));</span>
+    }
+
+    public Product createProduct(ProductRequest request, int ownerId) {
+<span class="fc" id="L51">        String name = requireName(request.productName());</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        if (productRepository.existsByProductNameAndOwner_Id(name, ownerId)) {</span>
+<span class="fc" id="L53">            throw new ConflictException(NAME_ALREADY_EXISTS);</span>
+        }
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        Category category = request.categoryId() != null ? resolveCategory(request.categoryId(), ownerId) : null;</span>
+<span class="fc" id="L56">        return productRepository.save(ProductMapper.toNewProduct(request, name, category, ownerId));</span>
+    }
+
+    /**
+     * Pastaba: neegzistuojančiam produktui grąžinama 403 (ne 404), kaip ir iki pertvarkymo.
+     * Elgsena sąmoningai nekeista; žr. ataskaitos 5.2 poskyrį.
+     */
+    public Product updateProduct(int productId, ProductRequest request, int ownerId) {
+<span class="fc" id="L64">        Product existing = productRepository.findByProductIdAndOwner_Id(productId, ownerId)</span>
+<span class="fc" id="L65">                .orElseThrow(() -&gt; new ForbiddenException(&quot;You can only modify your own products&quot;));</span>
+
+<span class="fc" id="L67">        renameIfRequested(existing, request.productName(), ownerId);</span>
+<span class="fc" id="L68">        ProductMapper.applyOptionalFields(request, existing);</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">        if (request.categoryId() != null) {</span>
+<span class="fc" id="L70">            existing.setCategory(resolveCategory(request.categoryId(), ownerId));</span>
+        }
+<span class="fc" id="L72">        return productRepository.save(existing);</span>
+    }
+
+    public void deleteProduct(int productId, int ownerId) {
+<span class="fc" id="L76">        getOwnedProduct(productId, ownerId, &quot;You can only delete your own products&quot;);</span>
+<span class="fc" id="L77">        productRepository.deleteById(productId);</span>
+<span class="fc" id="L78">    }</span>
+
+    private Product getOwnedProduct(int productId, int ownerId, String forbiddenMessage) {
+<span class="fc" id="L81">        Product product = productRepository.findById(productId)</span>
+<span class="fc" id="L82">                .orElseThrow(() -&gt; new NotFoundException(PRODUCT_NOT_FOUND));</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">        if (!isOwnedBy(product, ownerId)) {</span>
+<span class="fc" id="L84">            throw new ForbiddenException(forbiddenMessage);</span>
+        }
+<span class="fc" id="L86">        return product;</span>
+    }
+
+    private static boolean isOwnedBy(Product product, int ownerId) {
+<span class="fc bfc" id="L90" title="All 4 branches covered.">        return product.getOwner() != null &amp;&amp; product.getOwner().getId() == ownerId;</span>
+    }
+
+    private static String requireName(String productName) {
+<span class="fc bfc" id="L94" title="All 4 branches covered.">        if (productName == null || productName.isBlank()) {</span>
+<span class="fc" id="L95">            throw new BadRequestException(&quot;productName is required&quot;);</span>
+        }
+<span class="fc" id="L97">        return productName.trim();</span>
+    }
+
+    private void renameIfRequested(Product existing, String requestedName, int ownerId) {
+<span class="fc bfc" id="L101" title="All 4 branches covered.">        if (requestedName == null || requestedName.isBlank()) {</span>
+<span class="fc" id="L102">            return;</span>
+        }
+<span class="fc" id="L104">        String newName = requestedName.trim();</span>
+<span class="fc" id="L105">        boolean nameTaken = productRepository.findByProductNameAndOwner_Id(newName, ownerId)</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">                .filter(other -&gt; other.getProductId() != existing.getProductId())</span>
+<span class="fc" id="L107">                .isPresent();</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">        if (nameTaken) {</span>
+<span class="fc" id="L109">            throw new ConflictException(NAME_ALREADY_EXISTS);</span>
+        }
+<span class="fc" id="L111">        existing.setProductName(newName);</span>
+<span class="fc" id="L112">    }</span>
+
+    private Category resolveCategory(int categoryId, int ownerId) {
+<span class="fc" id="L115">        return categoryRepository.findByCategoryIdAndOwner_Id(categoryId, ownerId)</span>
+<span class="fc" id="L116">                .orElseThrow(() -&gt; new BadRequestException(INVALID_CATEGORY));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>
