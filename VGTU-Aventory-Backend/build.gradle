@@ -3,11 +3,19 @@ plugins {
     id 'org.springframework.boot' version '4.0.3'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'com.netflix.dgs.codegen' version '8.3.0'
+    id 'pmd'
+    id 'com.github.spotbugs' version '6.5.13'
+    id 'jacoco'
+    id 'org.sonarqube' version '7.5.0.8588'
 }
 
 group = 'org.example'
 version = '0.0.1-SNAPSHOT'
 description = 'VGTU-Aventory'
+
+// Static analysis setup for HW1 (member C); configs live in ../quality-hw1/analysis/static/config
+def pmdVersion = '7.29.0'
+def staticAnalysisConfig = '../quality-hw1/analysis/static/config'
 
 java {
     toolchain {
@@ -19,6 +27,7 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    cpd
 }
 
 repositories {
@@ -49,6 +58,10 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'com.h2database:h2'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.14.0'
+    cpd "net.sourceforge.pmd:pmd-cli:${pmdVersion}"
+    cpd "net.sourceforge.pmd:pmd-java:${pmdVersion}"
 }
 
 generateJava {
@@ -59,4 +72,114 @@ generateJava {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+pmd {
+    toolVersion = pmdVersion
+    ruleSets = []
+    ruleSetFiles = files("${staticAnalysisConfig}/pmd-ruleset.xml")
+    ignoreFailures = true
+}
+
+tasks.named('pmdMain') {
+    exclude '**/codegen/**'
+    reports {
+        xml.required = true
+        html.required = true
+    }
+}
+
+tasks.named('pmdTest') {
+    enabled = false
+}
+
+spotbugs {
+    toolVersion = '4.10.5'
+    effort = com.github.spotbugs.snom.Effort.valueOf('MAX')
+    reportLevel = com.github.spotbugs.snom.Confidence.valueOf('LOW')
+    excludeFilter = file("${staticAnalysisConfig}/spotbugs-exclude.xml")
+    ignoreFailures = true
+}
+
+tasks.named('spotbugsMain') {
+    reports {
+        html {
+            required = true
+        }
+        xml {
+            required = true
+        }
+    }
+}
+
+tasks.named('spotbugsTest') {
+    enabled = false
+}
+
+tasks.register('cpdMain', JavaExec) {
+    group = 'verification'
+    description = 'Finds copy-pasted code in main sources with PMD CPD.'
+    def report = layout.buildDirectory.file('reports/cpd/main.xml')
+    inputs.dir 'src/main/java'
+    outputs.file report
+    classpath = configurations.cpd
+    mainClass = 'net.sourceforge.pmd.cli.PmdCli'
+    args 'cpd',
+            '--language', 'java',
+            '--minimum-tokens', '50',
+            '--dir', 'src/main/java',
+            '--format', 'xml',
+            '--report-file', report.get().asFile.path,
+            '--no-fail-on-violation'
+    doFirst {
+        report.get().asFile.parentFile.mkdirs()
+    }
+}
+
+tasks.register('staticAnalysis', Copy) {
+    group = 'verification'
+    description = 'Runs PMD, CPD and SpotBugs and copies the reports to quality-hw1/analysis/static.'
+    dependsOn 'pmdMain', 'cpdMain', 'spotbugsMain'
+    from(layout.buildDirectory.dir('reports')) {
+        include 'pmd/**', 'cpd/**', 'spotbugs/**'
+    }
+    into '../quality-hw1/analysis/static'
+}
+
+// HW2: testų padengimas
+jacoco {
+    toolVersion = '0.8.14'
+}
+
+tasks.named('test') {
+    finalizedBy 'jacocoTestReport'
+}
+
+tasks.named('jacocoTestReport') {
+    dependsOn 'test'
+    reports {
+        xml.required = true
+        html.required = true
+    }
+}
+
+// HW2: PMD CC, CogC ir NCSS kiekvienam metodui (A dalies metrika)
+tasks.register('complexityMain', JavaExec) {
+    group = 'verification'
+    description = 'PMD CC, CogC ir NCSS kiekvienam metodui (CSV).'
+    def report = layout.buildDirectory.file('reports/complexity/pmd-complexity.csv')
+    inputs.dir 'src/main/java'
+    outputs.file report
+    classpath = configurations.cpd
+    mainClass = 'net.sourceforge.pmd.cli.PmdCli'
+    args 'check',
+            '-d', 'src/main/java',
+            '-R', "${staticAnalysisConfig}/complexity-ruleset.xml",
+            '-f', 'csv',
+            '-r', report.get().asFile.path,
+            '--no-cache',
+            '--no-fail-on-violation'
+    doFirst {
+        report.get().asFile.parentFile.mkdirs()
+    }
 }
