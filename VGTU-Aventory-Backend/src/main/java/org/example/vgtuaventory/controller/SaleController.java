@@ -1,7 +1,13 @@
 package org.example.vgtuaventory.controller;
 
+import org.example.vgtuaventory.dto.ProductSalesComparisonRequest;
+import org.example.vgtuaventory.dto.ProductSalesComparisonResponse;
+import org.example.vgtuaventory.dto.SaleRequest;
+import org.example.vgtuaventory.dto.TopSellingProductResponse;
+import org.example.vgtuaventory.exception.InsufficientStockException;
 import org.example.vgtuaventory.model.Sale;
 import org.example.vgtuaventory.service.SaleService;
+import org.example.vgtuaventory.service.SalesAnalyticsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,20 +22,24 @@ import java.util.List;
 public class SaleController {
 
     private final SaleService saleService;
+    private final SalesAnalyticsService salesAnalyticsService;
 
-    public SaleController(SaleService saleService) {
+    public SaleController(SaleService saleService, SalesAnalyticsService salesAnalyticsService) {
         this.saleService = saleService;
+        this.salesAnalyticsService = salesAnalyticsService;
     }
 
     @PostMapping
     public ResponseEntity<?> createSale(
-            @RequestBody SaleService.SaleRequest request,
+            @RequestBody SaleRequest request,
             @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId){
         try {
             Sale savedSale = saleService.registerSale(request, currentUserId);
             return ResponseEntity.ok(savedSale);
         } catch (IllegalStateException ex) {
             return ResponseEntity.status(403).body(ex.getMessage());
+        } catch (InsufficientStockException ex) {
+            return ResponseEntity.status(409).body(ex.getMessage());
         } catch (RuntimeException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
@@ -49,8 +59,8 @@ public class SaleController {
             @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId
     ) {
         try {
-            List<SaleService.TopSellingProductResponse> topSellingProducts =
-                    saleService.getTopSellingProductsByDateRange(currentUserId, startDate, endDate);
+            List<TopSellingProductResponse> topSellingProducts =
+                    salesAnalyticsService.getTopSellingProductsByDateRange(currentUserId, startDate, endDate);
             return ResponseEntity.ok(topSellingProducts);
         } catch (RuntimeException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
@@ -65,15 +75,11 @@ public class SaleController {
             @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId
     ) {
         try {
-            List<SaleService.ProductSalesComparisonResponse> comparison =
-                    saleService.getProductSalesComparison(currentUserId, startDate, endDate, request.productIds);
+            List<ProductSalesComparisonResponse> comparison =
+                    salesAnalyticsService.getProductSalesComparison(currentUserId, startDate, endDate, request.productIds());
             return ResponseEntity.ok(comparison);
         } catch (RuntimeException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
-    }
-
-    public static class ProductSalesComparisonRequest {
-        public List<Integer> productIds;
     }
 }

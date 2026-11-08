@@ -3,96 +3,41 @@ package org.example.vgtuaventory.controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import org.example.vgtuaventory.model.Sale;
-import org.example.vgtuaventory.repository.SaleRepository;
-import org.example.vgtuaventory.utils.LocalDateTimeAdapter;
+import org.example.vgtuaventory.service.SalesTotalsService;
 import org.example.vgtuaventory.utils.AuthSessionAttributes;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.BiFunction;
 
 @RestController
 public class TotalSalesController {
-    private final SaleRepository saleRepository;
 
-    @Autowired
-    public TotalSalesController(SaleRepository saleRepository) {
-        this.saleRepository = saleRepository;
-    }
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
-    private record DateInterval(LocalDate startDate, LocalDate endDate, LocalDateTime startDateTime, LocalDateTime endDateTime) {
-    }
+    private final SalesTotalsService salesTotalsService;
 
-    private ResponseEntity<Map<String, String>> badRequest(String message) {
-        Map<String, String> response = new HashMap<>();
-        response.put("error", message);
-        return ResponseEntity.badRequest().body(response);
-    }
-
-    private DateInterval validateInterval(LocalDate parsedStartDate, LocalDate parsedEndDate) {
-        if (parsedEndDate.isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException("End date cannot be in the future.");
-        }
-
-        if (parsedStartDate.isAfter(parsedEndDate)) {
-            throw new IllegalArgumentException("Start date cannot be later than end date.");
-        }
-
-        Optional<Sale> firstSaleOptional = saleRepository.findFirstByOrderBySaleDateAsc();
-        if (firstSaleOptional.isEmpty()) {
-            throw new IllegalArgumentException("No sales found in the system.");
-        }
-
-        LocalDate firstSaleDate = firstSaleOptional.get().getSaleDate().toLocalDate();
-        if (parsedStartDate.isBefore(firstSaleDate)) {
-            throw new IllegalArgumentException("Start date cannot be earlier than first recorded sale date.");
-        }
-
-        LocalDateTime startDate = parsedStartDate.atStartOfDay();
-        LocalDateTime endDate = parsedEndDate.plusDays(1).atStartOfDay().minusNanos(1);
-        return new DateInterval(parsedStartDate, parsedEndDate, startDate, endDate);
+    public TotalSalesController(SalesTotalsService salesTotalsService) {
+        this.salesTotalsService = salesTotalsService;
     }
 
     @GetMapping(value  = "/allSalesInPeriod")
     public ResponseEntity<?> findAllBySaleDateBetween(
             @RequestBody String dateInfo,
             @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId) {
-        GsonBuilder build = new GsonBuilder();
-        build.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter());
-        Gson gson = build.setPrettyPrinting().create();
-        JsonObject dateInterval = gson.fromJson(dateInfo, JsonObject.class);
-        
+        JsonObject dateInterval = GSON.fromJson(dateInfo, JsonObject.class);
         if (!dateInterval.has("startDate") || !dateInterval.has("endDate")) {
-            Map<String, String> response = new HashMap<>();
-            response.put("error", "startDate and endDate are required");
-            return ResponseEntity.badRequest().body(response);
+            return badRequest("startDate and endDate are required");
         }
 
-        DateInterval interval;
-        try {
-            LocalDate parsedStartDate = LocalDate.parse(dateInterval.get("startDate").getAsString());
-            LocalDate parsedEndDate = LocalDate.parse(dateInterval.get("endDate").getAsString());
-            interval = validateInterval(parsedStartDate, parsedEndDate);
-        } catch (DateTimeParseException exception) {
-            return badRequest("Dates must be valid ISO date strings (YYYY-MM-DD).");
-        } catch (IllegalArgumentException exception) {
-            return badRequest(exception.getMessage());
-        }
-
-        List<Sale> sales = saleRepository.findAllByOwner_IdAndSaleDateBetween(currentUserId, interval.startDateTime(), interval.endDateTime());
-        Map<Integer, Double> totalProfit = new HashMap<>();
-        for(Sale sale : sales) {
-            totalProfit.put(sale.getId(), sale.getTotalPrice());
-        }
-        return ResponseEntity.ok(totalProfit);
+        return withInterval(
+                dateInterval.get("startDate").getAsString(),
+                dateInterval.get("endDate").getAsString(),
+                (start, end) -> ResponseEntity.ok(salesTotalsService.totalPriceBySaleId(currentUserId, start, end)));
     }
 
     @GetMapping(value = "/totalProfitInInterval/{startDate}/{endDate}")
@@ -100,29 +45,11 @@ public class TotalSalesController {
             @PathVariable String startDate,
             @PathVariable String endDate,
             @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId) {
-        GsonBuilder build = new GsonBuilder();
-        build.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter());
-        Gson gson = build.setPrettyPrinting().create();
-        
-        DateInterval interval;
-        try {
-            LocalDate parsedStartDate = LocalDate.parse(startDate);
-            LocalDate parsedEndDate = LocalDate.parse(endDate);
-            interval = validateInterval(parsedStartDate, parsedEndDate);
-        } catch (DateTimeParseException exception) {
-            return badRequest("Dates must be valid ISO date strings (YYYY-MM-DD).");
-        } catch (IllegalArgumentException exception) {
-            return badRequest(exception.getMessage());
-        }
-
-        List<Sale> sales = saleRepository.findAllByOwner_IdAndSaleDateBetween(currentUserId, interval.startDateTime(), interval.endDateTime());
-        Double sum = 0.0;
-        for(Sale sale : sales) {
-            sum += sale.getTotalPrice();
-        }
-        JsonObject totalProfit = new JsonObject();
-        totalProfit.addProperty("totalProfit", sum);
-        return ResponseEntity.ok(gson.toJson(totalProfit));
+        return withInterval(startDate, endDate, (start, end) -> {
+            JsonObject totalProfit = new JsonObject();
+            totalProfit.addProperty("totalProfit", salesTotalsService.totalProfit(currentUserId, start, end));
+            return ResponseEntity.ok(GSON.toJson(totalProfit));
+        });
     }
 
     @GetMapping(value = "/totalSalesCountInInterval/{startDate}/{endDate}")
@@ -130,49 +57,41 @@ public class TotalSalesController {
             @PathVariable String startDate,
             @PathVariable String endDate,
             @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId) {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        return withInterval(startDate, endDate, (start, end) -> {
+            JsonObject totalSalesCount = new JsonObject();
+            totalSalesCount.addProperty("totalSalesCount",
+                    salesTotalsService.totalSalesCount(currentUserId, start, end));
+            return ResponseEntity.ok(GSON.toJson(totalSalesCount));
+        });
+    }
 
-        DateInterval interval;
+    @GetMapping(value = "/firstSaleDate")
+    public ResponseEntity<?> getFirstSaleDate() {
+        Optional<LocalDate> firstSaleDate = salesTotalsService.firstSaleDate();
+        if (firstSaleDate.isEmpty()) {
+            return badRequest("No sales found in the system.");
+        }
+
+        JsonObject response = new JsonObject();
+        response.addProperty("firstSaleDate", firstSaleDate.get().toString());
+        return ResponseEntity.ok(response.toString());
+    }
+
+    /**
+     * Parses both ISO dates and runs the action; parse and validation errors become 400 {"error": ...}.
+     */
+    private ResponseEntity<?> withInterval(String startDate, String endDate,
+                                           BiFunction<LocalDate, LocalDate, ResponseEntity<?>> action) {
         try {
-            LocalDate parsedStartDate = LocalDate.parse(startDate);
-            LocalDate parsedEndDate = LocalDate.parse(endDate);
-            interval = validateInterval(parsedStartDate, parsedEndDate);
+            return action.apply(LocalDate.parse(startDate), LocalDate.parse(endDate));
         } catch (DateTimeParseException exception) {
             return badRequest("Dates must be valid ISO date strings (YYYY-MM-DD).");
         } catch (IllegalArgumentException exception) {
             return badRequest(exception.getMessage());
         }
-
-        List<Sale> sales = saleRepository.findAllByOwner_IdAndSaleDateBetween(
-                currentUserId,
-                interval.startDateTime(),
-                interval.endDateTime()
-        );
-
-        int totalSalesCount = 0;
-        for (Sale sale : sales) {
-            int quantity = sale.getQuantity();
-            if (quantity < 0) {
-                return badRequest("Sales count cannot be negative.");
-            }
-            totalSalesCount += quantity;
-        }
-
-        JsonObject totalSalesCountJson = new JsonObject();
-        totalSalesCountJson.addProperty("totalSalesCount", totalSalesCount);
-        return ResponseEntity.ok(gson.toJson(totalSalesCountJson));
     }
 
-    @GetMapping(value = "/firstSaleDate")
-    public ResponseEntity<?> getFirstSaleDate() {
-        Optional<Sale> firstSaleOptional = saleRepository.findFirstByOrderBySaleDateAsc();
-        if (firstSaleOptional.isEmpty()) {
-            return badRequest("No sales found in the system.");
-        }
-
-        JsonObject response = new JsonObject();
-        response.addProperty("firstSaleDate", firstSaleOptional.get().getSaleDate().toLocalDate().toString());
-        return ResponseEntity.ok(response.toString());
+    private ResponseEntity<Map<String, String>> badRequest(String message) {
+        return ResponseEntity.badRequest().body(Map.of("error", message));
     }
-
 }
