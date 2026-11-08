@@ -1,12 +1,15 @@
 package org.example.vgtuaventory.exception;
 
+import org.springframework.http.HttpStatus;
+
 /**
- * Thrown when the email is unknown or the password does not match.
- * Mapped to HTTP 401 Unauthorized.
+ * Nezinomas el. pastas arba neteisingas slaptazodis (HTTP 401 Unauthorized).
  */
-public class InvalidCredentialsException extends RuntimeException {
+public class InvalidCredentialsException extends ApiException {
+
+    private static final long serialVersionUID = 1L;
 
     public InvalidCredentialsException() {
-        super("Invalid credentials");
+        super(HttpStatus.UNAUTHORIZED, "Invalid credentials");
     }
 }

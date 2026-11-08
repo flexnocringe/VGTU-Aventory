@@ -3,6 +3,7 @@ package org.example.vgtuaventory.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.vgtuaventory.exception.AccountLockedException;
+import org.example.vgtuaventory.exception.BadRequestException;
 import org.example.vgtuaventory.exception.InvalidCredentialsException;
 import org.example.vgtuaventory.model.User;
 import org.example.vgtuaventory.model.UserRole;
@@ -40,7 +41,7 @@ public class AuthService {
 
     private User authenticateUser(String email, String password) {
         if(email == null || password == null || email.isBlank() || password.isBlank()) {
-            throw new IllegalArgumentException("Email and password must not be empty");
+            throw new BadRequestException("Email and password must not be empty");
         }
 
         String normalizedEmail = email.trim();
@@ -64,21 +65,21 @@ public class AuthService {
 
     public User register(String email, String password) {
         if (email == null || password == null || email.isBlank() || password.isBlank()) {
-            throw new IllegalArgumentException("Email and password must not be empty");
+            throw new BadRequestException("Email and password must not be empty");
         }
 
         String normalizedEmail = email.trim();
 
         if (!EMAIL_PATTERN.matcher(normalizedEmail).matches()) {
-            throw new IllegalArgumentException("Email format is invalid");
+            throw new BadRequestException("Email format is invalid");
         }
 
         if (!PASSWORD_PATTERN.matcher(password).matches()) {
-            throw new IllegalArgumentException("Password must be at least 8 characters and contain at least one letter and one number");
+            throw new BadRequestException("Password must be at least 8 characters and contain at least one letter and one number");
         }
 
         if (userRepository.existsByEmailIgnoreCase(normalizedEmail)) {
-            throw new IllegalArgumentException("Email already exists");
+            throw new BadRequestException("Email already exists");
         }
 
         User user = new User();

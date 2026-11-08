@@ -1,6 +1,7 @@
 package org.example.vgtuaventory.service;
 
 import org.example.vgtuaventory.exception.AccountLockedException;
+import org.example.vgtuaventory.exception.BadRequestException;
 import org.example.vgtuaventory.model.User;
 import org.example.vgtuaventory.model.UserRole;
 import org.example.vgtuaventory.repository.UserRepository;
@@ -130,13 +131,13 @@ class AuthServiceTest {
     @Test
     void authenticate_shouldThrowException_whenInputInvalid() {
 
-        assertThrows(IllegalArgumentException.class, () ->
+        assertThrows(BadRequestException.class, () ->
                 authService.authenticate("", "password123"));
 
-        assertThrows(IllegalArgumentException.class, () ->
+        assertThrows(BadRequestException.class, () ->
                 authService.authenticate("test@test.com", ""));
 
-        assertThrows(IllegalArgumentException.class, () ->
+        assertThrows(BadRequestException.class, () ->
                 authService.authenticate(null, "password123"));
     }
 
@@ -197,7 +198,7 @@ class AuthServiceTest {
     void register_shouldThrowException_whenEmailAlreadyExists() {
         when(userRepository.existsByEmailIgnoreCase("test@test.com")).thenReturn(true);
 
-        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+        BadRequestException ex = assertThrows(BadRequestException.class,
                 () -> authService.register("test@test.com", "password123"));
 
         assertEquals("Email already exists", ex.getMessage());
@@ -205,7 +206,7 @@ class AuthServiceTest {
 
     @Test
     void register_shouldThrowException_whenEmailFormatInvalid() {
-        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+        BadRequestException ex = assertThrows(BadRequestException.class,
                 () -> authService.register("bad-email", "password123"));
 
         assertEquals("Email format is invalid", ex.getMessage());
@@ -213,7 +214,7 @@ class AuthServiceTest {
 
     @Test
     void register_shouldThrowException_whenPasswordTooWeak() {
-        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+        BadRequestException ex = assertThrows(BadRequestException.class,
                 () -> authService.register("test@test.com", "password"));
 
         assertEquals("Password must be at least 8 characters and contain at least one letter and one number", ex.getMessage());
@@ -235,7 +236,7 @@ class AuthServiceTest {
         String[][] inputs = {{null, "password123"}, {"test@test.com", null}, {" ", "password123"}, {"test@test.com", " "}};
 
         for (String[] input : inputs) {
-            IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+            BadRequestException ex = assertThrows(BadRequestException.class,
                     () -> authService.register(input[0], input[1]));
             assertEquals("Email and password must not be empty", ex.getMessage());
         }
@@ -245,7 +246,7 @@ class AuthServiceTest {
 
     @Test
     void login_shouldRejectMissingPassword_withoutTouchingRepository() {
-        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+        BadRequestException ex = assertThrows(BadRequestException.class,
                 () -> authService.login("test@test.com", null));
 
         assertEquals("Email and password must not be empty", ex.getMessage());

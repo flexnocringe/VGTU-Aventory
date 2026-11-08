@@ -1,12 +1,15 @@
 package org.example.vgtuaventory.exception;
 
+import org.springframework.http.HttpStatus;
+
 /**
- * Thrown when an account is temporarily blocked after too many failed logins.
- * Mapped to HTTP 423 Locked.
+ * Paskyra laikinai uzblokuota po per daug nesekmingu prisijungimu (HTTP 423 Locked).
  */
-public class AccountLockedException extends RuntimeException {
+public class AccountLockedException extends ApiException {
+
+    private static final long serialVersionUID = 1L;
 
     public AccountLockedException() {
-        super("Account is temporarily blocked. Try again later.");
+        super(HttpStatus.LOCKED, "Account is temporarily blocked. Try again later.");
     }
 }
