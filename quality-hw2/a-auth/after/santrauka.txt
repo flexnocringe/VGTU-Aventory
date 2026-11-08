@@ -1,0 +1,33 @@
+== a-auth-after, commit 853857b
+testai: 92, nepavyko: 0
+PMD viso: 112
+SpotBugs viso: 51
+CPD dublikatai: 5
+
+klasė | PMD | SpotBugs | JaCoCo (klasės lygis)
+AuthController | pmd=3 | sb=3 | BRANCH 5/6, LINE 17/17
+AuthService | pmd=2 | sb=2 | BRANCH 28/28, LINE 33/33
+LoginAttemptService | pmd=0 | sb=0 | BRANCH 6/6, LINE 17/17
+InvalidCredentialsException | pmd=0 | sb=0 | LINE 2/2
+AccountLockedException | pmd=0 | sb=0 | LINE 2/2
+GlobalExceptionHandler | pmd=0 | sb=0 | LINE 2/2
+
+PMD CC / CogC (visi metodai, slenkstis 1, pmd-complexity.csv):
+AuthController.java: The class 'AuthController' has a total cyclomatic complexity of 6 (highest 4).
+AuthController.java: The method 'login(LoginRequest)' has a cyclomatic complexity of 1.
+AuthController.java: The method 'register(RegisterRequest)' has a cyclomatic complexity of 1.
+AuthController.java: The method 'logout(String)' has a cognitive complexity of 3, current threshold is 1
+AuthController.java: The method 'logout(String)' has a cyclomatic complexity of 4.
+AuthService.java: The class 'AuthService' has a total cyclomatic complexity of 25 (highest 12).
+AuthService.java: The method 'authenticate(String, String)' has a cyclomatic complexity of 1.
+AuthService.java: The method 'login(String, String)' has a cyclomatic complexity of 1.
+AuthService.java: The method 'authenticateUser(String, String)' has a cognitive complexity of 6, current threshold is 1
+AuthService.java: The method 'authenticateUser(String, String)' has a cyclomatic complexity of 11.
+AuthService.java: The method 'register(String, String)' has a cognitive complexity of 5, current threshold is 1
+AuthService.java: The method 'register(String, String)' has a cyclomatic complexity of 12.
+LoginAttemptService.java: The class 'LoginAttemptService' has a total cyclomatic complexity of 7 (highest 4).
+LoginAttemptService.java: The method 'assertNotLocked(String)' has a cognitive complexity of 2, current threshold is 1
+LoginAttemptService.java: The method 'assertNotLocked(String)' has a cyclomatic complexity of 4.
+LoginAttemptService.java: The method 'recordFailure(String)' has a cognitive complexity of 1, current threshold is 1
+LoginAttemptService.java: The method 'recordFailure(String)' has a cyclomatic complexity of 2.
+LoginAttemptService.java: The method 'reset(String)' has a cyclomatic complexity of 1.
