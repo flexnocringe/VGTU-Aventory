@@ -58,8 +58,8 @@ class ProductControllerTest {
 
     @BeforeEach
     void setUp() {
-        ProductService productService = new ProductService(productRepository);
-        ProductController controller = new ProductController(productRepository, productService, categoryRepository);
+        ProductService productService = new ProductService(productRepository, categoryRepository);
+        ProductController controller = new ProductController(productService);
                 mockMvc = MockMvcBuilders.standaloneSetup(controller)
                 .setControllerAdvice(new GlobalExceptionHandler())
                 .build();
