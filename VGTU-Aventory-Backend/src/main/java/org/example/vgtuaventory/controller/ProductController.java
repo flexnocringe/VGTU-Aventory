@@ -1,7 +1,9 @@
 package org.example.vgtuaventory.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.vgtuaventory.dto.ProductMapper;
 import org.example.vgtuaventory.dto.ProductRequest;
+import org.example.vgtuaventory.dto.ProductScanResponse;
 import org.example.vgtuaventory.model.Product;
 import org.example.vgtuaventory.service.ProductService;
 import org.example.vgtuaventory.utils.AuthSessionAttributes;
@@ -40,19 +42,7 @@ public class ProductController {
             @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId
     ) {
         Product product = productService.getProductByQrCodeForOwner(qrCode, currentUserId);
-
-        Integer categoryId = product.getCategory() != null ? product.getCategory().getCategoryId() : null;
-
-        return ResponseEntity.ok(new ProductScanResponse(
-                product.getProductId(),
-                product.getProductName(),
-                product.getPrice(),
-                product.getProductDescription(),
-                product.getPhotoUrl(),
-                product.getQuantity(),
-                product.getQrCode(),
-                categoryId
-        ));
+        return ResponseEntity.ok(ProductMapper.toScanResponse(product));
     }
 
     @PostMapping
@@ -81,15 +71,4 @@ public class ProductController {
         productService.deleteProduct(id, currentUserId);
         return ResponseEntity.noContent().build();
     }
-
-    public record ProductScanResponse(
-            int productId,
-            String productName,
-            Double price,
-            String productDescription,
-            String photoUrl,
-            int quantity,
-            String qrCode,
-            Integer categoryId
-    ) {}
 }

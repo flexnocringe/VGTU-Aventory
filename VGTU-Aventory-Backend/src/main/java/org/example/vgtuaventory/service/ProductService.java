@@ -1,5 +1,6 @@
 package org.example.vgtuaventory.service;
 
+import org.example.vgtuaventory.dto.ProductMapper;
 import org.example.vgtuaventory.dto.ProductRequest;
 import org.example.vgtuaventory.exception.BadRequestException;
 import org.example.vgtuaventory.exception.ConflictException;
@@ -7,7 +8,6 @@ import org.example.vgtuaventory.exception.ForbiddenException;
 import org.example.vgtuaventory.exception.NotFoundException;
 import org.example.vgtuaventory.model.Category;
 import org.example.vgtuaventory.model.Product;
-import org.example.vgtuaventory.model.User;
 import org.example.vgtuaventory.repository.CategoryRepository;
 import org.example.vgtuaventory.repository.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Produktu verslo taisykles ir duomenu prieiga.
- * Kontroleris tik priima HTTP uzklausa ir grazina atsakyma.
+ * Produktų verslo taisyklės ir duomenų prieiga.
+ * Kontroleris tik priima HTTP užklausą ir grąžina atsakymą.
  */
 @Service
 public class ProductService {
@@ -38,12 +38,7 @@ public class ProductService {
     }
 
     public Product getProductForOwner(int id, int ownerId) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(PRODUCT_NOT_FOUND));
-        if (product.getOwner() == null || product.getOwner().getId() != ownerId) {
-            throw new ForbiddenException("You can only access your own products");
-        }
-        return product;
+        return getOwnedProduct(id, ownerId, "You can only access your own products");
     }
 
     public Product getProductByQrCodeForOwner(String qrCode, int ownerId) {
@@ -53,77 +48,71 @@ public class ProductService {
     }
 
     public Product createProduct(ProductRequest request, int ownerId) {
-        if (request.productName() == null || request.productName().isBlank()) {
-            throw new BadRequestException("productName is required");
-        }
-
-        String name = request.productName().trim();
+        String name = requireName(request.productName());
         if (productRepository.existsByProductNameAndOwner_Id(name, ownerId)) {
             throw new ConflictException(NAME_ALREADY_EXISTS);
         }
-
-        Category category = null;
-        if (request.categoryId() != null) {
-            category = categoryRepository.findByCategoryIdAndOwner_Id(request.categoryId(), ownerId)
-                    .orElseThrow(() -> new BadRequestException(INVALID_CATEGORY));
-        }
-
-        Product p = new Product();
-        User owner = new User();
-        owner.setId(ownerId);
-
-        p.setOwner(owner);
-        p.setProductName(name);
-        p.setPrice(request.price());
-        p.setProductDescription(request.productDescription());
-        p.setPhotoUrl(request.photoUrl());
-
-        if (request.quantity() != null) p.setQuantity(request.quantity());
-        p.setQrCode(request.qrCode());
-
-        p.setCategory(category);
-
-        return productRepository.save(p);
+        Category category = request.categoryId() != null ? resolveCategory(request.categoryId(), ownerId) : null;
+        return productRepository.save(ProductMapper.toNewProduct(request, name, category, ownerId));
     }
 
+    /**
+     * Pastaba: neegzistuojančiam produktui grąžinama 403 (ne 404), kaip ir iki pertvarkymo.
+     * Elgsena sąmoningai nekeista; žr. ataskaitos 5.2 poskyrį.
+     */
     public Product updateProduct(int id, ProductRequest request, int ownerId) {
         Product existing = productRepository.findByProductIdAndOwner_Id(id, ownerId)
                 .orElseThrow(() -> new ForbiddenException("You can only modify your own products"));
 
-        if (request.productName() != null && !request.productName().isBlank()) {
-            String newName = request.productName().trim();
-
-            boolean nameTaken = productRepository.findByProductNameAndOwner_Id(newName, ownerId)
-                    .filter(p -> p.getProductId() != id)
-                    .isPresent();
-
-            if (nameTaken) {
-                throw new ConflictException(NAME_ALREADY_EXISTS);
-            }
-            existing.setProductName(newName);
-        }
-
-        if (request.price() != null) existing.setPrice(request.price());
-        if (request.productDescription() != null) existing.setProductDescription(request.productDescription());
-        if (request.photoUrl() != null) existing.setPhotoUrl(request.photoUrl());
-        if (request.quantity() != null) existing.setQuantity(request.quantity());
-        if (request.qrCode() != null) existing.setQrCode(request.qrCode());
-
-        // Kategorija: null - paliekama esama; nurodyta, bet netinkama - 400
+        renameIfRequested(existing, request.productName(), ownerId);
+        ProductMapper.applyOptionalFields(request, existing);
         if (request.categoryId() != null) {
-            existing.setCategory(categoryRepository.findByCategoryIdAndOwner_Id(request.categoryId(), ownerId)
-                    .orElseThrow(() -> new BadRequestException(INVALID_CATEGORY)));
+            existing.setCategory(resolveCategory(request.categoryId(), ownerId));
         }
-
         return productRepository.save(existing);
     }
 
     public void deleteProduct(int id, int ownerId) {
+        getOwnedProduct(id, ownerId, "You can only delete your own products");
+        productRepository.deleteById(id);
+    }
+
+    private Product getOwnedProduct(int id, int ownerId, String forbiddenMessage) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(PRODUCT_NOT_FOUND));
-        if (product.getOwner() == null || product.getOwner().getId() != ownerId) {
-            throw new ForbiddenException("You can only delete your own products");
+        if (!isOwnedBy(product, ownerId)) {
+            throw new ForbiddenException(forbiddenMessage);
         }
-        productRepository.deleteById(id);
+        return product;
+    }
+
+    private static boolean isOwnedBy(Product product, int ownerId) {
+        return product.getOwner() != null && product.getOwner().getId() == ownerId;
+    }
+
+    private static String requireName(String productName) {
+        if (productName == null || productName.isBlank()) {
+            throw new BadRequestException("productName is required");
+        }
+        return productName.trim();
+    }
+
+    private void renameIfRequested(Product existing, String requestedName, int ownerId) {
+        if (requestedName == null || requestedName.isBlank()) {
+            return;
+        }
+        String newName = requestedName.trim();
+        boolean nameTaken = productRepository.findByProductNameAndOwner_Id(newName, ownerId)
+                .filter(p -> p.getProductId() != existing.getProductId())
+                .isPresent();
+        if (nameTaken) {
+            throw new ConflictException(NAME_ALREADY_EXISTS);
+        }
+        existing.setProductName(newName);
+    }
+
+    private Category resolveCategory(int categoryId, int ownerId) {
+        return categoryRepository.findByCategoryIdAndOwner_Id(categoryId, ownerId)
+                .orElseThrow(() -> new BadRequestException(INVALID_CATEGORY));
     }
 }
