@@ -8,6 +8,7 @@ import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * Limits login attempts: after 5 failed logins an account is locked for 5 minutes.
@@ -20,8 +21,8 @@ public class LoginAttemptService {
     private static final Duration LOCK_DURATION = Duration.ofMinutes(5);
 
     private final Clock clock;
-    private final ConcurrentHashMap<String, Integer> failedLoginAttempts = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<String, Instant> lockedUntil = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, Integer> failedLoginAttempts = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, Instant> lockedUntil = new ConcurrentHashMap<>();
 
     /**
      * Throws while the lock is active; an expired lock is cleared together with its counter.
