@@ -33,11 +33,21 @@ public final class ProductMapper {
 
     /** Redagavimas: keičiami tik užklausoje nurodyti (ne null) laukai. */
     public static void applyOptionalFields(ProductRequest request, Product product) {
-        if (request.price() != null) product.setPrice(request.price());
-        if (request.productDescription() != null) product.setProductDescription(request.productDescription());
-        if (request.photoUrl() != null) product.setPhotoUrl(request.photoUrl());
-        if (request.quantity() != null) product.setQuantity(request.quantity());
-        if (request.qrCode() != null) product.setQrCode(request.qrCode());
+        if (request.price() != null) {
+            product.setPrice(request.price());
+        }
+        if (request.productDescription() != null) {
+            product.setProductDescription(request.productDescription());
+        }
+        if (request.photoUrl() != null) {
+            product.setPhotoUrl(request.photoUrl());
+        }
+        if (request.quantity() != null) {
+            product.setQuantity(request.quantity());
+        }
+        if (request.qrCode() != null) {
+            product.setQrCode(request.qrCode());
+        }
     }
 
     public static ProductScanResponse toScanResponse(Product product) {

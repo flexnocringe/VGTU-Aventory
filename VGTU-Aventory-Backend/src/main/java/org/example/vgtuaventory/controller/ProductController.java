@@ -9,7 +9,17 @@ import org.example.vgtuaventory.service.ProductService;
 import org.example.vgtuaventory.utils.AuthSessionAttributes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -30,10 +40,10 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Product> getById(
-            @PathVariable int id,
+            @PathVariable("id") int productId,
             @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId
     ) {
-        return ResponseEntity.ok(productService.getProductForOwner(id, currentUserId));
+        return ResponseEntity.ok(productService.getProductForOwner(productId, currentUserId));
     }
 
     @GetMapping("/scan")
@@ -56,19 +66,19 @@ public class ProductController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Product> update(
-            @PathVariable int id,
+            @PathVariable("id") int productId,
             @RequestBody ProductRequest request,
             @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId
     ) {
-        return ResponseEntity.ok(productService.updateProduct(id, request, currentUserId));
+        return ResponseEntity.ok(productService.updateProduct(productId, request, currentUserId));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(
-            @PathVariable int id,
+            @PathVariable("id") int productId,
             @RequestAttribute(AuthSessionAttributes.CURRENT_USER_ID) int currentUserId
     ) {
-        productService.deleteProduct(id, currentUserId);
+        productService.deleteProduct(productId, currentUserId);
         return ResponseEntity.noContent().build();
     }
 }

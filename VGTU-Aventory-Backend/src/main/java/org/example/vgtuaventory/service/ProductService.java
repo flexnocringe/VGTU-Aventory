@@ -37,8 +37,8 @@ public class ProductService {
         return productRepository.findAllByOwner_Id(ownerId);
     }
 
-    public Product getProductForOwner(int id, int ownerId) {
-        return getOwnedProduct(id, ownerId, "You can only access your own products");
+    public Product getProductForOwner(int productId, int ownerId) {
+        return getOwnedProduct(productId, ownerId, "You can only access your own products");
     }
 
     public Product getProductByQrCodeForOwner(String qrCode, int ownerId) {
@@ -60,8 +60,8 @@ public class ProductService {
      * Pastaba: neegzistuojančiam produktui grąžinama 403 (ne 404), kaip ir iki pertvarkymo.
      * Elgsena sąmoningai nekeista; žr. ataskaitos 5.2 poskyrį.
      */
-    public Product updateProduct(int id, ProductRequest request, int ownerId) {
-        Product existing = productRepository.findByProductIdAndOwner_Id(id, ownerId)
+    public Product updateProduct(int productId, ProductRequest request, int ownerId) {
+        Product existing = productRepository.findByProductIdAndOwner_Id(productId, ownerId)
                 .orElseThrow(() -> new ForbiddenException("You can only modify your own products"));
 
         renameIfRequested(existing, request.productName(), ownerId);
@@ -72,13 +72,13 @@ public class ProductService {
         return productRepository.save(existing);
     }
 
-    public void deleteProduct(int id, int ownerId) {
-        getOwnedProduct(id, ownerId, "You can only delete your own products");
-        productRepository.deleteById(id);
+    public void deleteProduct(int productId, int ownerId) {
+        getOwnedProduct(productId, ownerId, "You can only delete your own products");
+        productRepository.deleteById(productId);
     }
 
-    private Product getOwnedProduct(int id, int ownerId, String forbiddenMessage) {
-        Product product = productRepository.findById(id)
+    private Product getOwnedProduct(int productId, int ownerId, String forbiddenMessage) {
+        Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new NotFoundException(PRODUCT_NOT_FOUND));
         if (!isOwnedBy(product, ownerId)) {
             throw new ForbiddenException(forbiddenMessage);
@@ -103,7 +103,7 @@ public class ProductService {
         }
         String newName = requestedName.trim();
         boolean nameTaken = productRepository.findByProductNameAndOwner_Id(newName, ownerId)
-                .filter(p -> p.getProductId() != existing.getProductId())
+                .filter(other -> other.getProductId() != existing.getProductId())
                 .isPresent();
         if (nameTaken) {
             throw new ConflictException(NAME_ALREADY_EXISTS);
