@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SalesAnalyticsService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">VGTU-Aventory</a> &gt; <a href="index.source.html" class="el_package">org.example.vgtuaventory.service</a> &gt; <span class="el_source">SalesAnalyticsService.java</span></div><h1>SalesAnalyticsService.java</h1><pre class="source lang-java linenums">package org.example.vgtuaventory.service;
+
+import org.example.vgtuaventory.dto.ProductSalesComparisonResponse;
+import org.example.vgtuaventory.dto.TopSellingProductResponse;
+import org.example.vgtuaventory.model.Product;
+import org.example.vgtuaventory.model.Sale;
+import org.example.vgtuaventory.model.SaleType;
+import org.example.vgtuaventory.repository.ProductRepository;
+import org.example.vgtuaventory.repository.SaleRepository;
+import org.springframework.stereotype.Service;
+
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Read-only sales analytics (top-selling products, product comparison) for the authenticated user.
+ * Extracted from SaleService, which keeps registering and listing sales.
+ */
+@Service
+public class SalesAnalyticsService {
+
+    private final SaleRepository saleRepository;
+    private final ProductRepository productRepository;
+    private final Clock clock;
+
+<span class="fc" id="L32">    public SalesAnalyticsService(SaleRepository saleRepository, ProductRepository productRepository, Clock clock) {</span>
+<span class="fc" id="L33">        this.saleRepository = saleRepository;</span>
+<span class="fc" id="L34">        this.productRepository = productRepository;</span>
+<span class="fc" id="L35">        this.clock = clock;</span>
+<span class="fc" id="L36">    }</span>
+
+    public List&lt;TopSellingProductResponse&gt; getTopSellingProductsByDateRange(
+            int currentUserId,
+            LocalDate startDate,
+            LocalDate endDate
+    ) {
+<span class="fc" id="L43">        validateDateRange(startDate, endDate);</span>
+<span class="fc" id="L44">        validateNotBeforeFirstSale(startDate);</span>
+<span class="fc" id="L45">        List&lt;Sale&gt; sales = findSalesInRange(currentUserId, startDate, endDate);</span>
+
+<span class="fc" id="L47">        Map&lt;Integer, Product&gt; productById = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L48">        Map&lt;Integer, Integer&gt; countById = new HashMap&lt;&gt;();</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        for (Sale sale : sales) {</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">            if (!isCountedSale(sale)) {</span>
+<span class="fc" id="L51">                continue;</span>
+            }
+
+<span class="fc" id="L54">            Product product = sale.getProduct();</span>
+<span class="fc" id="L55">            productById.putIfAbsent(product.getProductId(), product);</span>
+<span class="fc" id="L56">            countById.merge(product.getProductId(), sale.getQuantity(), Integer::sum);</span>
+<span class="fc" id="L57">        }</span>
+
+<span class="fc" id="L59">        List&lt;TopSellingProductResponse&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L60">        countById.forEach((productId, count) -&gt; result.add(</span>
+<span class="fc" id="L61">                new TopSellingProductResponse(productId, productById.get(productId).getProductName(), count)));</span>
+<span class="fc" id="L62">        result.sort(</span>
+<span class="fc" id="L63">                Comparator.comparingInt(TopSellingProductResponse::salesCount).reversed()</span>
+<span class="fc" id="L64">                        .thenComparing(TopSellingProductResponse::productName, String.CASE_INSENSITIVE_ORDER)</span>
+        );
+
+<span class="fc" id="L67">        return result;</span>
+    }
+
+    public List&lt;ProductSalesComparisonResponse&gt; getProductSalesComparison(
+            int currentUserId,
+            LocalDate startDate,
+            LocalDate endDate,
+            List&lt;Integer&gt; productIds
+    ) {
+<span class="fc" id="L76">        validateDateRange(startDate, endDate);</span>
+
+<span class="fc bfc" id="L78" title="All 4 branches covered.">        if (productIds == null || productIds.isEmpty()) {</span>
+<span class="fc" id="L79">            throw new RuntimeException(&quot;At least one product must be selected&quot;);</span>
+        }
+
+<span class="fc bfc" id="L82" title="All 2 branches covered.">        if (productIds.size() &gt; 5) {</span>
+<span class="fc" id="L83">            throw new RuntimeException(&quot;Maximum 5 products can be compared&quot;);</span>
+        }
+
+<span class="fc" id="L86">        validateNotBeforeFirstSale(startDate);</span>
+<span class="fc" id="L87">        List&lt;Sale&gt; sales = findSalesInRange(currentUserId, startDate, endDate);</span>
+
+<span class="fc" id="L89">        Map&lt;Integer, String&gt; nameById = new HashMap&lt;&gt;();</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">        for (Integer productId : productIds) {</span>
+<span class="fc" id="L91">            Product product = productRepository.findByProductIdAndOwner_Id(productId, currentUserId)</span>
+<span class="fc" id="L92">                    .orElseThrow(() -&gt; new RuntimeException(&quot;Product not found with ID: &quot; + productId));</span>
+<span class="fc" id="L93">            nameById.put(productId, product.getProductName());</span>
+<span class="fc" id="L94">        }</span>
+
+<span class="fc" id="L96">        Map&lt;Integer, Integer&gt; totalById = new HashMap&lt;&gt;();</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">        for (Sale sale : sales) {</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">            if (!isCountedSale(sale)) {</span>
+<span class="fc" id="L99">                continue;</span>
+            }
+
+<span class="fc" id="L102">            int productId = sale.getProduct().getProductId();</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">            if (nameById.containsKey(productId)) {</span>
+<span class="fc" id="L104">                totalById.merge(productId, sale.getQuantity(), Integer::sum);</span>
+            }
+<span class="fc" id="L106">        }</span>
+
+<span class="fc" id="L108">        List&lt;ProductSalesComparisonResponse&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        for (Integer productId : productIds) {</span>
+<span class="fc" id="L110">            result.add(new ProductSalesComparisonResponse(</span>
+<span class="fc" id="L111">                    productId, nameById.get(productId), totalById.getOrDefault(productId, 0)));</span>
+<span class="fc" id="L112">        }</span>
+
+<span class="fc" id="L114">        return result;</span>
+    }
+
+    private void validateDateRange(LocalDate startDate, LocalDate endDate) {
+<span class="fc bfc" id="L118" title="All 2 branches covered.">        if (endDate.isAfter(LocalDate.now(clock))) {</span>
+<span class="fc" id="L119">            throw new RuntimeException(&quot;End date cannot be in the future&quot;);</span>
+        }
+
+<span class="fc bfc" id="L122" title="All 2 branches covered.">        if (startDate.isAfter(endDate)) {</span>
+<span class="fc" id="L123">            throw new RuntimeException(&quot;Start date cannot be later than end date&quot;);</span>
+        }
+<span class="fc" id="L125">    }</span>
+
+    private void validateNotBeforeFirstSale(LocalDate startDate) {
+<span class="fc" id="L128">        Sale firstSale = saleRepository.findFirstByOrderBySaleDateAsc()</span>
+<span class="fc" id="L129">                .orElseThrow(() -&gt; new RuntimeException(&quot;No sales found in the system&quot;));</span>
+
+<span class="fc bfc" id="L131" title="All 2 branches covered.">        if (startDate.isBefore(firstSale.getSaleDate().toLocalDate())) {</span>
+<span class="fc" id="L132">            throw new RuntimeException(&quot;Start date cannot be earlier than first recorded sale date&quot;);</span>
+        }
+<span class="fc" id="L134">    }</span>
+
+    private List&lt;Sale&gt; findSalesInRange(int ownerId, LocalDate startDate, LocalDate endDate) {
+<span class="fc" id="L137">        LocalDateTime startDateTime = startDate.atStartOfDay();</span>
+<span class="fc" id="L138">        LocalDateTime endDateTime = endDate.plusDays(1).atStartOfDay().minusNanos(1);</span>
+
+<span class="fc" id="L140">        return saleRepository.findAllByOwner_IdAndSaleTypeAndSaleDateBetween(</span>
+                ownerId,
+                SaleType.SALE,
+                startDateTime,
+                endDateTime
+        );
+    }
+
+    private static boolean isCountedSale(Sale sale) {
+<span class="fc bfc" id="L149" title="All 4 branches covered.">        return sale.getQuantity() &gt; 0 &amp;&amp; sale.getProduct() != null;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SecurityConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">VGTU-Aventory</a> &gt; <a href="index.source.html" class="el_package">org.example.vgtuaventory.utils</a> &gt; <span class="el_source">SecurityConfig.java</span></div><h1>SecurityConfig.java</h1><pre class="source lang-java linenums">package org.example.vgtuaventory.utils;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import org.example.vgtuaventory.service.TokenService;
+import org.example.vgtuaventory.utils.AuthSessionAttributes;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
+import java.util.List;
+
+@Configuration
+@EnableWebSecurity
+<span class="nc" id="L31">public class SecurityConfig {</span>
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+<span class="nc" id="L35">        CorsConfiguration configuration = new CorsConfiguration();</span>
+<span class="nc" id="L36">        configuration.setAllowedOrigins(List.of(&quot;http://localhost:3000&quot;));</span>
+<span class="nc" id="L37">        configuration.setAllowedMethods(List.of(&quot;GET&quot;, &quot;POST&quot;, &quot;PUT&quot;, &quot;DELETE&quot;, &quot;OPTIONS&quot;));</span>
+<span class="nc" id="L38">        configuration.setAllowedHeaders(List.of(&quot;Authorization&quot;, &quot;Content-Type&quot;, &quot;Accept&quot;, &quot;Origin&quot;, &quot;X-Requested-With&quot;));</span>
+<span class="nc" id="L39">        configuration.setExposedHeaders(List.of(&quot;Authorization&quot;));</span>
+
+<span class="nc" id="L41">        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();</span>
+<span class="nc" id="L42">        source.registerCorsConfiguration(&quot;/**&quot;, configuration);</span>
+<span class="nc" id="L43">        return source;</span>
+    }
+
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http, AuthTokenFilter authTokenFilter) throws Exception {
+<span class="nc" id="L48">        return http</span>
+<span class="nc" id="L49">                .cors(Customizer.withDefaults())</span>
+<span class="nc" id="L50">                .csrf(AbstractHttpConfigurer::disable)</span>
+<span class="nc" id="L51">                .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class)</span>
+<span class="nc" id="L52">                .authorizeHttpRequests(auth -&gt; auth</span>
+<span class="nc" id="L53">                        .anyRequest().permitAll()</span>
+                )
+<span class="nc" id="L55">                .build();</span>
+    }
+
+    @Bean
+    AuthTokenFilter authTokenFilter(TokenService tokenService) {
+<span class="nc" id="L60">        return new AuthTokenFilter(tokenService);</span>
+    }
+
+    @RequiredArgsConstructor
+    static class AuthTokenFilter extends OncePerRequestFilter {
+        private final TokenService tokenService;
+
+        @Override
+        protected boolean shouldNotFilter(HttpServletRequest request) {
+<span class="nc" id="L69">            String path = request.getRequestURI();</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">            return HttpMethod.OPTIONS.matches(request.getMethod())</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">                    || path.equals(&quot;/auth/login&quot;)</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">                    || path.equals(&quot;/auth/register&quot;)</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">                    || path.equals(&quot;/error&quot;);</span>
+        }
+
+        @Override
+        protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+                throws ServletException, IOException {
+<span class="nc" id="L79">            String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);</span>
+
+<span class="nc bnc" id="L81" title="All 4 branches missed.">            if (authorization == null || !authorization.startsWith(&quot;Bearer &quot;)) {</span>
+<span class="nc" id="L82">                sendUnauthorized(response);</span>
+<span class="nc" id="L83">                return;</span>
+            }
+
+<span class="nc" id="L86">            String token = authorization.substring(&quot;Bearer &quot;.length()).trim();</span>
+
+<span class="nc bnc" id="L88" title="All 4 branches missed.">            if (token.isBlank() || !tokenService.isTokenValid(token)) {</span>
+<span class="nc" id="L89">                sendUnauthorized(response);</span>
+<span class="nc" id="L90">                return;</span>
+            }
+
+<span class="nc" id="L93">            Integer currentUserId = tokenService.getUserIdForToken(token).orElse(null);</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">            if (currentUserId == null) {</span>
+<span class="nc" id="L95">                sendUnauthorized(response);</span>
+<span class="nc" id="L96">                return;</span>
+            }
+
+<span class="nc" id="L99">            request.setAttribute(AuthSessionAttributes.CURRENT_USER_ID, currentUserId);</span>
+
+<span class="nc" id="L101">            filterChain.doFilter(request, response);</span>
+<span class="nc" id="L102">        }</span>
+
+        private void sendUnauthorized(HttpServletResponse response) throws IOException {
+<span class="nc" id="L105">            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);</span>
+<span class="nc" id="L106">            response.setContentType(MediaType.APPLICATION_JSON_VALUE);</span>
+<span class="nc" id="L107">            response.getWriter().write(&quot;{\&quot;error\&quot;:\&quot;Unauthorized\&quot;}&quot;);</span>
+<span class="nc" id="L108">        }</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

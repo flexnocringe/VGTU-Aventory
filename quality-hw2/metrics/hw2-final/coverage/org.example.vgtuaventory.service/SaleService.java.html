@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SaleService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">VGTU-Aventory</a> &gt; <a href="index.source.html" class="el_package">org.example.vgtuaventory.service</a> &gt; <span class="el_source">SaleService.java</span></div><h1>SaleService.java</h1><pre class="source lang-java linenums">package org.example.vgtuaventory.service;
+
+import jakarta.transaction.Transactional;
+import org.example.vgtuaventory.dto.SaleRequest;
+import org.example.vgtuaventory.exception.InsufficientStockException;
+import org.example.vgtuaventory.model.Product;
+import org.example.vgtuaventory.model.Sale;
+import org.example.vgtuaventory.model.SaleType;
+import org.example.vgtuaventory.model.User;
+import org.example.vgtuaventory.repository.SaleRepository;
+import org.example.vgtuaventory.repository.ProductRepository;
+import org.example.vgtuaventory.repository.UserRepository;
+import org.springframework.stereotype.Service;
+
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Service
+public class SaleService {
+
+    private final SaleRepository saleRepository;
+    private final ProductRepository productRepository;
+    private final UserRepository userRepository;
+    private final Clock clock;
+
+    public SaleService(SaleRepository saleRepository,
+                       ProductRepository productRepository,
+                       UserRepository userRepository,
+<span class="fc" id="L30">                       Clock clock) {</span>
+<span class="fc" id="L31">        this.saleRepository = saleRepository;</span>
+<span class="fc" id="L32">        this.productRepository = productRepository;</span>
+<span class="fc" id="L33">        this.userRepository = userRepository;</span>
+<span class="fc" id="L34">        this.clock = clock;</span>
+<span class="fc" id="L35">    }</span>
+
+    @Transactional
+    public Sale registerSale(SaleRequest request, int currentUserId) {
+<span class="fc bfc" id="L39" title="All 4 branches covered.">        if (request.getOwnerId() != 0 &amp;&amp; request.getOwnerId() != currentUserId) {</span>
+<span class="fc" id="L40">            throw new IllegalStateException(&quot;You can only create sales for your own account&quot;);</span>
+        }
+
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        if (request.getQuantity() &lt;= 0) {</span>
+<span class="fc" id="L44">            throw new RuntimeException(&quot;Quantity must be greater than 0&quot;);</span>
+        }
+
+<span class="fc" id="L47">        Product product = productRepository.findByProductIdAndOwner_Id(request.getProductId(), currentUserId)</span>
+<span class="fc" id="L48">            .orElseThrow(() -&gt; new RuntimeException(&quot;Product not found with ID: &quot; + request.getProductId()));</span>
+
+<span class="fc" id="L50">        User owner = userRepository.findById(currentUserId)</span>
+<span class="fc" id="L51">            .orElseThrow(() -&gt; new RuntimeException(&quot;User not found with ID: &quot; + currentUserId));</span>
+
+<span class="fc" id="L53">        Sale sale = new Sale();</span>
+<span class="fc" id="L54">        sale.setProduct(product);</span>
+<span class="fc" id="L55">        sale.setOwner(owner);</span>
+<span class="fc" id="L56">        sale.setQuantity(request.getQuantity());</span>
+<span class="fc" id="L57">        sale.setSaleLocation(request.getSaleLocation());</span>
+<span class="fc" id="L58">        sale.setSaleType(request.getSaleType());</span>
+<span class="fc" id="L59">        sale.setSaleNote(request.getSaleNote());</span>
+<span class="fc" id="L60">        sale.setSaleDate(LocalDateTime.now(clock));</span>
+
+<span class="fc" id="L62">        sale.setSaleProductPrice(product.getPrice());</span>
+<span class="fc" id="L63">        sale.setTotalPrice(product.getPrice() * request.getQuantity());</span>
+
+<span class="fc bfc" id="L65" title="All 2 branches covered.">        if (request.getSaleType() == SaleType.SALE) {</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">            if (request.getQuantity() &gt; product.getQuantity()) {</span>
+<span class="fc" id="L67">                throw new InsufficientStockException();</span>
+            }
+<span class="fc" id="L69">            product.setQuantity(product.getQuantity() - request.getQuantity());</span>
+        } else {
+<span class="fc" id="L71">            product.setQuantity(product.getQuantity() + request.getQuantity());</span>
+        }
+
+<span class="fc" id="L74">        productRepository.save(product);</span>
+<span class="fc" id="L75">        return saleRepository.save(sale);</span>
+    }
+
+    public List&lt;Sale&gt; getSalesByUser(int userId) {
+<span class="fc" id="L79">        return saleRepository.findByOwnerId(userId);</span>
+    }
+
+    public List&lt;Sale&gt; getAllSales() {
+<span class="fc" id="L83">        return saleRepository.findAll();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

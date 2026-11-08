@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SalesTotalsService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">VGTU-Aventory</a> &gt; <a href="index.source.html" class="el_package">org.example.vgtuaventory.service</a> &gt; <span class="el_source">SalesTotalsService.java</span></div><h1>SalesTotalsService.java</h1><pre class="source lang-java linenums">package org.example.vgtuaventory.service;
+
+import org.example.vgtuaventory.model.Sale;
+import org.example.vgtuaventory.repository.SaleRepository;
+import org.springframework.stereotype.Service;
+
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+/**
+ * Totals over a user's sales in a date interval (revenue, units sold, per-sale prices).
+ * Moved out of TotalSalesController, which now only parses dates and formats JSON.
+ * Validation errors are IllegalArgumentException with the messages the clients already show.
+ */
+@Service
+public class SalesTotalsService {
+
+    private final SaleRepository saleRepository;
+    private final Clock clock;
+
+<span class="fc" id="L26">    public SalesTotalsService(SaleRepository saleRepository, Clock clock) {</span>
+<span class="fc" id="L27">        this.saleRepository = saleRepository;</span>
+<span class="fc" id="L28">        this.clock = clock;</span>
+<span class="fc" id="L29">    }</span>
+
+    public Map&lt;Integer, Double&gt; totalPriceBySaleId(int ownerId, LocalDate startDate, LocalDate endDate) {
+<span class="fc" id="L32">        Map&lt;Integer, Double&gt; totalPriceBySaleId = new HashMap&lt;&gt;();</span>
+<span class="fc bfc" id="L33" title="All 2 branches covered.">        for (Sale sale : findSalesInInterval(ownerId, startDate, endDate)) {</span>
+<span class="fc" id="L34">            totalPriceBySaleId.put(sale.getId(), sale.getTotalPrice());</span>
+<span class="fc" id="L35">        }</span>
+<span class="fc" id="L36">        return totalPriceBySaleId;</span>
+    }
+
+    public double totalProfit(int ownerId, LocalDate startDate, LocalDate endDate) {
+<span class="fc" id="L40">        double sum = 0.0;</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">        for (Sale sale : findSalesInInterval(ownerId, startDate, endDate)) {</span>
+<span class="fc" id="L42">            sum += sale.getTotalPrice();</span>
+<span class="fc" id="L43">        }</span>
+<span class="fc" id="L44">        return sum;</span>
+    }
+
+    public int totalSalesCount(int ownerId, LocalDate startDate, LocalDate endDate) {
+<span class="fc" id="L48">        int totalSalesCount = 0;</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        for (Sale sale : findSalesInInterval(ownerId, startDate, endDate)) {</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">            if (sale.getQuantity() &lt; 0) {</span>
+<span class="fc" id="L51">                throw new IllegalArgumentException(&quot;Sales count cannot be negative.&quot;);</span>
+            }
+<span class="fc" id="L53">            totalSalesCount += sale.getQuantity();</span>
+<span class="fc" id="L54">        }</span>
+<span class="fc" id="L55">        return totalSalesCount;</span>
+    }
+
+    public Optional&lt;LocalDate&gt; firstSaleDate() {
+<span class="fc" id="L59">        return saleRepository.findFirstByOrderBySaleDateAsc()</span>
+<span class="fc" id="L60">                .map(sale -&gt; sale.getSaleDate().toLocalDate());</span>
+    }
+
+    private List&lt;Sale&gt; findSalesInInterval(int ownerId, LocalDate startDate, LocalDate endDate) {
+<span class="fc" id="L64">        validateInterval(startDate, endDate);</span>
+<span class="fc" id="L65">        LocalDateTime startDateTime = startDate.atStartOfDay();</span>
+<span class="fc" id="L66">        LocalDateTime endDateTime = endDate.plusDays(1).atStartOfDay().minusNanos(1);</span>
+<span class="fc" id="L67">        return saleRepository.findAllByOwner_IdAndSaleDateBetween(ownerId, startDateTime, endDateTime);</span>
+    }
+
+    private void validateInterval(LocalDate startDate, LocalDate endDate) {
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        if (endDate.isAfter(LocalDate.now(clock))) {</span>
+<span class="fc" id="L72">            throw new IllegalArgumentException(&quot;End date cannot be in the future.&quot;);</span>
+        }
+
+<span class="fc bfc" id="L75" title="All 2 branches covered.">        if (startDate.isAfter(endDate)) {</span>
+<span class="fc" id="L76">            throw new IllegalArgumentException(&quot;Start date cannot be later than end date.&quot;);</span>
+        }
+
+<span class="fc" id="L79">        LocalDate firstSaleDate = firstSaleDate()</span>
+<span class="fc" id="L80">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;No sales found in the system.&quot;));</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">        if (startDate.isBefore(firstSaleDate)) {</span>
+<span class="fc" id="L82">            throw new IllegalArgumentException(&quot;Start date cannot be earlier than first recorded sale date.&quot;);</span>
+        }
+<span class="fc" id="L84">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

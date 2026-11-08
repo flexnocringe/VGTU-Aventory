@@ -1,0 +1,38 @@
+> Task :clean
+
+> Task :generateJava
+Schema location C:\Users\domci\Desktop\VGTU-Aventory\VGTU-Aventory-Backend\src\main\resources\graphql-client does not exist
+Schema is empty
+
+> Task :compileJava
+> Task :processResources
+> Task :classes
+
+> Task :compileTestJava
+Note: C:\Users\domci\Desktop\VGTU-Aventory\VGTU-Aventory-Backend\src\test\java\org\example\vgtuaventory\unitTests\TotalProfitTest.java uses unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+
+> Task :processTestResources
+> Task :testClasses
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+> Task :test
+> Task :jacocoTestReport
+> Task :cpdMain
+
+> Task :complexityMain
+Processing files   0% [                ]  0/55 (0:00:00) Violations:0, Errors:0Processing files   1% [                ]  2/55 (0:00:00) Violations:0, Errors:0Processing files   3% [                ]  2/55 (0:00:00) Violations:0, Errors:0Processing files   5% [=               ]  4/55 (0:00:00) Violations:7, Errors:0Processing files   7% [=               ]  4/55 (0:00:00) Violations:7, Errors:0Processing files   9% [=              ]  5/55 (0:00:00) Violations:12, Errors:0Processing files  10% [=              ]  6/55 (0:00:00) Violations:28, Errors:0Processing files  14% [==             ]  8/55 (0:00:00) Violations:63, Errors:0Processing files  14% [==             ]  8/55 (0:00:00) Violations:63, Errors:0Processing files  21% [===            ] 12/55 (0:00:00) Violations:95, Errors:0Processing files  23% [===            ] 13/55 (0:00:00) Violations:97, Errors:0Processing files  23% [===            ] 13/55 (0:00:00) Violations:97, Errors:0Processing files  18% [===            ] 10/55 (0:00:00) Violations:97, Errors:0Processing files  25% [===            ] 14/55 (0:00:00) Violations:99, Errors:0Processing files  27% [===           ] 15/55 (0:00:00) Violations:102, Errors:0Processing files  21% [===            ] 12/55 (0:00:00) Violations:95, Errors:0Processing files  32% [====          ] 18/55 (0:00:00) Violations:103, Errors:0Processing files  32% [====          ] 18/55 (0:00:00) Violations:103, Errors:0Processing files  29% [====          ] 16/55 (0:00:00) Violations:102, Errors:0Processing files  34% [====          ] 19/55 (0:00:00) Violations:107, Errors:0Processing files  36% [=====         ] 20/55 (0:00:00) Violations:112, Errors:0Processing files  38% [=====         ] 21/55 (0:00:00) Violations:114, Errors:0Processing files  40% [=====         ] 22/55 (0:00:00) Violations:123, Errors:0Processing files  41% [=====         ] 23/55 (0:00:00) Violations:123, Errors:0Processing files  43% [======        ] 24/55 (0:00:00) Violations:127, Errors:0Processing files  47% [======        ] 26/55 (0:00:00) Violations:189, Errors:0Processing files  50% [=======       ] 28/55 (0:00:00) Violations:189, Errors:0Processing files  49% [=======       ] 27/55 (0:00:00) Violations:189, Errors:0Processing files  50% [=======       ] 28/55 (0:00:00) Violations:189, Errors:0Processing files  54% [=======       ] 30/55 (0:00:00) Violations:189, Errors:0Processing files  54% [========      ] 31/55 (0:00:00) Violations:189, Errors:0Processing files  60% [========      ] 33/55 (0:00:00) Violations:189, Errors:0Processing files  60% [========      ] 33/55 (0:00:00) Violations:189, Errors:0Processing files  60% [========      ] 33/55 (0:00:00) Violations:189, Errors:0Processing files  65% [=========     ] 37/55 (0:00:00) Violations:189, Errors:0Processing files  63% [=========     ] 35/55 (0:00:00) Violations:189, Errors:0Processing files  67% [=========     ] 37/55 (0:00:00) Violations:189, Errors:0Processing files  69% [=========     ] 38/55 (0:00:00) Violations:189, Errors:0Processing files  70% [=========     ] 39/55 (0:00:00) Violations:189, Errors:0Processing files  69% [=========     ] 38/55 (0:00:00) Violations:189, Errors:0Processing files  72% [==========    ] 40/55 (0:00:00) Violations:200, Errors:0Processing files  74% [==========    ] 41/55 (0:00:00) Violations:204, Errors:0Processing files  76% [==========    ] 42/55 (0:00:00) Violations:208, Errors:0Processing files  78% [==========    ] 43/55 (0:00:00) Violations:212, Errors:0Processing files  80% [===========   ] 44/55 (0:00:00) Violations:225, Errors:0Processing files  81% [===========   ] 45/55 (0:00:00) Violations:252, Errors:0Processing files  83% [===========   ] 46/55 (0:00:00) Violations:263, Errors:0Processing files  85% [===========   ] 47/55 (0:00:00) Violations:267, Errors:0Processing files  87% [============  ] 48/55 (0:00:00) Violations:292, Errors:0Processing files  89% [============  ] 49/55 (0:00:00) Violations:308, Errors:0Processing files  90% [============  ] 50/55 (0:00:00) Violations:349, Errors:0Processing files  94% [============= ] 52/55 (0:00:00) Violations:351, Errors:0Processing files  94% [============= ] 52/55 (0:00:00) Violations:351, Errors:0Processing files  96% [============= ] 53/55 (0:00:00) Violations:359, Errors:0Processing files  98% [============= ] 54/55 (0:00:00) Violations:394, Errors:0Processing files 100% [==============] 55/55 (0:00:00) Violations:395, Errors:0Processing files 100% [==============] 55/55 (0:00:00) Violations:395, Errors:0Processing files 100% [==============] 55/55 (0:00:00) Violations:395, Errors:0
+Processing files 100% [==============] 55/55 (0:00:01) Violations:395, Errors:0Processing files 100% [==============] 55/55 (0:00:01) Violations:395, Errors:0
+[main] INFO net.sourceforge.pmd.cli - Found 395 violations.
+
+> Task :pmdMain
+Adding current platform C:\Program Files\Eclipse Adoptium\jdk-21.0.13.9-hotspot\lib\jrt-fs.jar to auxClasspath, which could be the wrong java version. Please add the correct jrt-fs.jar explicitly to the auxClasspath. See https://docs.pmd-code.org/latest/pmd_languages_java.html#providing-the-auxiliary-classpath Set env var PMD_JAVA_DISABLE_AUX_CLASSPATH_WARNINGS=true to disable this warning.
+97 PMD rule violations were found. See the report at: file:///C:/Users/domci/Desktop/VGTU-Aventory/VGTU-Aventory-Backend/build/reports/pmd/main.html
+
+> Task :spotbugsMain
+SpotBugs ended with exit code 1
+
+[Incubating] Problems report is available at: file:///C:/Users/domci/Desktop/VGTU-Aventory/VGTU-Aventory-Backend/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 27s
+12 actionable tasks: 12 executed
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.3.1/userguide/configuration_cache_enabling.html
