@@ -19,34 +19,22 @@ public class AuthController {
     private final TokenService tokenService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-        try {
-            AuthService.LoginResult loginResult = authService.login(request.email(), request.password());
-            User user = loginResult.user();
-            return ResponseEntity.ok(new LoginResponse(
-                    loginResult.token(),
-                    user.getId(),
-                    user.getEmail(),
-                    user.getRole().name()
-            ));
-        } catch (IllegalArgumentException ex) {
-            return ResponseEntity.badRequest().body(ex.getMessage());
-        } catch (IllegalStateException ex) {
-            return ResponseEntity.status(HttpStatus.LOCKED).body(ex.getMessage());
-        } catch (RuntimeException ex) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
-        }
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
+        AuthService.LoginResult loginResult = authService.login(request.email(), request.password());
+        User user = loginResult.user();
+        return ResponseEntity.ok(new LoginResponse(
+                loginResult.token(),
+                user.getId(),
+                user.getEmail(),
+                user.getRole().name()
+        ));
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
-        try {
-            User savedUser = authService.register(request.email(), request.password());
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(new RegisterResponse(savedUser.getId(), savedUser.getEmail(), savedUser.getRole().name()));
-        } catch (IllegalArgumentException ex) {
-            return ResponseEntity.badRequest().body(ex.getMessage());
-        }
+    public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest request) {
+        User savedUser = authService.register(request.email(), request.password());
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new RegisterResponse(savedUser.getId(), savedUser.getEmail(), savedUser.getRole().name()));
     }
 
     @PostMapping("/logout")
